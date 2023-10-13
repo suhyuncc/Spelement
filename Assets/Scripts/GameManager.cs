@@ -16,8 +16,7 @@ public class GameManager : MonoBehaviour
 
     private Transform Initpos;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Initpos = this.transform;
     }

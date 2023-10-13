@@ -11,14 +11,14 @@ public class DragAndDrop : MonoBehaviour
 
     public float count;
 
-    public bool isColum;
+    public bool Onspell;
 
     private void Awake()
     {
         InitPosition = transform.position;
         landPosition = InitPosition;
 
-        isColum = true;
+        Onspell = false;
     }
 
     private Vector3 GetmousePos()
@@ -41,7 +41,15 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseUp()
     {
-        //transform.position = landPosition;
+        if(Onspell)
+        {
+            this.gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.position = landPosition;
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -49,10 +57,22 @@ public class DragAndDrop : MonoBehaviour
         landPosition = InitPosition;
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Spell"))
+        {
+            Onspell = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Onspell = false;
+    }
+
     public void ReturnPos()
     {
         transform.rotation = Quaternion.identity;
         transform.position = InitPosition;
-        isColum = true;
     }
 }
