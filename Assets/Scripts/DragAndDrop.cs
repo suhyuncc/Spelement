@@ -13,10 +13,15 @@ public class DragAndDrop : MonoBehaviour
 
     public bool Onspell;
 
-    private void Awake()
+    private void OnEnable()
     {
         InitPosition = transform.position;
         landPosition = InitPosition;
+    }
+
+    private void Awake()
+    {
+        
 
         Onspell = false;
     }
@@ -47,7 +52,7 @@ public class DragAndDrop : MonoBehaviour
         }
         else
         {
-            transform.position = landPosition;
+            transform.position = InitPosition;
         }
 
     }

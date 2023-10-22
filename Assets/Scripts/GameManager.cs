@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     private Transform Initpos;
 
-    void Awake()
+    void Start()
     {
         Initpos = this.transform;
     }
