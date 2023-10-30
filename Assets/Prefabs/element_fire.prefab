@@ -146,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   count: 0
   Onspell: 0
+  element: 4
 --- !u!50 &6097217210538536386
 Rigidbody2D:
   serializedVersion: 4

@@ -12,9 +12,9 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private Text description;
     [SerializeField]
-    private Image spell;
+    private GameObject spell;
     [SerializeField]
-    private GameObject cost;
+    private GameObject[] costs;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -22,8 +22,12 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         description.gameObject.SetActive(true);
 
         Name.gameObject.SetActive(false);
-        spell.gameObject.SetActive(false);
-        cost.SetActive(false);
+        spell.SetActive(false);
+
+        for (int i = 0; i < costs.Length; i++) {
+            costs[i].SetActive(false);
+        }
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -33,7 +37,22 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         description.gameObject.SetActive(false);
 
         Name.gameObject.SetActive(true);
-        spell.gameObject.SetActive(true);
-        cost.SetActive(true);
+        spell.SetActive(true);
+        for (int i = 0; i < costs.Length; i++)
+        {
+            costs[i].SetActive(true);
+        }
+    }
+
+    public void getair() {
+        int count = 0;
+        for(int i = 0; i < costs.Length; i++)
+        {
+            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "원소_바람")
+            {
+                count++;
+            }
+        }
+        Debug.Log($"{count}개 있습니다");
     }
 }

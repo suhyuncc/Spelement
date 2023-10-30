@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum Element
+{
+    Null = 0,
+    Air = 1,
+    Earth = 2,
+    Water = 3,
+    Fire = 4,
+}
+
 public class DragAndDrop : MonoBehaviour
 {
     private Vector3 mousePosition;
@@ -13,10 +22,21 @@ public class DragAndDrop : MonoBehaviour
 
     public bool Onspell;
 
+    private GameObject spell;
+    public Element element;
+
     private void OnEnable()
     {
         InitPosition = transform.position;
         landPosition = InitPosition;
+    }
+
+    private void OnDisable()
+    {
+        if(element == Element.Air)
+        {
+            spell.gameObject.GetComponent<SpellAction>().getair();
+        }
     }
 
     private void Awake()
@@ -67,6 +87,7 @@ public class DragAndDrop : MonoBehaviour
         if (collision.gameObject.CompareTag("Spell"))
         {
             Onspell = true;
+            spell = collision.gameObject;
         }
     }
 
