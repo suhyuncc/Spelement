@@ -33,10 +33,32 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnDisable()
     {
-        if(element == Element.Air)
-        {
-            spell.gameObject.GetComponent<SpellAction>().getair();
+        if (spell != null) {
+            switch (element)
+            {
+                case Element.Air:
+                    spell.gameObject.GetComponent<SpellAction>().getair();
+                    break; 
+
+                case Element.Earth:
+                    spell.gameObject.GetComponent<SpellAction>().getearth();
+                    break;
+
+                case Element.Water:
+                    spell.gameObject.GetComponent<SpellAction>().getwater();
+                    break;
+
+                case Element.Fire:
+                    spell.gameObject.GetComponent<SpellAction>().getfire();
+                    break;
+
+                case Element.Null:
+                    spell.gameObject.GetComponent<SpellAction>().getnull();
+                    break;
+            }
         }
+
+        
     }
 
     private void Awake()

@@ -6,53 +6,48 @@ public class CSVParsing : MonoBehaviour
 {
     [SerializeField]
     private TextAsset csvFile = null;
-    private static Dictionary<string, DialogueData[]> dialogueDict = new Dictionary<string, DialogueData[]>();
 
-    public static DialogueData[] GetDialogue(string eventName)
-    {
-        return dialogueDict[eventName];
-    }
+    public string[] Name;
+    public int[] Null;
+    public int[] Air;
+    public int[] Earth;
+    public int[] Water;
+    public int[] Fire;
+    public int[] number;
+    public string[] discription;
 
-    public void SetDict()
+
+    public void SetData()
     {
         string csvText = csvFile.text.Substring(0, csvFile.text.Length - 1); //get csv file as string type, except last line(empty)
         string[] row = csvText.Split(new char[] { '\n' }); //split by enter sign
 
-        for(int i = 1; i < row.Length; i++)
-        {
+        Name = new string[row.Length -1];
+        Null = new int[row.Length -1];
+        Air = new int[row.Length - 1];
+        Earth = new int[row.Length - 1];
+        Water = new int[row.Length - 1];
+        Fire = new int[row.Length - 1];
+        number = new int[row.Length - 1];
+        discription = new string[row.Length - 1];
+
+        for (int i = 1; i < row.Length; i++) {
             string[] data = row[i].Split(new char[] { ',' }); //split by (,)
 
-            if (data[0].Trim() == "" || data[0].Trim() == "end") continue; //no event -> continue
-
-            List<DialogueData> dataList = new List<DialogueData>();
-            string eventName = data[0];
-
-            while (data[0].Trim() != "end")
-            {
-                List<string> contextList = new List<string>();
-
-                DialogueData dialogueData;
-                dialogueData.name = data[2];
-                dialogueData.speakerType = data[1];
-                do
-                {
-                    contextList.Add(data[3].ToString());
-                    if(++i < row.Length)
-                    {
-                        data = row[i].Split(new char[] { ',' });
-                    }
-                    else break;
-                } while (data[1] == "" && data[0] != "end");
-
-                dialogueData.dialogue_Context= contextList.ToArray();
-                dataList.Add(dialogueData);
-            }
-            dialogueDict.Add(eventName, dataList.ToArray());
+            Name[i-1] = data[0];
+            Null[i - 1] = int.Parse(data[1]);
+            Air[i - 1] = int.Parse(data[2]);
+            Earth[i - 1] = int.Parse(data[3]);
+            Water[i - 1] = int.Parse(data[4]);
+            Fire[i - 1] = int.Parse(data[5]);
+            number[i - 1] = int.Parse(data[6]);
+            discription[i - 1] = data[7];
         }
+
     }
 
     private void Awake()
-    {
-        SetDict();
+    { 
+        SetData();
     }
 }
