@@ -16,7 +16,9 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private GameObject[] costs;
     [SerializeField]
-    private Sprite[] sprites;
+    private Sprite[] Jam_sprites;
+    [SerializeField]
+    private Sprite[] Ele_sprites;
 
     [SerializeField]
     private int Null_num;
@@ -71,7 +73,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         int count = 0;
         for(int i = 0; i < costs.Length; i++)
         {
-            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "원소_불"
+            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "보석_불"
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -92,7 +94,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         int count = 0;
         for (int i = 0; i < costs.Length; i++)
         {
-            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "원소_물"
+            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "보석_물"
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -113,7 +115,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         int count = 0;
         for (int i = 0; i < costs.Length; i++)
         {
-            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "원소_바람"
+            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "보석_바람"
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -134,7 +136,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         int count = 0;
         for (int i = 0; i < costs.Length; i++)
         {
-            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "원소_땅"
+            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "보석_땅"
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -154,9 +156,10 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         for (int i = 0; i < costs.Length; i++)
         {
-            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "원소_무"
+            if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "보석_무"
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
+                costs[i].GetComponent<SpriteRenderer>().sprite = Ele_sprites[0];
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 break;
             }
@@ -195,7 +198,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 for (int j = index; j < index + Total_num[i]; j++)
                 {
                     costs[j].SetActive(true);
-                    costs[j].GetComponent<SpriteRenderer>().sprite = sprites[i];
+                    costs[j].GetComponent<SpriteRenderer>().sprite = Jam_sprites[i];
                     costs[j].GetComponent<SpriteRenderer>().color = new Color(1,1,1,0.3f);
                     
                 }
