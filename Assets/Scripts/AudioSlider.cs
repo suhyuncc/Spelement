@@ -80,12 +80,12 @@ public class AudioSlider : MonoBehaviour
     {
         if(masterT.isOn)
         {
-            masterText.color = new Color(1, 1, 1, 0.1f);
+            masterText.color = new Color(masterText.color.r, masterText.color.g, masterText.color.b, 0.1f);
             Mixer.SetFloat("Master", -80);
         }
         else
         {
-            masterText.color = new Color(1, 1, 1, 1f);
+            masterText.color = new Color(masterText.color.r, masterText.color.g, masterText.color.b, 1f);
             float sound = Master.value * 4 / 10;
             if (sound == 0) Mixer.SetFloat("Master", -80);
             else
@@ -99,12 +99,12 @@ public class AudioSlider : MonoBehaviour
     {
         if (BGMT.isOn)
         {
-            BGMText.color = new Color(1, 1, 1, 0.1f);
+            BGMText.color = new Color(BGMText.color.r, BGMText.color.g, BGMText.color.b, 0.1f);
             Mixer.SetFloat("Background", -80);
         }
         else
         {
-            BGMText.color = new Color(1, 1, 1, 1f);
+            BGMText.color = new Color(BGMText.color.r, BGMText.color.g, BGMText.color.b, 1f);
             float sound = BGM.value * 4 / 10;
             if (sound == 0) Mixer.SetFloat("Background", -80);
             else
@@ -118,12 +118,12 @@ public class AudioSlider : MonoBehaviour
     {
         if (EffectT.isOn)
         {
-            EffectText.color = new Color(1, 1, 1, 0.1f);
+            EffectText.color = new Color(EffectText.color.r, EffectText.color.g, EffectText.color.b, 0.1f);
             Mixer.SetFloat("Effect", -80);
         }
         else
         {
-            EffectText.color = new Color(1, 1, 1, 1f);
+            EffectText.color = new Color(EffectText.color.r, EffectText.color.g, EffectText.color.b, 1f);
             float sound = Effect.value * 4 / 10;
             if (sound == 0) Mixer.SetFloat("Effect", -80);
             else
