@@ -1,13 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
+public enum Phase
+{
+    StandBy = 0,
+    Battle = 1,
+    End = 2,
+}
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
 
     [SerializeField]
     private TextAsset csvFile = null;
+    [SerializeField]
+    private TextAsset stage_info = null;
 
     public string[] Name;
     public int[] Null;
@@ -18,10 +28,41 @@ public class BattleManager : MonoBehaviour
     public int[] number;
     public string[] discription;
 
+    public int[] monster_HP;
+    public int[] player_HP; 
+    public int[] Monster_Attack;
+    public int[] Monster_Spell_id;
+    public int[] Monster_Spell_cool;
+
+    public Sprite[] Upper_sprites;
+    public Sprite[] Down_sprites;
+    public Sprite[] icons;
+
+    public bool player_turn;
+
     [SerializeField]
     private GameObject[] spellPages;
+    [SerializeField]
+    private Slider Player_HP;
+    [SerializeField]
+    private Text Player_HP_Text;
+    [SerializeField]
+    private GameObject Player_state;
+    [SerializeField]
+    private Slider Monster_HP;
+    [SerializeField]
+    private Text Monster_HP_Text;
+    [SerializeField]
+    private GameObject Monster_state;
+    [SerializeField]
+    private GameObject Book;
+    [SerializeField]
+    private Monster monster;
 
-    public void SetData()
+    public Phase phase;
+
+    //csv파싱
+    public void Set_Spell_Data()
     {
         string csvText = csvFile.text.Substring(0, csvFile.text.Length - 1); //get csv file as string type, except last line(empty)
         string[] row = csvText.Split(new char[] { '\n' }); //split by enter sign
@@ -51,13 +92,95 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    public void Set_Stage_Data() {
+        string csvText = stage_info.text.Substring(0, stage_info.text.Length - 1); //get csv file as string type, except last line(empty)
+        string[] row = csvText.Split(new char[] { '\n' }); //split by enter sign
+
+        monster_HP = new int[row.Length - 1];
+        Monster_Attack = new int[row.Length - 1];
+        player_HP = new int[row.Length - 1];
+        Monster_Spell_id = new int[row.Length - 1];
+        Monster_Spell_cool = new int[row.Length - 1];
+
+        for (int i = 1; i < row.Length; i++)
+        {
+            string[] data = row[i].Split(new char[] { ',' }); //split by (,)
+
+            monster_HP[i - 1] = int.Parse(data[1]);
+            Monster_Attack[i - 1] = int.Parse(data[3]);
+            player_HP[i - 1] = int.Parse(data[4]);
+            Monster_Spell_id[i - 1] = int.Parse(data[5]);
+            Monster_Spell_cool[i - 1] = int.Parse(data[6]);
+        }
+    }
+
     private void Awake()
     {
         instance = this;
-        SetData();
-        spellPages[0].GetComponent<SpellAction>().spell_id = 0;
-        spellPages[1].GetComponent<SpellAction>().spell_id = 1;
-        spellPages[2].GetComponent<SpellAction>().spell_id = 2;
-        spellPages[3].GetComponent<SpellAction>().spell_id = 3;
+
+        phase = Phase.StandBy;
+        player_turn = true;
+
+        Set_Spell_Data();
+        Set_Stage_Data();
+
+        Player_HP_Text.text = $"{player_HP[0]} / {player_HP[0]}";
+        Monster_HP_Text.text = $"{monster_HP[0]} / {monster_HP[0]}";
+
+        monster.spell_id = Monster_Spell_id[0];
+        monster.spell_cool = Monster_Spell_cool[0];
+        monster.nomal_demage = Monster_Attack[0];
+
+        spellPages[0].GetComponent<SpellAction>().spell_id = 3;
+        spellPages[1].GetComponent<SpellAction>().spell_id = 7;
+        spellPages[2].GetComponent<SpellAction>().spell_id = 17;
+        spellPages[3].GetComponent<SpellAction>().spell_id = 18;
+
+        for(int i = 0; i < spellPages.Length; i++)
+        {
+            spellPages[i].GetComponent<SpellAction>().spellSetting();
+        }
     }
+
+    private void Update()
+    {
+        switch (phase)
+        {
+            case Phase.StandBy:
+                if (player_turn) {
+                    Player_state.GetComponent<StateManagement>().reduceState();
+                    Book.gameObject.SetActive(true);
+                    EleManager.instance.Reroll();
+                    phase = Phase.Battle;
+                }
+                else
+                {
+                    Monster_state.GetComponent<StateManagement>().reduceState();
+                    phase = Phase.Battle;
+                }
+                break;
+
+            case Phase.Battle:
+                if (player_turn){
+                    //스펠 다쓰면 페이지 전환
+                    //엔드는 "턴 종료" 버튼으로
+                }
+                else {
+                    monster.monster_active();
+                    phase = Phase.End;
+                }
+                break;
+
+            case Phase.End:
+                player_turn = !player_turn;
+                phase = Phase.StandBy;
+                break;
+        }
+    }
+
+    public void turn_end()
+    {
+        phase = Phase.End;
+    }
+
 }

@@ -38,22 +38,29 @@ public class DragAndDrop : MonoBehaviour
             {
                 case Element.Air:
                     spell.gameObject.GetComponent<SpellAction>().getair();
+                    spell = null;
                     break; 
 
                 case Element.Earth:
                     spell.gameObject.GetComponent<SpellAction>().getearth();
+                    spell = null;
                     break;
 
                 case Element.Water:
                     spell.gameObject.GetComponent<SpellAction>().getwater();
+                    spell = null;
                     break;
 
                 case Element.Fire:
+
                     spell.gameObject.GetComponent<SpellAction>().getfire();
+                    spell = null;
                     break;
 
                 case Element.Null:
+
                     spell.gameObject.GetComponent<SpellAction>().getnull();
+                    spell = null;
                     break;
             }
         }
@@ -88,7 +95,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if(Onspell)
+        if(Onspell && !spell.gameObject.GetComponent<SpellAction>().isDone)
         {
             this.gameObject.SetActive(false);
         }

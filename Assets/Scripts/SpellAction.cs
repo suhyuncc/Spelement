@@ -14,11 +14,13 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private GameObject spell;
     [SerializeField]
+    private SpriteRenderer spell_page;
+    [SerializeField]
+    private Button spell_icon;
+    [SerializeField]
     private GameObject[] costs;
     [SerializeField]
     private Sprite[] Jam_sprites;
-    [SerializeField]
-    private Sprite[] Ele_sprites;
 
     [SerializeField]
     private int Null_num;
@@ -31,38 +33,55 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private int Fire_num;
 
+    [SerializeField]
+    private bool isUpper;
+
     private int[] Total_num = new int[5];
     private int total;
+    private int ready_count;
+
+    public bool isDone;
 
     public int spell_id;
 
-    private void Awake()
+    private void Update()
     {
-        
+        if(ready_count >= total && !isDone)
+        {
+            spell_icon.interactable = true;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //Debug.Log("mouse over");
-        description.gameObject.SetActive(true);
-        Name.gameObject.SetActive(true);
-
-        spell.SetActive(false);
-
-        for (int i = 0; i < total; i++) {
-            costs[i].SetActive(false);
+        if(isDone)
+        {
+            return;
         }
+
+        if (ready_count < total)
+        {
+            description.gameObject.SetActive(true);
+            Name.gameObject.SetActive(true);
+
+            spell.SetActive(false);
+
+            for (int i = 0; i < total; i++)
+            {
+                costs[i].SetActive(false);
+            }
+        }
+        
         
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //Debug.Log("mouse Exit");
-
         description.gameObject.SetActive(false);
         Name.gameObject.SetActive(false);
 
         spell.SetActive(true);
+
         for (int i = 0; i < total; i++)
         {
             costs[i].SetActive(true);
@@ -77,6 +96,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                ready_count++;
                 break;
             }
             count++;
@@ -98,6 +118,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                ready_count++;
                 break;
             }
             count++;
@@ -119,6 +140,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                ready_count++;
                 break;
             }
             count++;
@@ -140,6 +162,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                ready_count++;
                 break;
             }
             count++;
@@ -159,8 +182,8 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             if (costs[i].GetComponent<SpriteRenderer>().sprite.name == "보석_무"
                 && costs[i].GetComponent<SpriteRenderer>().color.a != 1)
             {
-                costs[i].GetComponent<SpriteRenderer>().sprite = Ele_sprites[0];
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                ready_count++;
                 break;
             }
         }
@@ -168,10 +191,43 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public void spellSetting() {
+
+        //스펠 이름
         Name.text = $"<{BattleManager.instance.Name[spell_id]}>";
 
+        //스펠 설명
         description.text = $"{BattleManager.instance.discription[spell_id]}";
 
+        //스펠 뒷배경 설정
+        if(spell_id - 3 < 0)
+        {
+            if (isUpper)
+            {
+                spell_page.sprite = BattleManager.instance.Upper_sprites[0];
+            }
+            else 
+            {
+                spell_page.sprite = BattleManager.instance.Down_sprites[0];
+            }
+        }
+        else
+        {
+            if (isUpper)
+            {
+                spell_page.sprite = BattleManager.instance.Upper_sprites[((spell_id - 3) / 4) + 1];
+            }
+            else
+            {
+                spell_page.sprite = BattleManager.instance.Down_sprites[((spell_id - 3) / 4) + 1];
+            }
+        }
+
+        //스펠 아이콘 설정
+        spell_icon.image.sprite = BattleManager.instance.icons[spell_id];
+
+        spell_icon.interactable = false;
+
+        //코스트 수
         Null_num = BattleManager.instance.Null[spell_id];
         Air_num = BattleManager.instance.Air[spell_id];
         Earth_num = BattleManager.instance.Earth[spell_id];
@@ -205,5 +261,23 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 index += Total_num[i];
             }
         }
+    }
+
+    //스펠 버튼으로 작동
+    public void spellDone()
+    {
+        spell_icon.interactable = false;
+
+        spell_page.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+        for (int i = 0; i < total; i++)
+        {
+            costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
+        }
+
+        SkillManager.instance.player_turn = true;
+        SkillManager.instance.spell_id = spell_id;
+        SkillManager.instance.isActive = true;
+
+        isDone = true;
     }
 }

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GameManager : MonoBehaviour
+public class EleManager : MonoBehaviour
 {
+    public static EleManager instance;
+
     [SerializeField]
     private Transform[] Points;
     [SerializeField]
@@ -28,9 +30,9 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+        instance = this;
     }
 
     public void Reroll()

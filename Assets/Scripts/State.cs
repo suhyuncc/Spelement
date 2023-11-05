@@ -6,18 +6,37 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class State : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
 {
+    [SerializeField]
+    private GameObject discrip_box;
+
+    private bool mouseOn;
+
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("mouse over");
-        Debug.Log(eventData.position);
-
-
+        mouseOn = true;
+        discrip_box.SetActive(true);
+        Debug.Log("on");
     }
+
+    
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("mouse Exit");
+        mouseOn = false;
+        discrip_box.SetActive(false);
+        Debug.Log("off");
+        Debug.Log(eventData.position);
+        Debug.Log(Input.mousePosition);
+    }
+
+    private void Update()
+    {
+        if (mouseOn) {
+            discrip_box.transform.position = Input.mousePosition + new Vector3(10f,10f,0);
+        }
+        
     }
 }
