@@ -15,6 +15,8 @@ public class SkillManager : MonoBehaviour
     private Text Player_HP_Text;
     [SerializeField]
     private GameObject Player_state;
+    [SerializeField]
+    private GameObject Player_apos;
 
     [SerializeField]
     private GameObject Monster;
@@ -24,6 +26,8 @@ public class SkillManager : MonoBehaviour
     private Text Monster_HP_Text;
     [SerializeField]
     private GameObject Monster_state;
+    [SerializeField]
+    private GameObject Monster_apos;
 
     [SerializeField]
     private GameObject[] skill_Effects;
@@ -36,6 +40,7 @@ public class SkillManager : MonoBehaviour
         new Color(1, 0.75f, 0.75f), new Color(1f, 0.875f, 0.75f), new Color(0.875f, 1f, 0.75f) };
 
     public bool isActive;
+    public bool isAttack;
     public bool player_turn;
     public int spell_id;
 
@@ -58,37 +63,76 @@ public class SkillManager : MonoBehaviour
 
     IEnumerator Skill_Active(bool player_turn, int spell_id)
     {
-        //투사체 날리기
-        skill_Effects[0].SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-
-        //피격 및 데미지 계산
-        hit_Effects[0].SetActive(true);
-
-        //피격당하는 원소의 색상으로 점멸 효과
-        if (player_turn)
+        if (BattleManager.instance.isAttack[spell_id] == 1)
         {
-            if (spell_id - 3 < 0)
+            //투사체 날리기
+            if (player_turn)
             {
-                Monster.GetComponent<SpriteRenderer>().color = colors[0];
+                //플레이어가 몬스터에게
+                skill_Effects[spell_id].transform.position = Player_apos.transform.position;
+                skill_Effects[spell_id].transform.rotation = Quaternion.Euler(0, 0, 0);
+                skill_Effects[spell_id].GetComponent<Attack>().speed = 15;
             }
             else
             {
-                Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
+                //몬스터가 플레이어에게
+                skill_Effects[spell_id].transform.position = Monster_apos.transform.position;
+                skill_Effects[spell_id].transform.rotation = Quaternion.Euler(0, 0, 180);
+                skill_Effects[spell_id].GetComponent<Attack>().speed = -15;
+            }
+            skill_Effects[spell_id].SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+
+            //피격 및 데미지 계산
+            if (player_turn)
+            {
+                hit_Effects[spell_id].transform.position = Monster.transform.position;
+                hit_Effects[spell_id].SetActive(true);
+
+                //피격당하는 원소의 색상으로 점멸 효과
+                if (spell_id - 3 < 0)
+                {
+                    Monster.GetComponent<SpriteRenderer>().color = colors[0];
+                }
+                else
+                {
+                    Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
+                }
+            }
+            else
+            {
+                hit_Effects[spell_id].transform.position = Player.transform.position;
+                hit_Effects[spell_id].SetActive(true);
+
+                //피격당하는 원소의 색상으로 점멸 효과
+                if (spell_id - 3 < 0 || spell_id == 19)
+                {
+                    Player.GetComponent<SpriteRenderer>().color = colors[0];
+                }
+                else
+                {
+                    Player.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
+                }
+
             }
         }
         else
         {
-            if (spell_id - 3 < 0)
+            //피격 및 데미지 계산
+            if (player_turn)
             {
-                Player.GetComponent<SpriteRenderer>().color = colors[0];
+                hit_Effects[spell_id].transform.position = Player.transform.position;
+                hit_Effects[spell_id].SetActive(true);
             }
             else
             {
-                Player.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
+                hit_Effects[spell_id].transform.position = Monster.transform.position;
+                hit_Effects[spell_id].SetActive(true);
             }
         }
+        
 
+        
         yield return new WaitForSeconds(0.3f);
 
         //배틀 페이즈 종료
@@ -101,8 +145,10 @@ public class SkillManager : MonoBehaviour
         else
         {
             Player.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-            BattleManager.instance.phase = Phase.End;
+            BattleManager.instance.monster_done = true;
         }
+
+        StopCoroutine("Skill_Active");
         
     }
 }

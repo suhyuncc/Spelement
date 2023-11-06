@@ -7,6 +7,8 @@ public class Hit_anim : MonoBehaviour
 {
     [SerializeField]
     private Animator anim;
+    [SerializeField]
+    private float during_time;
 
     private void OnEnable()
     {
@@ -16,7 +18,7 @@ public class Hit_anim : MonoBehaviour
     IEnumerator Hit()
     {
         anim.SetBool("Hit", true);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(during_time);
 
         this.gameObject.SetActive(false);
     }

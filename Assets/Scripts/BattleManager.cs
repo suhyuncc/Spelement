@@ -27,9 +27,10 @@ public class BattleManager : MonoBehaviour
     public int[] Fire;
     public int[] number;
     public string[] discription;
+    public int[] isAttack;
 
     public int[] monster_HP;
-    public int[] player_HP; 
+    public int[] player_HP;
     public int[] Monster_Attack;
     public int[] Monster_Spell_id;
     public int[] Monster_Spell_cool;
@@ -39,6 +40,12 @@ public class BattleManager : MonoBehaviour
     public Sprite[] icons;
 
     public bool player_turn;
+    public bool monster_done;
+    private bool Re_setting;
+
+    public int[] page_list = { 0, 1, 2, 17, 9};
+    public int spell_count;
+    private int page_index;
 
     [SerializeField]
     private GameObject[] spellPages;
@@ -75,6 +82,7 @@ public class BattleManager : MonoBehaviour
         Fire = new int[row.Length - 1];
         number = new int[row.Length - 1];
         discription = new string[row.Length - 1];
+        isAttack = new int[row.Length];
 
         for (int i = 1; i < row.Length; i++)
         {
@@ -88,8 +96,10 @@ public class BattleManager : MonoBehaviour
             Fire[i - 1] = int.Parse(data[5]);
             number[i - 1] = int.Parse(data[6]);
             discription[i - 1] = data[7];
+            isAttack[i - 1] = int.Parse(data[8]);
         }
 
+        isAttack[19] = 1;
     }
 
     public void Set_Stage_Data() {
@@ -118,8 +128,10 @@ public class BattleManager : MonoBehaviour
     {
         instance = this;
 
+        page_index = 0;
         phase = Phase.StandBy;
         player_turn = true;
+        Re_setting = false;
 
         Set_Spell_Data();
         Set_Stage_Data();
@@ -131,7 +143,9 @@ public class BattleManager : MonoBehaviour
         monster.spell_cool = Monster_Spell_cool[0];
         monster.nomal_demage = Monster_Attack[0];
 
-        spellPages[0].GetComponent<SpellAction>().spell_id = 3;
+
+        pageSetting(page_index);
+        /*spellPages[0].GetComponent<SpellAction>().spell_id = 3;
         spellPages[1].GetComponent<SpellAction>().spell_id = 7;
         spellPages[2].GetComponent<SpellAction>().spell_id = 17;
         spellPages[3].GetComponent<SpellAction>().spell_id = 18;
@@ -139,14 +153,20 @@ public class BattleManager : MonoBehaviour
         for(int i = 0; i < spellPages.Length; i++)
         {
             spellPages[i].GetComponent<SpellAction>().spellSetting();
-        }
+        }*/
     }
 
     private void Update()
     {
+        if(spell_count== 0)
+        {
+            Re_setting = true;
+        }
+
         switch (phase)
         {
             case Phase.StandBy:
+                StopCoroutine("endTostandby");
                 if (player_turn) {
                     Player_state.GetComponent<StateManagement>().reduceState();
                     Book.gameObject.SetActive(true);
@@ -164,6 +184,10 @@ public class BattleManager : MonoBehaviour
                 if (player_turn){
                     //스펠 다쓰면 페이지 전환
                     //엔드는 "턴 종료" 버튼으로
+                    if(Re_setting)
+                    {
+                        pageSetting(++page_index);
+                    }
                 }
                 else {
                     monster.monster_active();
@@ -172,8 +196,22 @@ public class BattleManager : MonoBehaviour
                 break;
 
             case Phase.End:
-                player_turn = !player_turn;
-                phase = Phase.StandBy;
+                if (player_turn){
+                    player_turn = !player_turn;
+                    phase = Phase.StandBy;
+                }
+                else {
+                    if (monster_done)
+                    {
+                        player_turn = !player_turn;
+                        monster_done = false;
+                        phase = Phase.StandBy;
+                        
+                    }
+                }
+                
+                //StartCoroutine("endTostandby");
+                
                 break;
         }
     }
@@ -181,6 +219,32 @@ public class BattleManager : MonoBehaviour
     public void turn_end()
     {
         phase = Phase.End;
+    }
+
+    private void pageSetting(int page_i)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < (page_list.Length - (4 * page_i))) {
+                spellPages[i].GetComponent<SpellAction>().spell_id = page_list[i + (4 * page_i)];
+                spellPages[i].GetComponent<SpellAction>().spellSetting();
+                spell_count++;
+                
+            }
+            else
+            {
+                spellPages[i].gameObject.SetActive(false);
+            }
+            
+        }
+
+        Re_setting = false;
+    }
+
+    IEnumerator endTostandby()
+    {
+        yield return new WaitForSeconds(0.7f);
+        phase = Phase.StandBy;
     }
 
 }

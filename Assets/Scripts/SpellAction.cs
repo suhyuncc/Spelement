@@ -192,6 +192,20 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void spellSetting() {
 
+        this.gameObject.SetActive(true);
+
+        spell_icon.interactable = true;
+
+        spell_page.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        for (int i = 0; i < total; i++)
+        {
+            costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        }
+
+        isDone = false;
+        ready_count = 0;
+
+
         //Ω∫∆Á ¿Ã∏ß
         Name.text = $"<{BattleManager.instance.Name[spell_id]}>";
 
@@ -274,10 +288,13 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
         }
 
+        BattleManager.instance.spell_count--;
+
         SkillManager.instance.player_turn = true;
         SkillManager.instance.spell_id = spell_id;
         SkillManager.instance.isActive = true;
 
         isDone = true;
     }
+
 }
