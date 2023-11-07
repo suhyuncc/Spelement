@@ -13,12 +13,12 @@ public class OptionControl : MonoBehaviour
         {
             if (optionPanel.activeSelf)
             {
-                Time.timeScale = 0;
+                Time.timeScale = 1;
                 optionPanel.SetActive(false);
             }
             else
             {
-                Time.timeScale = 1;
+                Time.timeScale = 0;
                 optionPanel.SetActive(true);
             }
         }

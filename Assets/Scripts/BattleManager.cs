@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,6 +67,8 @@ public class BattleManager : MonoBehaviour
     private GameObject Book;
     [SerializeField]
     private Monster monster;
+    [SerializeField]
+    private GameObject Elements;
 
     public Phase phase;
 
@@ -172,6 +175,7 @@ public class BattleManager : MonoBehaviour
                 StopCoroutine("endTostandby");
                 if (player_turn) {
                     Player_state.GetComponent<StateManagement>().reduceState();
+                    Elements.SetActive(true);
                     Book.gameObject.SetActive(true);
                     EleManager.instance.Reroll();
                     phase = Phase.Battle;
@@ -204,6 +208,7 @@ public class BattleManager : MonoBehaviour
 
             case Phase.End:
                 if (player_turn){
+                    Elements.SetActive(false);
                     player_turn = !player_turn;
                     phase = Phase.StandBy;
                 }

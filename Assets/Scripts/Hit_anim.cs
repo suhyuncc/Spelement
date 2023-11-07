@@ -10,8 +10,6 @@ public class Hit_anim : MonoBehaviour
     [SerializeField]
     private float during_time;
 
-    [SerializeField]
-    private Animation animation;
 
     private void OnEnable()
     {
@@ -20,7 +18,7 @@ public class Hit_anim : MonoBehaviour
 
     IEnumerator Hit()
     {
-        Debug.Log(anim.runtimeAnimatorController.animationClips[0].length);
+        //Debug.Log(anim.runtimeAnimatorController.animationClips[0].length);
         
         anim.SetBool("Hit", true);
         yield return new WaitForSeconds(during_time);
