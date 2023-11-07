@@ -28,6 +28,9 @@ public class Monster : MonoBehaviour
             if (ran > 0.5f)
             {
                 //평타
+                SkillManager.instance.player_turn = false;
+                SkillManager.instance.spell_id = 19;
+                SkillManager.instance.isActive = true;
                 Debug.Log($"평타!! {nomal_demage}의 데미지!!");
             }
             else
@@ -35,6 +38,7 @@ public class Monster : MonoBehaviour
                 //스킬 쿨 작동
                 current_cool = spell_cool;
                 Debug.Log($"{BattleManager.instance.Name[spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
+                BattleManager.instance.monster_done = true;
             }
         }
         else
@@ -42,13 +46,17 @@ public class Monster : MonoBehaviour
             current_cool--;
             if (current_cool == 0)
             {
+                SkillManager.instance.player_turn = false;
+                SkillManager.instance.spell_id = spell_id;
+                SkillManager.instance.isActive = true;
                 Debug.Log($"스킬 발동!!");
             }
             else
             {
                 Debug.Log($"{BattleManager.instance.Name[spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
+                BattleManager.instance.monster_done = true;
             }
         }
-        
+
     }
 }

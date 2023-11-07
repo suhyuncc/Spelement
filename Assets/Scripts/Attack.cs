@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
+    public int speed;
+    public float during_time;
+
     private float init_x;
     private float init_y;
 
@@ -12,7 +15,7 @@ public class Attack : MonoBehaviour
         init_x = transform.position.x;
         init_y = transform.position.y;
         Rigidbody2D rigid = this.GetComponent<Rigidbody2D>();
-        rigid.AddForce(new Vector2(1.15f, 0.57f) * 15, ForceMode2D.Impulse);
+        rigid.AddForce(new Vector2(1.15f, 0.57f) * speed, ForceMode2D.Impulse);
         StartCoroutine("disapear");
     }
 
@@ -24,7 +27,7 @@ public class Attack : MonoBehaviour
 
     IEnumerator disapear()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(during_time);
         this.gameObject.SetActive(false);
     }
 }
