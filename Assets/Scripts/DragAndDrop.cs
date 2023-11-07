@@ -70,8 +70,6 @@ public class DragAndDrop : MonoBehaviour
 
     private void Awake()
     {
-        
-
         Onspell = false;
     }
 

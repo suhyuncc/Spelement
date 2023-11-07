@@ -46,6 +46,7 @@ public class BattleManager : MonoBehaviour
     public int[] page_list = { 0, 1, 2, 17, 9};
     public int spell_count;
     private int page_index;
+    private int page_max;
 
     [SerializeField]
     private GameObject[] spellPages;
@@ -126,9 +127,11 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
+        //씬 시작시 초기세팅
         instance = this;
 
         page_index = 0;
+        page_max = page_list.Length / 4;
         phase = Phase.StandBy;
         player_turn = true;
         Re_setting = false;
@@ -186,6 +189,10 @@ public class BattleManager : MonoBehaviour
                     //엔드는 "턴 종료" 버튼으로
                     if(Re_setting)
                     {
+                        if(page_index == page_max)
+                        {
+                            page_index = -1;
+                        }
                         pageSetting(++page_index);
                     }
                 }

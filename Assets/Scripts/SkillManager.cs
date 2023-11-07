@@ -35,6 +35,8 @@ public class SkillManager : MonoBehaviour
     private GameObject[] hit_Effects;
     [SerializeField]
     private GameObject Book;
+    [SerializeField]
+    private Text Demage_Text;
 
     private Color[] colors = {new Color(0.75f,0.75f,0.75f), new Color(0.75f, 0.75f, 1f),
         new Color(1, 0.75f, 0.75f), new Color(1f, 0.875f, 0.75f), new Color(0.875f, 1f, 0.75f) };
@@ -86,6 +88,7 @@ public class SkillManager : MonoBehaviour
             //피격 및 데미지 계산
             if (player_turn)
             {
+                //몬스터에게
                 hit_Effects[spell_id].transform.position = Monster.transform.position;
                 hit_Effects[spell_id].SetActive(true);
 
@@ -93,14 +96,19 @@ public class SkillManager : MonoBehaviour
                 if (spell_id - 3 < 0)
                 {
                     Monster.GetComponent<SpriteRenderer>().color = colors[0];
+                    Demage_Text.color = colors[0];
                 }
                 else
                 {
                     Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
+                    Demage_Text.color = colors[((spell_id - 3) / 4) + 1];
                 }
+                Demage_Text.text = $"{BattleManager.instance.number[spell_id]}";
+                Demage_Text.gameObject.SetActive(true);
             }
             else
             {
+                //플레이어에게
                 hit_Effects[spell_id].transform.position = Player.transform.position;
                 hit_Effects[spell_id].SetActive(true);
 

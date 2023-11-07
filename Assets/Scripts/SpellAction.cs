@@ -21,6 +21,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private GameObject[] costs;
     [SerializeField]
     private Sprite[] Jam_sprites;
+    
 
     [SerializeField]
     private int Null_num;
@@ -44,6 +45,12 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public int spell_id;
 
+    private BoxCollider2D collide_Area;
+
+    private void Awake()
+    {
+        collide_Area = this.GetComponent<BoxCollider2D>();
+    }
     private void Update()
     {
         if(ready_count >= total && !isDone)
@@ -193,14 +200,17 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void spellSetting() {
 
         this.gameObject.SetActive(true);
+        collide_Area.enabled = true;
 
         spell_icon.interactable = true;
 
         spell_page.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
-        for (int i = 0; i < total; i++)
+        for (int i = 0; i < costs.Length; i++)
         {
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+            costs[i].SetActive(false);
         }
+
 
         isDone = false;
         ready_count = 0;
@@ -287,6 +297,8 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
         }
+
+        collide_Area.enabled = false;
 
         BattleManager.instance.spell_count--;
 
