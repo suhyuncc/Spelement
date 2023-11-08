@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Monster : MonoBehaviour
     public int spell_cool;
 
     private int current_cool;
+
+    [SerializeField]
+    private Text sys_text;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +27,26 @@ public class Monster : MonoBehaviour
     }
 
     public void monster_active() {
-        if (current_cool == 0) {
+        StartCoroutine("Monster_turn");
+        
+
+    }
+
+    IEnumerator turn_pass(string s)
+    {
+        sys_text.text = s;
+        sys_text.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.7f);
+        BattleManager.instance.monster_done = true;
+
+    }
+
+
+    IEnumerator Monster_turn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (current_cool == 0)
+        {
             float ran = Random.Range(0f, 1f);
             if (ran > 0.5f)
             {
@@ -31,14 +54,18 @@ public class Monster : MonoBehaviour
                 SkillManager.instance.player_turn = false;
                 SkillManager.instance.spell_id = 19;
                 SkillManager.instance.isActive = true;
+                SkillManager.instance.nomal_Dem = nomal_demage;
                 Debug.Log($"평타!! {nomal_demage}의 데미지!!");
+                sys_text.text = $"평타!! {nomal_demage}의 데미지!!";
+                sys_text.gameObject.SetActive(true);
             }
             else
             {
                 //스킬 쿨 작동
                 current_cool = spell_cool;
+                StartCoroutine(turn_pass($"{BattleManager.instance.Name[spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다"));
                 Debug.Log($"{BattleManager.instance.Name[spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
-                BattleManager.instance.monster_done = true;
+
             }
         }
         else
@@ -50,13 +77,14 @@ public class Monster : MonoBehaviour
                 SkillManager.instance.spell_id = spell_id;
                 SkillManager.instance.isActive = true;
                 Debug.Log($"스킬 발동!!");
+                sys_text.text = $"{BattleManager.instance.Name[spell_id]}!!";
+                sys_text.gameObject.SetActive(true);
             }
             else
             {
+                StartCoroutine(turn_pass($"{BattleManager.instance.Name[spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다"));
                 Debug.Log($"{BattleManager.instance.Name[spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
-                BattleManager.instance.monster_done = true;
             }
         }
-
     }
 }

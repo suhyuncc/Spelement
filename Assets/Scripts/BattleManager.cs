@@ -29,6 +29,8 @@ public class BattleManager : MonoBehaviour
     public int[] number;
     public string[] discription;
     public int[] isAttack;
+    public int[] isHeal;//나중에 고치자(왜만들었지...)
+    public int[] additional_act;
 
     public int[] monster_HP;
     public int[] player_HP;
@@ -87,6 +89,8 @@ public class BattleManager : MonoBehaviour
         number = new int[row.Length - 1];
         discription = new string[row.Length - 1];
         isAttack = new int[row.Length];
+        isHeal = new int[row.Length - 1];
+        additional_act = new int[row.Length - 1];
 
         for (int i = 1; i < row.Length; i++)
         {
@@ -101,6 +105,8 @@ public class BattleManager : MonoBehaviour
             number[i - 1] = int.Parse(data[6]);
             discription[i - 1] = data[7];
             isAttack[i - 1] = int.Parse(data[8]);
+            isHeal[i - 1] = int.Parse(data[9]);
+            additional_act[i - 1] = int.Parse(data[10]);
         }
 
         isAttack[19] = 1;
@@ -172,18 +178,22 @@ public class BattleManager : MonoBehaviour
         switch (phase)
         {
             case Phase.StandBy:
-                StopCoroutine("endTostandby");
-                if (player_turn) {
-                    Player_state.GetComponent<StateManagement>().reduceState();
+                if (player_turn)
+                {
+                    
+                    
                     Elements.SetActive(true);
                     Book.gameObject.SetActive(true);
                     EleManager.instance.Reroll();
+                    Player_state.GetComponent<StateManagement>().reduceState();
                     phase = Phase.Battle;
                 }
                 else
                 {
+                    
                     Monster_state.GetComponent<StateManagement>().reduceState();
                     phase = Phase.Battle;
+
                 }
                 break;
 
@@ -203,6 +213,7 @@ public class BattleManager : MonoBehaviour
                 else {
                     monster.monster_active();
                     phase = Phase.End;
+                    
                 }
                 break;
 
@@ -221,8 +232,6 @@ public class BattleManager : MonoBehaviour
                         
                     }
                 }
-                
-                //StartCoroutine("endTostandby");
                 
                 break;
         }
@@ -253,10 +262,10 @@ public class BattleManager : MonoBehaviour
         Re_setting = false;
     }
 
-    IEnumerator endTostandby()
+    IEnumerator monster_term()
     {
         yield return new WaitForSeconds(0.7f);
-        phase = Phase.StandBy;
+        phase = Phase.Battle;
     }
 
 }

@@ -43,10 +43,12 @@ public class StateManagement : MonoBehaviour
 
     public void reduceState()
     {
+
         for (int i = 0; i < counts.Length; i++)
         {
             if (counts[i] != 0)
             {
+                SkillManager.instance.StateAct(i);
                 counts[i]--;
             }
         }
