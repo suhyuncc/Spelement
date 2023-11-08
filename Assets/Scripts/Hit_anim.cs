@@ -9,6 +9,7 @@ public class Hit_anim : MonoBehaviour
     private Animator anim;
     [SerializeField]
     private float during_time;
+    
 
 
     private void OnEnable()
@@ -18,9 +19,11 @@ public class Hit_anim : MonoBehaviour
 
     IEnumerator Hit()
     {
-        //Debug.Log(anim.runtimeAnimatorController.animationClips[0].length);
+        //Debug.Log(sfx.clip.length);
+        
         
         anim.SetBool("Hit", true);
+
         yield return new WaitForSeconds(during_time);
 
         this.gameObject.SetActive(false);

@@ -34,12 +34,16 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private GameObject[] hit_Effects;
     [SerializeField]
+    private AudioClip[] hit_SFX;
+    [SerializeField]
     private GameObject Book;
     [SerializeField]
     private Text Demage_Text;
 
     private Color[] colors = {new Color(0.75f,0.75f,0.75f), new Color(0.75f, 0.75f, 1f),
         new Color(1, 0.75f, 0.75f), new Color(1f, 0.875f, 0.75f), new Color(0.875f, 1f, 0.75f) };
+
+    private AudioSource sfx;
 
     public bool isActive;
     public bool isAttack;
@@ -50,6 +54,7 @@ public class SkillManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        sfx = this.GetComponent<AudioSource>();
         //플레이어, 몬스터 체력 받아오기
     }
 
@@ -105,6 +110,9 @@ public class SkillManager : MonoBehaviour
                 }
                 Demage_Text.text = $"{BattleManager.instance.number[spell_id]}";
                 Demage_Text.gameObject.SetActive(true);
+
+                sfx.clip = hit_SFX[0];
+                sfx.Play();
             }
             else
             {
