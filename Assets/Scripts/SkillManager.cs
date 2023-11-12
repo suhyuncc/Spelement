@@ -121,7 +121,7 @@ public class SkillManager : MonoBehaviour
             skill_Effects[spell_id].SetActive(true);
             yield return new WaitForSeconds(0.5f);
 
-            //피격 및 데미지 계산
+            //피격
             if (player_turn)
             {
                 //몬스터에게
@@ -313,6 +313,11 @@ public class SkillManager : MonoBehaviour
 
         }
         
+    }
+
+    private void Attack(int spell_id)
+    {
+
     }
 
     private void Additional(int spell_id)

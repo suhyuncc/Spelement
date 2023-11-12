@@ -16,9 +16,9 @@ public class DragAndDrop : MonoBehaviour
 {
     private Vector3 mousePosition;
     private Vector3 landPosition;
+    [SerializeField]
     private Vector3 InitPosition;
 
-    public float count;
 
     public bool Onspell;
 
