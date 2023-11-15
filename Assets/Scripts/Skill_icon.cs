@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Skill_icon : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IPointerClickHandler
+public class Skill_icon : MonoBehaviour
 {
     private Vector3 mousePosition;
     private Vector3 landPosition;
@@ -35,24 +36,6 @@ public class Skill_icon : MonoBehaviour, IPointerExitHandler, IPointerEnterHandl
         collider = this.GetComponent<BoxCollider2D>();
         InitPosition = rect.position;
         landPosition = InitPosition;
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        mouseOn = true;
-        discrip_box.SetActive(true);
-        Debug.Log("on");
-    }
-
-
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        mouseOn = false;
-        discrip_box.SetActive(false);
-        Debug.Log("off");
-        Debug.Log(eventData.position);
-        Debug.Log(Input.mousePosition);
     }
 
     private void Update()
@@ -88,6 +71,7 @@ public class Skill_icon : MonoBehaviour, IPointerExitHandler, IPointerEnterHandl
         My_area.SetActive(true);
         if (Onspell)
         {
+            spell.GetComponent<SpellSetting>().Spellsetting(spell_id);
             anActive();
         }
     }
@@ -123,10 +107,5 @@ public class Skill_icon : MonoBehaviour, IPointerExitHandler, IPointerEnterHandl
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         collider.enabled = true;
         My_area.SetActive(true);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log("dd");
     }
 }

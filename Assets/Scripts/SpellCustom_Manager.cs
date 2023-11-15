@@ -20,6 +20,10 @@ public class SpellCustom_Manager : MonoBehaviour
     [SerializeField]
     private Skill_icon[] icons;
 
+    public Sprite[] sprites;
+    public Sprite[] Upper_sprites;
+    public Sprite[] Down_sprites;
+
     public int stage_lv;
     public int[] page_list;
     private int page_index;
@@ -31,6 +35,8 @@ public class SpellCustom_Manager : MonoBehaviour
     public int[] Water;
     public int[] Fire;
     public string[] discription;
+
+    public int cur_id;
 
     public void Set_Spell_Data()
     {
@@ -62,18 +68,21 @@ public class SpellCustom_Manager : MonoBehaviour
 
     private void Awake()
     {
+        cur_id = -1;
         instance = this;
         Set_Spell_Data();
-        if (page_list == null)
+        if (stage_lv > 10)
         {
-            if(stage_lv > 10)
-            {
-                page_list = new int[12];
-            }
-            else
-            {
-                page_list = new int[stage_lv + 2];
-            }
+            page_list = new int[12];
+        }
+        else
+        {
+            page_list = new int[stage_lv + 2];
+        }
+
+        for(int i = 0; i < page_list.Length; i++) {
+            //비어있다면 -1
+            page_list[i] = -1;
         }
     }
 
@@ -113,5 +122,16 @@ public class SpellCustom_Manager : MonoBehaviour
         page_index--;
     }
 
-    
+    public void spell_set(int spell_id, int page_id)
+    {
+        if (page_list[page_index * 4 + page_id] == -1)
+        {
+            page_list[page_index * 4 + page_id] = spell_id;
+        }
+        else
+        {
+            icons[page_list[page_index * 4 + page_id]].Active();
+            page_list[page_index * 4 + page_id] = spell_id;
+        }
+    }
 }

@@ -207,6 +207,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         spell_icon.interactable = true;
 
         spell_page.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+
         for (int i = 0; i < costs.Length; i++)
         {
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
