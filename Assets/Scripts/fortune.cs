@@ -12,7 +12,7 @@ public class fortune : MonoBehaviour
     [SerializeField]
     private Sprite[] fortune_sprites;
     [SerializeField]
-    private SpriteRenderer[] sprites;
+    private Image[] images;
     [SerializeField]
     private Text[] names;
     [SerializeField]
@@ -21,13 +21,15 @@ public class fortune : MonoBehaviour
     private string[] Name;
     private string[] discription;
 
+    public int[] test = new int[18];
+
     private void OnEnable()
     {
-        
+        set_Fortune();
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Set_Fortune_Data();
     }
@@ -50,10 +52,41 @@ public class fortune : MonoBehaviour
         {
             string[] data = row[i].Split(new char[] { ',' }); //split by (,)
 
-            Name[i - 1] = data[2];
-            discription[i - 1] = data[3];
+            Name[i - 1] = data[3];
+            discription[i - 1] = data[4];
            
         }
 
+    }
+
+    private void set_Fortune()
+    {
+        int ran1 = Random.Range(0, 18);
+        int ran2 = Random.Range(0, 18);
+        int ran3 = Random.Range(0, 18);
+
+        if(ran1 != ran2 &&  ran3 != ran1 && ran2 != ran3) {
+
+            images[0].sprite = fortune_sprites[ran1 / 6];
+            images[1].sprite = fortune_sprites[ran2 / 6];
+            images[2].sprite = fortune_sprites[ran3 / 6];
+
+            names[0].text = Name[ran1];
+            names[1].text = Name[ran2];
+            names[2].text = Name[ran3];
+
+            discriptions[0].text = discription[ran1];
+            discriptions[1].text = discription[ran2];
+            discriptions[2].text = discription[ran3];
+
+            test[ran1]++;
+            test[ran2]++;
+            test[ran3]++;
+        }
+        else
+        {
+            set_Fortune();
+            return;
+        }
     }
 }

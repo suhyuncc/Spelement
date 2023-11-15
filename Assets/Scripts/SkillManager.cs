@@ -119,6 +119,7 @@ public class SkillManager : MonoBehaviour
                 skill_Effects[spell_id].GetComponent<Attack>().speed *= -1;
             }
             skill_Effects[spell_id].SetActive(true);
+
             yield return new WaitForSeconds(0.5f);
 
             //피격
@@ -180,6 +181,7 @@ public class SkillManager : MonoBehaviour
         }
         
         yield return new WaitForSeconds(0.3f);
+
         wind.SetActive(false);
         //데미지 계산
         if (player_turn)

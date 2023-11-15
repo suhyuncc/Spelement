@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Skill_icon : MonoBehaviour
+public class Skill_icon : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IPointerClickHandler
 {
     private Vector3 mousePosition;
     private Vector3 landPosition;
@@ -10,6 +11,8 @@ public class Skill_icon : MonoBehaviour
     private Vector3 InitPosition;
     [SerializeField]
     private int spell_id;
+    [SerializeField]
+    private GameObject My_area;
 
     public bool Onspell;
 
@@ -18,6 +21,11 @@ public class Skill_icon : MonoBehaviour
     private RectTransform rect;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D collider;
+
+    [SerializeField]
+    private GameObject discrip_box;
+
+    private bool mouseOn;
 
     private void Awake()
     {
@@ -29,10 +37,31 @@ public class Skill_icon : MonoBehaviour
         landPosition = InitPosition;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        mouseOn = true;
+        discrip_box.SetActive(true);
+        Debug.Log("on");
+    }
+
+
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        mouseOn = false;
+        discrip_box.SetActive(false);
+        Debug.Log("off");
+        Debug.Log(eventData.position);
+        Debug.Log(Input.mousePosition);
+    }
+
+    private void Update()
+    {
+        if (mouseOn)
+        {
+            discrip_box.transform.position = Input.mousePosition + new Vector3(10f, 10f, 0);
+        }
+
     }
 
     private Vector3 GetmousePos()
@@ -50,12 +79,13 @@ public class Skill_icon : MonoBehaviour
     {
 
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
-
+        My_area.SetActive(false);
     }
 
     private void OnMouseUp()
     {
         transform.position = InitPosition;
+        My_area.SetActive(true);
         if (Onspell)
         {
             anActive();
@@ -85,11 +115,18 @@ public class Skill_icon : MonoBehaviour
     {
         spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
         collider.enabled = false;
+        My_area.SetActive(false);
     }
 
     public void Active()
     {
         spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         collider.enabled = true;
+        My_area.SetActive(true);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("dd");
     }
 }

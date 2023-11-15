@@ -35,8 +35,13 @@ public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     private void Update()
     {
         if (mouseOn) {
-            discrip_box.transform.position = Input.mousePosition + new Vector3(10f,10f,0);
+            discrip_box.transform.position = Input.mousePosition + new Vector3(20f,20f,0);
         }
         
+    }
+
+    private void OnDisable()
+    {
+        discrip_box.SetActive(false);
     }
 }
