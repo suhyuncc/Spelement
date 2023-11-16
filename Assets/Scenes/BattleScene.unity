@@ -11831,22 +11831,22 @@ MonoBehaviour:
   - {fileID: -1171030503, guid: 09f811f8e5002e44b8585c1a24dd3f87, type: 3}
   - {fileID: 1990468861, guid: 6a1d01173854fdf45bb6a144d1562cef, type: 3}
   - {fileID: 1022169945, guid: 438d59b29821ce644bd2572cbdbbcafc, type: 3}
-  - {fileID: 21300000, guid: fe25398e17248714195e639e705e1c8b, type: 3}
-  - {fileID: 21300000, guid: a5fc0248181c5274299b5caf79741e4a, type: 3}
-  - {fileID: 21300000, guid: cb8690a09738fb54a804cfcc12e4fb54, type: 3}
-  - {fileID: 21300000, guid: d86f4de3d1a8b854b9c326595a54f354, type: 3}
-  - {fileID: 21300000, guid: a21baf2c4471ed04fadfc058f1a7d49c, type: 3}
-  - {fileID: 21300000, guid: f44399eca29793f49b09c4db1cf4fff0, type: 3}
-  - {fileID: 21300000, guid: 759672f21a7e5154ebb8f1655b6beaa3, type: 3}
-  - {fileID: 21300000, guid: 067474372c8987e49b2428a7048b53ed, type: 3}
-  - {fileID: 21300000, guid: 5ea0b0e987c8ea9498e922fa126a7aa8, type: 3}
-  - {fileID: 21300000, guid: d71f83e89e6e24349b3bdc6ac2811b3d, type: 3}
-  - {fileID: 21300000, guid: 1e28ca39a6654144d9f9846cb44a26cd, type: 3}
-  - {fileID: 21300000, guid: 9a547771bb2a0594883c0291a63c5006, type: 3}
+  - {fileID: 722727260, guid: fe25398e17248714195e639e705e1c8b, type: 3}
+  - {fileID: -163849878, guid: a5fc0248181c5274299b5caf79741e4a, type: 3}
+  - {fileID: -1684583987, guid: cb8690a09738fb54a804cfcc12e4fb54, type: 3}
+  - {fileID: 787186408, guid: d86f4de3d1a8b854b9c326595a54f354, type: 3}
+  - {fileID: 1185823651, guid: a21baf2c4471ed04fadfc058f1a7d49c, type: 3}
+  - {fileID: 1361964106, guid: 759672f21a7e5154ebb8f1655b6beaa3, type: 3}
+  - {fileID: -1276578039, guid: f44399eca29793f49b09c4db1cf4fff0, type: 3}
+  - {fileID: 791193197, guid: 067474372c8987e49b2428a7048b53ed, type: 3}
+  - {fileID: -672434642, guid: 5ea0b0e987c8ea9498e922fa126a7aa8, type: 3}
+  - {fileID: 1124070958, guid: d71f83e89e6e24349b3bdc6ac2811b3d, type: 3}
+  - {fileID: 525011687, guid: 1e28ca39a6654144d9f9846cb44a26cd, type: 3}
+  - {fileID: -921370567, guid: 9a547771bb2a0594883c0291a63c5006, type: 3}
   - {fileID: -1523420653, guid: de7b10145b78f30449a3d92b6bb99fa0, type: 3}
   - {fileID: -2019537175, guid: e58c80a71eed4904a87fc66180b4a4e5, type: 3}
   - {fileID: -518756153, guid: a3eb29c975ce30748b159b67ccd0da60, type: 3}
-  - {fileID: 21300000, guid: 3ad16f4a1000f1e4186d7368abef7ddb, type: 3}
+  - {fileID: 58689293, guid: 3ad16f4a1000f1e4186d7368abef7ddb, type: 3}
   player_turn: 0
   monster_done: 0
   page_list: 0000000001000000020000001100000009000000

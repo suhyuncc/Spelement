@@ -11,6 +11,8 @@ public class SpellSetting : MonoBehaviour
     private Image spell_icon;
     [SerializeField]
     private Image plame;
+    [SerializeField]
+    private Sprite defualt;
 
 
     [SerializeField]
@@ -52,6 +54,22 @@ public class SpellSetting : MonoBehaviour
 
         //마법진 그리기
         StartCoroutine("Set");
+    }
+
+    public void Initialized()
+    {
+        spell_name.text = "<????>";
+
+        spell_icon.sprite = defualt;
+
+        if (isUpper)
+        {
+            plame.sprite = SpellCustom_Manager.instance.Upper_sprites[0];
+        }
+        else
+        {
+            plame.sprite = SpellCustom_Manager.instance.Down_sprites[0];
+        }
     }
 
     IEnumerator Set()

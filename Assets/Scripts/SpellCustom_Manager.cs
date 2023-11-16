@@ -19,6 +19,8 @@ public class SpellCustom_Manager : MonoBehaviour
 
     [SerializeField]
     private Skill_icon[] icons;
+    [SerializeField]
+    private GameObject[] spellPages;
 
     public Sprite[] sprites;
     public Sprite[] Upper_sprites;
@@ -84,6 +86,10 @@ public class SpellCustom_Manager : MonoBehaviour
             //비어있다면 -1
             page_list[i] = -1;
         }
+
+        
+
+        pageSetting(page_index);
     }
 
     // Start is called before the first frame update
@@ -98,8 +104,18 @@ public class SpellCustom_Manager : MonoBehaviour
         switch(page_index)
         {
             case 0:
-                back.gameObject.SetActive(false);
-                next.gameObject.SetActive(true);
+                //스킬의 가지수가 5개 이하일때 넘어가기 버튼 숨김
+                if (page_list.Length < 5)
+                {
+                    back.gameObject.SetActive(false);
+                    next.gameObject.SetActive(false);
+                }
+                else
+                {
+                    back.gameObject.SetActive(false);
+                    next.gameObject.SetActive(true);
+                }
+                
                 break; 
             case 1:
                 back.gameObject.SetActive(true);
@@ -115,11 +131,13 @@ public class SpellCustom_Manager : MonoBehaviour
     public void nextBtn()
     {
         page_index++;
+        pageSetting(page_index);
     }
 
     public void backBtn()
     {
         page_index--;
+        pageSetting(page_index);
     }
 
     public void spell_set(int spell_id, int page_id)
@@ -130,8 +148,38 @@ public class SpellCustom_Manager : MonoBehaviour
         }
         else
         {
-            icons[page_list[page_index * 4 + page_id]].Active();
+            if(page_list[page_index * 4 + page_id] != spell_id)
+            {
+                icons[page_list[page_index * 4 + page_id]].Active();
+            }
+            
             page_list[page_index * 4 + page_id] = spell_id;
+        }
+    }
+
+    private void pageSetting(int page_i)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            spellPages[i].gameObject.SetActive(true);
+            if (i < (page_list.Length - (4 * page_i)))
+            {
+                if (page_list[i + (4 * page_i)] != -1)
+                {
+                    spellPages[i].GetComponent<SpellSetting>().Spellsetting(page_list[i + (4 * page_i)]);
+                }
+                else
+                {
+                    spellPages[i].GetComponent<SpellSetting>().Initialized();
+                }
+                
+
+            }
+            else
+            {
+                spellPages[i].gameObject.SetActive(false);
+            }
+
         }
     }
 }
