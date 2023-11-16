@@ -36,7 +36,7 @@ public class Demage_txt : MonoBehaviour
         {
             time += Time.deltaTime / F_time;
             alpha.a = Mathf.Lerp(1, 0, time);
-            up.y = Mathf.Lerp(910, 960, time);
+            //up.y = Mathf.Lerp(810, 860, time);
             demage.color = alpha;
             this.transform.position = up;
             yield return null;
