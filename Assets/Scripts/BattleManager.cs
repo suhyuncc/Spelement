@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
     public bool monster_done;
     private bool Re_setting;
 
-    public int[] page_list = { 0, 1, 2, 17, 9};
+    public int[] page_list = { 0, 1, 2, 17, 9, 7};
     public int spell_count;
     private int page_index;
     private int page_max;
