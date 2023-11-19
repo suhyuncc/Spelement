@@ -118,8 +118,18 @@ public class SpellCustom_Manager : MonoBehaviour
                 
                 break; 
             case 1:
-                back.gameObject.SetActive(true);
-                next.gameObject.SetActive(true);
+                //스킬의 가지수가 9개 이하일때 넘어가기 버튼 숨김
+                if (page_list.Length < 9)
+                {
+                    back.gameObject.SetActive(true);
+                    next.gameObject.SetActive(false);
+                }
+                else
+                {
+                    back.gameObject.SetActive(true);
+                    next.gameObject.SetActive(true);
+                }
+                
                 break;
             case 2:
                 back.gameObject.SetActive(true);
