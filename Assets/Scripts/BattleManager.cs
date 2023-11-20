@@ -139,6 +139,8 @@ public class BattleManager : MonoBehaviour
         //씬 시작시 초기세팅
         instance = this;
 
+        Book.SetActive(true);
+
         page_index = 0;
         page_max = page_list.Length / 4;
         phase = Phase.StandBy;
@@ -157,6 +159,8 @@ public class BattleManager : MonoBehaviour
 
 
         pageSetting(page_index);
+
+        
         /*spellPages[0].GetComponent<SpellAction>().spell_id = 3;
         spellPages[1].GetComponent<SpellAction>().spell_id = 7;
         spellPages[2].GetComponent<SpellAction>().spell_id = 17;

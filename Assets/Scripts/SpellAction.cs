@@ -201,8 +201,8 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void spellSetting() {
 
-        this.gameObject.SetActive(true);
-        collide_Area.enabled = true;
+        //this.gameObject.SetActive(true);
+        //collide_Area.enabled = true;
 
         spell_icon.interactable = true;
 
@@ -290,7 +290,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
-    //스펠 버튼으로 작동
+    //스펠 버튼으로 작동(스펠 사용 후 실행)
     public void spellDone()
     {
         spell_icon.interactable = false;
@@ -301,7 +301,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
         }
 
-        collide_Area.enabled = false;
+        //collide_Area.enabled = false;
 
         BattleManager.instance.spell_count--;
 
