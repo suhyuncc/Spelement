@@ -15,7 +15,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private GameObject spell;
     [SerializeField]
-    private SpriteRenderer spell_page;
+    private Image spell_page;
     [SerializeField]
     private Button spell_icon;
     [SerializeField]
@@ -206,7 +206,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         spell_icon.interactable = true;
 
-        spell_page.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        spell_page.color = new Color(1, 1, 1, 1f);
 
         for (int i = 0; i < costs.Length; i++)
         {
@@ -295,7 +295,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         spell_icon.interactable = false;
 
-        spell_page.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+        spell_page.color = new Color(1, 1, 1, 0.5f);
         for (int i = 0; i < total; i++)
         {
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);

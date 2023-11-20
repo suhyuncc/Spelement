@@ -150,6 +150,20 @@ public class SpellCustom_Manager : MonoBehaviour
         pageSetting(page_index);
     }
 
+    public void resetBtn()
+    {
+        for (int i = 0; i < page_list.Length; i++)
+        {
+            if(page_list[i] != -1)
+            {
+                icons[page_list[i]].Active();
+                page_list[i] = -1;
+            }
+            
+        }
+        pageSetting(page_index);
+    }
+
     public void spell_set(int spell_id, int page_id)
     {
         if (page_list[page_index * 4 + page_id] == -1)

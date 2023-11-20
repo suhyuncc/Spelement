@@ -104,6 +104,7 @@ public class SkillManager : MonoBehaviour
                 //플레이어가 몬스터에게
                 skill_Effects[spell_id].transform.position = Player_apos.transform.position;
                 //skill_Effects[spell_id].transform.rotation = Quaternion.Euler(0, 0, 0);
+                skill_Effects[spell_id].transform.eulerAngles += new Vector3(0,0,0);
                 skill_Effects[spell_id].GetComponent<Attack>().speed *= 1;
                 if(spell_id == 17)
                 {
