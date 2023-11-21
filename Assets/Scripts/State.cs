@@ -6,7 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
+public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IPointerClickHandler
 {
     [SerializeField]
     private GameObject discrip_box;
@@ -18,7 +18,7 @@ public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
         mouseOn = true;
         discrip_box.SetActive(true);
-        Debug.Log("on");
+        
     }
 
     
@@ -27,9 +27,6 @@ public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
         mouseOn = false;
         discrip_box.SetActive(false);
-        Debug.Log("off");
-        Debug.Log(eventData.position);
-        Debug.Log(Input.mousePosition);
     }
 
     private void Update()
@@ -43,5 +40,10 @@ public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     private void OnDisable()
     {
         discrip_box.SetActive(false);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log(eventData.selectedObject.name);
     }
 }
