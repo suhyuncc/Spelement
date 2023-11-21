@@ -229,16 +229,14 @@ public class SkillManager : MonoBehaviour
             
         }
 
-        //추가 행동
-        Additional(spell_id);
-
         //데미지 계산 반영
         Monster_HP.value = (float)monster_current_hp / (float)monster_max_hp;
         Monster_HP_Text.text = $"{monster_current_hp} / {monster_max_hp}";
         Player_HP.value = (float)player_current_hp / (float)player_max_hp;
         Player_HP_Text.text = $"{player_current_hp} / {player_max_hp}";
 
-        
+        //추가 행동
+        Additional(spell_id);
 
         //배틀 페이즈 종료
         if (player_turn)
@@ -339,20 +337,6 @@ public class SkillManager : MonoBehaviour
                 {
                     Player_state.GetComponent<StateManagement>().counts[0] = 9;
                     Player_state.transform.GetChild(0).gameObject.SetActive(true);
-                }
-                break;
-
-            case 15:
-                if (player_turn)
-                {
-                    Player_state.GetComponent<StateManagement>().counts[2] = 3;
-                    Player_state.transform.GetChild(2).gameObject.SetActive(true);
-                    
-                }
-                else
-                {
-                    Monster_state.GetComponent<StateManagement>().counts[2] = 3;
-                    Monster_state.transform.GetChild(2).gameObject.SetActive(true);
                 }
                 break;
 
