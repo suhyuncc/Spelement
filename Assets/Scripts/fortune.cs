@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class fortune : MonoBehaviour
 {
+    public static fortune instance;
+
     [SerializeField]
     private TextAsset fortune_info = null;
     [SerializeField]
@@ -18,26 +20,27 @@ public class fortune : MonoBehaviour
     [SerializeField]
     private Text[] discriptions;
 
-    private string[] Name;
-    private string[] discription;
+    public string[] Name;
+    public string[] discription;
 
-    public int[] test = new int[18];
+    public int[] fortune_list = new int[3];
+    public int Show_F_index;
 
     private void OnEnable()
     {
         set_Fortune();
     }
 
+    private void OnDisable()
+    {
+
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
+        instance = this;
         Set_Fortune_Data();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Set_Fortune_Data()
@@ -79,14 +82,46 @@ public class fortune : MonoBehaviour
             discriptions[1].text = discription[ran2];
             discriptions[2].text = discription[ran3];
 
-            test[ran1]++;
-            test[ran2]++;
-            test[ran3]++;
+            fortune_list[0] = ran1;
+            fortune_list[1] = ran2;
+            fortune_list[2] = ran3;
         }
         else
         {
             set_Fortune();
             return;
         }
+    }
+
+    public void buttonOne() {
+        BattleManager.instance.F_list[BattleManager.instance.F_index] = fortune_list[0];
+        for (int i = 0; i < fortune_list.Length; i++)
+        {
+            fortune_list[i] = -1;
+        }
+        BattleManager.instance.showIcon(BattleManager.instance.F_index);
+        this.gameObject.SetActive(false);
+    }
+
+    public void buttonTwo()
+    {
+        BattleManager.instance.F_list[BattleManager.instance.F_index] = fortune_list[1];
+        for (int i = 0; i < fortune_list.Length; i++)
+        {
+            fortune_list[i] = -1;
+        }
+        BattleManager.instance.showIcon(BattleManager.instance.F_index);
+        this.gameObject.SetActive(false);
+    }
+
+    public void buttonThree()
+    {
+        BattleManager.instance.F_list[BattleManager.instance.F_index] = fortune_list[2];
+        for (int i = 0; i < fortune_list.Length; i++)
+        {
+            fortune_list[i] = -1;
+        }
+        BattleManager.instance.showIcon(BattleManager.instance.F_index);
+        this.gameObject.SetActive(false);
     }
 }

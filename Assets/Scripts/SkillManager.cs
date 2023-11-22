@@ -34,7 +34,9 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private GameObject[] skill_Effects;
     [SerializeField]
-    private GameObject[] hit_Effects;
+    private GameObject[] P_hit_Effects;
+    [SerializeField]
+    private GameObject[] M_hit_Effects;
     [SerializeField]
     private AudioClip[] hit_SFX;
     [SerializeField]
@@ -127,8 +129,7 @@ public class SkillManager : MonoBehaviour
             if (player_turn)
             {
                 //몬스터에게
-                hit_Effects[spell_id].transform.position = Monster.transform.position;
-                hit_Effects[spell_id].SetActive(true);
+                M_hit_Effects[spell_id].SetActive(true);
                 if(spell_id == 14)
                 {
                     StartCoroutine("camera_shake");
@@ -155,8 +156,7 @@ public class SkillManager : MonoBehaviour
             else
             {
                 //플레이어에게
-                hit_Effects[spell_id].transform.position = Player.transform.position;
-                hit_Effects[spell_id].SetActive(true);
+                P_hit_Effects[spell_id].SetActive(true);
 
                 //피격당하는 원소의 색상으로 점멸 효과
                 if (spell_id - 3 < 0 || spell_id == 19)
@@ -176,13 +176,11 @@ public class SkillManager : MonoBehaviour
             //회복 및 방어막
             if (player_turn)
             {
-                hit_Effects[spell_id].transform.position = Player.transform.position;
-                hit_Effects[spell_id].SetActive(true);
+                P_hit_Effects[spell_id].SetActive(true);
             }
             else
             {
-                hit_Effects[spell_id].transform.position = Monster.transform.position;
-                hit_Effects[spell_id].SetActive(true);
+                M_hit_Effects[spell_id].SetActive(true);
             }
         }
         
@@ -266,10 +264,8 @@ public class SkillManager : MonoBehaviour
         Book.SetActive(false);
         if (player_turn)
         {
-            
             //효과
-            hit_Effects[spell_id].transform.position = Player.transform.position;
-            hit_Effects[spell_id].SetActive(true);
+            P_hit_Effects[spell_id].SetActive(true);
             //점멸
             Player.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
             Demage_Text.color = colors[((spell_id - 3) / 4) + 1];
@@ -297,8 +293,7 @@ public class SkillManager : MonoBehaviour
         else
         {
             //효과
-            hit_Effects[spell_id].transform.position = Monster.transform.position;
-            hit_Effects[spell_id].SetActive(true);
+            M_hit_Effects[spell_id].SetActive(true);
             //점멸
             Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
             Demage_Text.color = colors[((spell_id - 3) / 4) + 1];
@@ -334,30 +329,184 @@ public class SkillManager : MonoBehaviour
     {
         switch(spell_id)
         {
-            case 9:
+            case 1:
                 if (player_turn)
                 {
-                    Monster_state.GetComponent<StateManagement>().counts[0] = 9;
+                    Player_state.GetComponent<StateManagement>().counts[4] += 5;
+                    Player_state.transform.GetChild(4).gameObject.SetActive(true);
+                    
+                }
+                else
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[4] += 5;
+                    Monster_state.transform.GetChild(4).gameObject.SetActive(true);
+                }
+                break;
+
+            case 3:
+                if (player_turn)
+                {
+                    Player_state.GetComponent<StateManagement>().counts[2] = 5;
+                    Player_state.transform.GetChild(2).gameObject.SetActive(true);
+
+                }
+                else
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[2] = 5;
+                    Monster_state.transform.GetChild(2).gameObject.SetActive(true);
+                }
+                break;
+
+            case 4:
+                if (player_turn)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[3] += 1;
+                    Monster_state.transform.GetChild(3).gameObject.SetActive(true);
+                }
+                else
+                {
+                    Player_state.GetComponent<StateManagement>().counts[3] += 1;
+                    Player_state.transform.GetChild(3).gameObject.SetActive(true);
+                }
+                break;
+
+            case 5:
+                if (player_turn)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[3] += 1;
+                    Monster_state.transform.GetChild(3).gameObject.SetActive(true);
+                }
+                else
+                {
+                    Player_state.GetComponent<StateManagement>().counts[3] += 1;
+                    Player_state.transform.GetChild(3).gameObject.SetActive(true);
+                }
+                break;
+
+            case 6:
+                if (player_turn)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[3] += 2;
+                    Monster_state.transform.GetChild(3).gameObject.SetActive(true);
+
+                    //30% 회복
+                    player_current_hp += (int)(player_max_hp * 0.3);
+                    //오버 회복 방지
+                    if (player_current_hp > player_max_hp)
+                    {
+                        player_current_hp = player_max_hp;
+                    }
+                }
+                else
+                {
+                    Player_state.GetComponent<StateManagement>().counts[3] += 2;
+                    Player_state.transform.GetChild(3).gameObject.SetActive(true);
+
+                    //30% 회복
+                    monster_current_hp += (int)(monster_max_hp * 0.3);
+                    //오버 회복 방지
+                    if (monster_current_hp > monster_max_hp)
+                    {
+                        monster_current_hp = monster_max_hp;
+                    }
+                }
+                break;
+
+            case 7:
+                if (player_turn)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[0] += 3;
                     Monster_state.transform.GetChild(0).gameObject.SetActive(true);
                 }
                 else
                 {
-                    Player_state.GetComponent<StateManagement>().counts[0] = 9;
+                    Player_state.GetComponent<StateManagement>().counts[0] += 3;
                     Player_state.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                break;
+
+            case 8:
+                if (player_turn)
+                {
+                    Player_state.GetComponent<StateManagement>().counts[5] = 3;
+                    Player_state.transform.GetChild(5).gameObject.SetActive(true);
+                    
+                }
+                else
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[5] = 3;
+                    Monster_state.transform.GetChild(5).gameObject.SetActive(true);
+                }
+                break;
+
+            case 9:
+                if (player_turn)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[0] += 9;
+                    Monster_state.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                else
+                {
+                    Player_state.GetComponent<StateManagement>().counts[0] += 9;
+                    Player_state.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                break;
+
+            //불기둥(추가 예정)
+
+
+            case 11:
+                if (player_turn)
+                {
+                    Player_state.GetComponent<StateManagement>().counts[7] = 3;
+                    Player_state.transform.GetChild(7).gameObject.SetActive(true);
+                    
+                }
+                else
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[7] = 3;
+                    Monster_state.transform.GetChild(7).gameObject.SetActive(true);
+                }
+                break;
+
+            case 13:
+                if (player_turn)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[1] = 1;
+                    Monster_state.transform.GetChild(1).gameObject.SetActive(true);
+                }
+                else
+                {
+                    Player_state.GetComponent<StateManagement>().counts[1] = 1;
+                    Player_state.transform.GetChild(1).gameObject.SetActive(true);
                 }
                 break;
 
             case 15:
                 if (player_turn)
                 {
-                    Player_state.GetComponent<StateManagement>().counts[2] = 3;
-                    Player_state.transform.GetChild(2).gameObject.SetActive(true);
+                    Player_state.GetComponent<StateManagement>().counts[6] = 3;
+                    Player_state.transform.GetChild(6).gameObject.SetActive(true);
                     
                 }
                 else
                 {
-                    Monster_state.GetComponent<StateManagement>().counts[2] = 3;
-                    Monster_state.transform.GetChild(2).gameObject.SetActive(true);
+                    Monster_state.GetComponent<StateManagement>().counts[6] = 3;
+                    Monster_state.transform.GetChild(6).gameObject.SetActive(true);
+                }
+                break;
+
+            case 16:
+                if (player_turn)
+                {
+                    Player_state.GetComponent<StateManagement>().counts[8] = 3;
+                    Player_state.transform.GetChild(8).gameObject.SetActive(true);
+
+                }
+                else
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[8] = 3;
+                    Monster_state.transform.GetChild(8).gameObject.SetActive(true);
                 }
                 break;
 

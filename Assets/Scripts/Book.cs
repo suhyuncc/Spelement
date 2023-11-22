@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,9 @@ public class Book : MonoBehaviour
     [SerializeField]
     private Animator book_anim;
     [SerializeField]
-    private GameObject[] book_inners;
+    private GameObject canvas;
+    [SerializeField]
+    private GameObject[] spellPages;
     [SerializeField]
     private SpriteRenderer book;
     [SerializeField]
@@ -35,16 +38,26 @@ public class Book : MonoBehaviour
     IEnumerator OpenBook()
     {
         book_anim.SetBool("Open", true);
-        for(int i = 0; i < book_inners.Length; i++)
+        canvas.SetActive(false);
+        for (int i = 0; i < spellPages.Length; i++)
         {
-            book_inners[i].SetActive(false);
+            spellPages[i].SetActive(false);
         }
         yield return new WaitForSeconds(0.75f);
         
         book_anim.SetBool("Open", false);
-        for (int i = 0; i < book_inners.Length; i++)
+        canvas.SetActive(true);
+        for (int i = 0; i < 4; i++)
         {
-            book_inners[i].SetActive(true);
+            if (i < (BattleManager.instance.page_list.Length - (4 * BattleManager.instance.page_index)))
+            {
+                spellPages[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                spellPages[i].gameObject.SetActive(false);
+            }
+
         }
         book.sprite = defult;
         StopCoroutine("OpenBook");

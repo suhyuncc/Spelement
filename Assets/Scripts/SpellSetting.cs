@@ -39,6 +39,11 @@ public class SpellSetting : MonoBehaviour
 
         spell_icon.sprite = SpellCustom_Manager.instance.sprites[spell_id];
 
+        for (int i = 0; i < costs.Length; i++)
+        {
+            costs[i].SetActive(false);
+        }
+
         //½ºÆç µÞ¹è°æ ¼³Á¤
         if (spell_id - 3 < 0)
         {
