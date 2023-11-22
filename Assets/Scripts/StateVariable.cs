@@ -6,7 +6,8 @@ public enum state //gameManager에서 사용함 건들 ㄴㄴ(state 추가는 해도 댐)
 {
     idle,
     dialogue,
-    battle
+    battle,
+    spell_setting
 }
 public class StateVariable : MonoBehaviour
 {

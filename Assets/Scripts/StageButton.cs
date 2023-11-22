@@ -15,10 +15,14 @@ public class StageButton : MonoBehaviour
     private GameObject GM; //GameManager를 할당받는 변수
     private void Update()
     {
-        if(isChecked == false && isCleared == true ) //스테이지가 클리어 되었지만 체크는 되지 않았을 때
+        if (isChecked == false && isCleared == true) //스테이지가 클리어 되었지만 체크는 되지 않았을 때
         {
             isChecked = true;//체크 true
-           this.transform.GetChild(0).gameObject.SetActive(true);//이미지 활성화
+            this.transform.GetChild(0).gameObject.SetActive(true);//이미지 활성화
+        }else if (previousStage != null 
+            && previousStage.GetComponent<StageButton>().isCleared == true && isCleared == false)
+        {
+            this.transform.GetChild(1).gameObject.SetActive(true);
         }
     }
 
