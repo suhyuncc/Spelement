@@ -272,4 +272,9 @@ public class BattleManager : MonoBehaviour
         phase = Phase.Battle;
     }
 
+    public void Rebutton()
+    {
+        Book.SetActive(false);
+        Book.SetActive(true);
+    }
 }

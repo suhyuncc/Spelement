@@ -8,6 +8,8 @@ public class SkillManager : MonoBehaviour
     public static SkillManager instance;
 
     [SerializeField]
+    private Camera camera;
+    [SerializeField]
     private GameObject Player;
     [SerializeField]
     private Slider Player_HP;
@@ -58,7 +60,7 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private int monster_current_hp;
     [SerializeField]
-    private GameObject wind;
+    private GameObject spin_spell_field;
 
     private int count;
     private int _percent;
@@ -102,15 +104,13 @@ public class SkillManager : MonoBehaviour
             if (player_turn)
             {
                 //플레이어가 몬스터에게
-                skill_Effects[spell_id].transform.position = Player_apos.transform.position;
-                //skill_Effects[spell_id].transform.rotation = Quaternion.Euler(0, 0, 0);
+                if(spell_id != 13)
+                {
+                    skill_Effects[spell_id].transform.position = Player_apos.transform.position;
+                }
                 skill_Effects[spell_id].transform.eulerAngles += new Vector3(0,0,0);
                 skill_Effects[spell_id].GetComponent<Attack>().speed *= 1;
-                if(spell_id == 17)
-                {
-                    wind.transform.position = Player_apos.transform.position;
-                    wind.SetActive(true);
-                }
+                spell_field(spell_id);
             }
             else
             {
@@ -129,6 +129,11 @@ public class SkillManager : MonoBehaviour
                 //몬스터에게
                 hit_Effects[spell_id].transform.position = Monster.transform.position;
                 hit_Effects[spell_id].SetActive(true);
+                if(spell_id == 14)
+                {
+                    StartCoroutine("camera_shake");
+                    
+                }
 
                 //피격당하는 원소의 색상으로 점멸 효과
                 if (spell_id - 3 < 0)
@@ -168,7 +173,7 @@ public class SkillManager : MonoBehaviour
         //공격 기술이 아닐때
         else
         {
-            //피격
+            //회복 및 방어막
             if (player_turn)
             {
                 hit_Effects[spell_id].transform.position = Player.transform.position;
@@ -183,7 +188,7 @@ public class SkillManager : MonoBehaviour
         
         yield return new WaitForSeconds(0.3f);
 
-        wind.SetActive(false);
+        spin_spell_field.SetActive(false);
         //데미지 계산
         if (player_turn)
         {
@@ -388,5 +393,49 @@ public class SkillManager : MonoBehaviour
             default: 
                 break;
         }
+    }
+
+    private void spell_field(int spell_id)
+    {
+        switch(spell_id)
+        {
+            case 0:
+                spin_spell_field.GetComponent<SpriteRenderer>().color = colors[0];
+                spin_spell_field.SetActive(true);
+                break;
+            case 7:
+                spin_spell_field.GetComponent<SpriteRenderer>().color = colors[2];
+                spin_spell_field.SetActive(true);
+                break;
+            case 13:
+                spin_spell_field.GetComponent<SpriteRenderer>().color = colors[3];
+                spin_spell_field.SetActive(true);
+                break;
+            case 17:
+                spin_spell_field.GetComponent<SpriteRenderer>().color = colors[4];
+                spin_spell_field.SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    IEnumerator camera_shake()
+    {
+        float F_time = 0.4f;
+        float time = 0f;
+        while (time < 1)
+        {
+            time += Time.deltaTime / F_time;
+
+            //반경 5f 안의 랜덤 위치 지정
+            camera.transform.position = Random.insideUnitSphere * 0.4f;
+
+            //높이도 같이 변경되니까 높이 고정하기, y값 초기화하기
+            camera.transform.position = new Vector3(camera.transform.position.x, 0f,-10f);
+            yield return null;
+        }
+        camera.transform.position = new Vector3(0f, 0f,-10f);
+        StopCoroutine("camera_shake");
     }
 }
