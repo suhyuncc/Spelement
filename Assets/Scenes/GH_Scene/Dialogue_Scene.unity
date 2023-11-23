@@ -1231,6 +1231,9 @@ MonoBehaviour:
   MapManager: {fileID: 0}
   DialogueManager: {fileID: 0}
   LoadingManager: {fileID: 0}
+  BattleManager: {fileID: 0}
+  SkillManager: {fileID: 0}
+  SpellManager: {fileID: 0}
 --- !u!1 &402254633
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,7 +5239,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2018744809}
         m_TargetAssemblyTypeName: Go_Spell_Setting_Scene, Assembly-CSharp
-        m_MethodName: SpellSceneButtonClicked
+        m_MethodName: ChangeIdleScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

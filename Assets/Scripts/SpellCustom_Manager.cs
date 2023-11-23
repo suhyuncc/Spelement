@@ -206,4 +206,14 @@ public class SpellCustom_Manager : MonoBehaviour
 
         }
     }
+
+    public void GoBackToIdleScene()
+    {
+        GameObject gm = GameObject.Find("GameManager");
+
+        if (gm != null)
+        {
+            gm.GetComponent<GameManager>().IdleSceneChange();
+        }
+    }
 }

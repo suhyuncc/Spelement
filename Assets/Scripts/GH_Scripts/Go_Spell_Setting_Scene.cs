@@ -6,8 +6,13 @@ using UnityEngine.EventSystems;
 
 public class Go_Spell_Setting_Scene : MonoBehaviour
 {
-    public void SpellSceneButtonClicked()
+    public void ChangeIdleScene()
     {
-        // spellScene¿∏∑Œ
+        GameObject gm = GameObject.Find("GameManager");
+
+        if (gm != null)
+        {
+            gm.GetComponent<GameManager>().IdleSceneChange();
+        }
     }
 }

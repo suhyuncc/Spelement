@@ -110,20 +110,27 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene("Loading");
             Debug.Log("Start Battle!");
         }
-        if (currentState == state.spell_setting && isButtonClickedInIdle == true && __scene.name == "Dialogue_Scene") //spellsetting 버튼이 눌렸을 때
+        if (currentState == state.idle && isButtonClickedInIdle == true && __scene.name == "Dialogue_Scene") //spellsetting 버튼이 눌렸을 때
         {
             isButtonClickedInIdle = false;
+            currentState = state.spell_setting;
             //지금까지 클리어 한 스테이지 정보 가지고 있을 것
             previousSerialNumber = memorizeClearedStage;
             sceneName = "Spell_Custom_Scene";
             SceneManager.LoadScene("Loading");
         }
-        if (currentState == state.idle && isButtonClickedInIdle == true && __scene.name == "Spell_Custom_Scene") //spellsetting 씬에서 지도 버튼이 눌렸을 때
+        if (currentState == state.spell_setting && isButtonClickedInIdle == true && __scene.name == "Spell_Custom_Scene") //spellsetting 씬에서 지도 버튼이 눌렸을 때
         {
             isButtonClickedInIdle = false;
+            currentState = state.idle;
             currentStageCleared = true;
             sceneName = "Dialogue_Scene";
             SceneManager.LoadScene("Loading");
         }
+    }
+
+    public void IdleSceneChange()
+    {
+        isButtonClickedInIdle = true;
     }
 }
