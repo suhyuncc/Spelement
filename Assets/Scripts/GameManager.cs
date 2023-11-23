@@ -17,10 +17,14 @@ public class GameManager : Singleton<GameManager>
     public GameObject MapManager;//MapManager를 찾을 GameObject
     public GameObject DialogueManager; //DialogueManager를 찾을 GameObject
     public GameObject LoadingManager;
+    public GameObject BattleManager;
+    public GameObject SkillManager;
+    public GameObject SpellManager;
 
     private string sceneName;
     private string eventName;
 
+    private bool isButtonClickedInIdle = false;
     void OnEnable()//여서부터
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -43,11 +47,20 @@ public class GameManager : Singleton<GameManager>
         else if (_scene.name == "Loading")
         {
             LoadingManager = GameObject.Find("LoadManager");
-            if(LoadingManager != null)
+            if (LoadingManager != null)
             {
                 LoadingManager.GetComponent<LoadingScene>().GetSceneName(sceneName);
                 sceneName = null;
             }
+        }
+        else if (currentState == state.battle && _scene.name == "BattleScene")
+        {
+            BattleManager = GameObject.Find("BattleManager");
+            SkillManager = GameObject.Find("SkillManager");
+        }
+        else if (currentState == state.spell_setting && _scene.name == "Spell_Custom_Scene")
+        {
+            SpellManager = GameObject.Find("SpellCustom_Manager");
         }
     }
     void OnDisable()
@@ -67,13 +80,13 @@ public class GameManager : Singleton<GameManager>
     private void Update()
     {
         __scene = SceneManager.GetActiveScene();
-        if(currentState == state.battle && currentStageCleared == true) //배틀중인데 적을 쓰러트림(clear)
+        if (currentState == state.battle && currentStageCleared == true) //배틀중인데 적을 쓰러트림(clear)
         {
-            if(eventName == null)
+            if (eventName == null)
                 currentState = state.idle;
-            else 
+            else
                 currentState = state.dialogue;
-            previousSerialNumber= currentStageSerialNumber;
+            previousSerialNumber = currentStageSerialNumber;
             currentStageSerialNumber = 0;
             sceneName = "Dialogue_Scene";
             SceneManager.LoadScene("Loading");
@@ -87,12 +100,27 @@ public class GameManager : Singleton<GameManager>
                 previousSerialNumber = 0;
             }
         }
-        if(currentState == state.idle && currentStageSerialNumber != 0) //버튼이 클릭되어서 시리얼 넘버가 gameManager에 입력되었을 때 -> 배틀 씬으로 넘어간다
+        if (currentState == state.idle && currentStageSerialNumber != 0) //버튼이 클릭되어서 시리얼 넘버가 gameManager에 입력되었을 때 -> 배틀 씬으로 넘어간다
         {
             currentState = state.battle;
             sceneName = "TestingBattle"; //이거 배틀 씬 이름으로
+            //sceneName = "BattleScene";
             SceneManager.LoadScene("Loading");
             Debug.Log("Start Battle!");
+        }
+        if (currentState == state.spell_setting && isButtonClickedInIdle == true)
+        {
+            isButtonClickedInIdle = false;
+            //지금까지 클리어 한 스테이지 정보 가지고 있을 것
+            sceneName = "Spell_Custom_Scene";
+            SceneManager.LoadScene("Loading");
+        }
+        if (currentState == state.idle && isButtonClickedInIdle == true)
+        {
+            isButtonClickedInIdle = false;
+            currentStageCleared = true;
+            sceneName = "Dialogue_Scene";
+            SceneManager.LoadScene("Loading");
         }
     }
 }
