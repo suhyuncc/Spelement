@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
     private string eventName;
 
     private bool isButtonClickedInIdle = false;
+    private int memorizeClearedStage;
     void OnEnable()//여서부터
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -32,11 +33,11 @@ public class GameManager : Singleton<GameManager>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)//여기다가 넣을 것
     {
         Scene _scene = SceneManager.GetActiveScene();
-        if (currentState == state.idle && _scene.name == "Dialogue_Scene")
+        if (currentState == state.idle && _scene.name == "Dialogue_Scene") //Idle scene에 도달했을 때
         {
             MapManager = GameObject.Find("MapManager");
         }
-        else if (currentState == state.dialogue && _scene.name == "Dialogue_Scene")
+        else if (currentState == state.dialogue && _scene.name == "Dialogue_Scene") // Idle scene but 대화가 선행되어야 할 때
         {
             DialogueManager = GameObject.Find("DialogueSystem");
             MapManager = GameObject.Find("MapManager");
@@ -44,7 +45,7 @@ public class GameManager : Singleton<GameManager>
             DialogueManager.GetComponent<Dialogue_Manage>().GetEventName(eventName);
             eventName = null;
         }
-        else if (_scene.name == "Loading")
+        else if (_scene.name == "Loading") // Loading scene에 도달했을 때
         {
             LoadingManager = GameObject.Find("LoadManager");
             if (LoadingManager != null)
@@ -53,12 +54,12 @@ public class GameManager : Singleton<GameManager>
                 sceneName = null;
             }
         }
-        else if (currentState == state.battle && _scene.name == "BattleScene")
+        else if (currentState == state.battle && _scene.name == "BattleScene") // BattleScene에 도달했을 때
         {
             BattleManager = GameObject.Find("BattleManager");
             SkillManager = GameObject.Find("SkillManager");
         }
-        else if (currentState == state.spell_setting && _scene.name == "Spell_Custom_Scene")
+        else if (currentState == state.spell_setting && _scene.name == "Spell_Custom_Scene") // Spellsettingscene에 도달했을 때
         {
             SpellManager = GameObject.Find("SpellCustom_Manager");
         }
@@ -95,6 +96,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (previousSerialNumber != 0 && MapManager != null)
             {
+                memorizeClearedStage = previousSerialNumber;
                 MapManager.GetComponent<MapManagement>().StageClear(previousSerialNumber);
                 currentStageCleared = false;//스테이지 선택되지 않은 상태로
                 previousSerialNumber = 0;
@@ -108,14 +110,15 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene("Loading");
             Debug.Log("Start Battle!");
         }
-        if (currentState == state.spell_setting && isButtonClickedInIdle == true)
+        if (currentState == state.spell_setting && isButtonClickedInIdle == true && __scene.name == "Dialogue_Scene") //spellsetting 버튼이 눌렸을 때
         {
             isButtonClickedInIdle = false;
             //지금까지 클리어 한 스테이지 정보 가지고 있을 것
+            previousSerialNumber = memorizeClearedStage;
             sceneName = "Spell_Custom_Scene";
             SceneManager.LoadScene("Loading");
         }
-        if (currentState == state.idle && isButtonClickedInIdle == true)
+        if (currentState == state.idle && isButtonClickedInIdle == true && __scene.name == "Spell_Custom_Scene") //spellsetting 씬에서 지도 버튼이 눌렸을 때
         {
             isButtonClickedInIdle = false;
             currentStageCleared = true;
