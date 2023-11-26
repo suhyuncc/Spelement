@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,7 +43,9 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private GameObject Book;
     [SerializeField]
-    private Text Demage_Text;
+    private Text[] player_Damage_Text;
+    [SerializeField]
+    private Text[] monster_Damage_Text;
 
     private Color[] colors = {new Color(0.75f,0.75f,0.75f), new Color(0.75f, 0.75f, 1f),
         new Color(1, 0.75f, 0.75f), new Color(1f, 0.875f, 0.75f), new Color(0.875f, 1f, 0.75f) };
@@ -67,7 +70,13 @@ public class SkillManager : MonoBehaviour
     private int count;
     private int _percent;
 
+    private int[] F_counts = new int[18];
+
     private Coroutine coroutine;
+
+    private bool fortune_Add;
+    private bool fortune_First;
+    private bool fortune_Second;
 
     // Start is called before the first frame update
     void Awake()
@@ -75,6 +84,14 @@ public class SkillManager : MonoBehaviour
         instance = this;
         sfx = this.GetComponent<AudioSource>();
         _percent = 0;
+
+        for(int i = 0; i < F_counts.Length; i++)
+        {
+            F_counts[i] = 0;
+        }
+        fortune_Add = true;
+        fortune_First = false;
+        fortune_Second = false;
     }
 
     private void Start()
@@ -140,15 +157,12 @@ public class SkillManager : MonoBehaviour
                 if (spell_id - 3 < 0)
                 {
                     Monster.GetComponent<SpriteRenderer>().color = colors[0];
-                    Demage_Text.color = colors[0];
                 }
                 else
                 {
                     Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
-                    Demage_Text.color = colors[((spell_id - 3) / 4) + 1];
                 }
-                Demage_Text.text = $"{BattleManager.instance.number[spell_id]}";
-                Demage_Text.gameObject.SetActive(true);
+                
 
                 sfx.clip = hit_SFX[0];
                 sfx.Play();
@@ -183,64 +197,97 @@ public class SkillManager : MonoBehaviour
                 M_hit_Effects[spell_id].SetActive(true);
             }
         }
-        
-        yield return new WaitForSeconds(0.3f);
 
-        spin_spell_field.SetActive(false);
         //데미지 계산
-        if (player_turn)
+        if (player_turn) //플레이어 턴
         {
+
             if (BattleManager.instance.isAttack[spell_id] == 1)
             {
                 //적 체력 감소
-                monster_current_hp -= BattleManager.instance.number[spell_id];
+                monster_Hit(spell_id, Player_Atk_damage_calcul(BattleManager.instance.number[spell_id]));
+
+                //물방울이 존재 할 때
+                if (Monster_state.GetComponent<StateManagement>().counts[3] != 0)
+                {
+                    player_Heal(4, 3);
+                    Monster_state.GetComponent<StateManagement>().counts[3]--;
+                }
+                //난기류 스택이 존재 할 때
+                else if (Player_state.GetComponent<StateManagement>().counts[8] != 0)
+                {
+                    monster_Hit(17, 5);
+                    Player_state.GetComponent<StateManagement>().counts[8]--;
+                }
             }
             else
             {
-                player_current_hp += BattleManager.instance.number[spell_id];
-                //오버 회복 방지
-                if (player_current_hp > player_max_hp)
-                {
-                    player_current_hp = player_max_hp;
-                }
+                //플레이어 체력 회복
+                player_Heal(spell_id, BattleManager.instance.number[spell_id]);
             }
-                
+
         }
-        else
+        else //적 턴
         {
+
             if (BattleManager.instance.isAttack[spell_id] == 1)
             {
                 if (spell_id == 19)
                 {
-                    player_current_hp -= nomal_Dem;
+                    player_Hit(spell_id, nomal_Dem);
                 }
                 else
                 {
-                    player_current_hp -= BattleManager.instance.number[spell_id];
+                    player_Hit(spell_id, BattleManager.instance.number[spell_id]);
                 }
             }
             else
             {
-                monster_current_hp += BattleManager.instance.number[spell_id];
-                //오버 회복 방지
-                if (monster_current_hp > monster_max_hp)
-                {
-                    monster_current_hp = monster_max_hp;
-                }
+                //몬스터 체력 회복
+                monster_Heal(spell_id, BattleManager.instance.number[spell_id]);
             }
-            
-            
+
+
         }
+
+        yield return new WaitForSeconds(0.3f);
+
+        spin_spell_field.SetActive(false);
+
+        //HP에 따른 운명 발동
+        Heal_fortune();
 
         //추가 행동
         Additional(spell_id);
 
-        //데미지 계산 반영
-        Monster_HP.value = (float)monster_current_hp / (float)monster_max_hp;
-        Monster_HP_Text.text = $"{monster_current_hp} / {monster_max_hp}";
-        Player_HP.value = (float)player_current_hp / (float)player_max_hp;
-        Player_HP_Text.text = $"{player_current_hp} / {player_max_hp}";
+        //운명으로 인한 추가 발동
+        if (fortune_Add)
+        {
+            fortune_Additional();
+            fortune_Add = false;
+        }
 
+        if(fortune_First || fortune_Second)
+        {
+            if (fortune_Second)
+            {
+                StopCoroutine(coroutine);
+                isActive = true;
+                Debug.Log("10% 발동!!");
+                fortune_Second = false;
+            }
+            else if (fortune_First)
+            {
+                StopCoroutine(coroutine);
+                isActive = true;
+                Debug.Log("30% 발동!!");
+                fortune_First = false;
+            }
+        }
+        else
+        {
+            fortune_Add = true;
+        }
         
 
         //배틀 페이즈 종료
@@ -268,10 +315,8 @@ public class SkillManager : MonoBehaviour
             P_hit_Effects[spell_id].SetActive(true);
             //점멸
             Player.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
-            Demage_Text.color = colors[((spell_id - 3) / 4) + 1];
 
-            Demage_Text.text = $"{BattleManager.instance.number[spell_id]}";
-            Demage_Text.gameObject.SetActive(true);
+            player_Damage_txt(spell_id,3);
 
             sfx.clip = hit_SFX[0];
             sfx.Play();
@@ -296,10 +341,8 @@ public class SkillManager : MonoBehaviour
             M_hit_Effects[spell_id].SetActive(true);
             //점멸
             Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
-            Demage_Text.color = colors[((spell_id - 3) / 4) + 1];
 
-            Demage_Text.text = $"{BattleManager.instance.number[spell_id]}";
-            Demage_Text.gameObject.SetActive(true);
+            monster_Damage_txt(spell_id,3);
 
             sfx.clip = hit_SFX[0];
             sfx.Play();
@@ -563,6 +606,410 @@ public class SkillManager : MonoBehaviour
             case 17:
                 spin_spell_field.GetComponent<SpriteRenderer>().color = colors[4];
                 spin_spell_field.SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void player_Heal(int spell_id, int heal_point)
+    {
+        player_current_hp += heal_point;
+        //오버 회복 방지
+        if (player_current_hp > player_max_hp)
+        {
+            player_current_hp = player_max_hp;
+        }
+        player_Damage_txt(spell_id, heal_point);
+        Damage_update();
+    }
+
+    private void monster_Heal(int spell_id, int heal_point)
+    {
+        monster_current_hp += heal_point;
+        //오버 회복 방지
+        if (monster_current_hp > monster_max_hp)
+        {
+            monster_current_hp = monster_max_hp;
+        }
+        monster_Damage_txt(spell_id, heal_point);
+        Damage_update();
+    }
+
+    private void player_Hit(int spell_id, int atk_point)
+    {
+        int Dam = Player_Hit_damage_calcul(atk_point);
+        player_current_hp -= Dam;
+        //오버 히트 방지
+        if (player_current_hp < 0)
+        {
+            player_current_hp = 0;
+        }
+        player_Damage_txt(spell_id, Dam);
+        Damage_update();
+    }
+
+    private void monster_Hit(int spell_id, int atk_point)
+    {
+        int Dam = Monster_Hit_damage_calcul(atk_point);
+        //적 체력 감소
+        monster_current_hp -= Dam;
+        monster_Damage_txt(spell_id, Dam);
+        Damage_update();
+    }
+
+    private void player_Damage_txt(int spell_id, int point)
+    {
+        if(BattleManager.instance.isAttack[spell_id] != 1)
+        {
+            return;
+        }
+
+        for (int i = 0; i < player_Damage_Text.Length; i++)
+        {
+            if (!player_Damage_Text[i].gameObject.activeSelf)
+            {
+                //피격당하는 원소의 색상으로 점멸 효과
+                if (spell_id - 3 < 0 || spell_id == 19)
+                {
+                    player_Damage_Text[i].color = colors[0];
+                }
+                else
+                {
+                    player_Damage_Text[i].color = colors[((spell_id - 3) / 4) + 1];
+                }
+
+                //-1일때는 상태이상과 같은 고정 수치 데미지
+                if (point == -1)
+                {
+                    player_Damage_Text[i].text = $"{BattleManager.instance.number[spell_id]}";
+                }
+                else
+                {
+                    player_Damage_Text[i].text = $"{point}";
+                }
+                
+                player_Damage_Text[i].gameObject.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    private void monster_Damage_txt(int spell_id, int point)
+    {
+        if (BattleManager.instance.isAttack[spell_id] != 1)
+        {
+            return;
+        }
+
+        for (int i = 0; i < monster_Damage_Text.Length; i++)
+        {
+            if (!monster_Damage_Text[i].gameObject.activeSelf)
+            {
+                //피격당하는 원소의 색상으로 점멸 효과
+                if (spell_id - 3 < 0)
+                {
+                    monster_Damage_Text[i].color = colors[0];
+                }
+                else
+                {
+                    monster_Damage_Text[i].color = colors[((spell_id - 3) / 4) + 1];
+                }
+
+                //-1일때는 상태이상과 같은 고정 수치 데미지
+                if (point == -1)
+                {
+                    monster_Damage_Text[i].text = $"{BattleManager.instance.number[spell_id]}";
+                }
+                else
+                {
+                    monster_Damage_Text[i].text = $"{point}";
+                }
+                monster_Damage_Text[i].gameObject.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    private int Player_Hit_damage_calcul(int Hit_damage)
+    {
+        int damage = Hit_damage;
+
+        if (damage == 0)
+        {
+            return damage;
+        }
+
+        //헤이스트가 존재 할 때
+        if (Player_state.GetComponent<StateManagement>().counts[6] != 0)
+        {
+            damage = 0;
+            Player_state.GetComponent<StateManagement>().counts[6]--;
+            return damage;
+        }
+        //스톤스킨이 존재 할 때
+        else if (Player_state.GetComponent<StateManagement>().counts[7] != 0)
+        {
+            damage = damage / 2;
+            Player_state.GetComponent<StateManagement>().counts[7]--;
+        }
+        //방어도가 존재 할 때
+        else if (Player_state.GetComponent<StateManagement>().counts[4] != 0)
+        {
+            if((damage - Player_state.GetComponent<StateManagement>().counts[4]) < 0)
+            {
+                damage = 0;
+                Player_state.GetComponent<StateManagement>().counts[4] -= damage;
+            }
+            else
+            {
+                damage = damage - Player_state.GetComponent<StateManagement>().counts[4];
+                Player_state.GetComponent<StateManagement>().counts[4] = 0;
+            }
+        }
+
+        //운명 계산
+        for(int i = 0; i < BattleManager.instance.F_list.Length; i++)
+        {
+            switch (BattleManager.instance.F_list[i])
+            {
+                case 12:
+                    if(monster_current_hp > player_current_hp && F_counts[12] < 3)
+                    {
+                        damage = damage / 2;
+                        F_counts[12]++;
+                    }
+                    break;
+                case 14:
+                    if (F_counts[14] < 2)
+                    {
+                        if(damage - 10 < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            damage = damage - 10;
+                        }
+                        
+                        F_counts[14]++;
+                    }
+                    break;
+                case 16:
+                    if (F_counts[16] < 2)
+                    {
+                        if (damage - 5 < 0)
+                        {
+                            damage = 0;
+                        }
+                        else
+                        {
+                            damage = damage - 5;
+                        }
+
+                        F_counts[16]++;
+                    }
+                    break;
+                case 17:
+                    if (F_counts[17] < 1)
+                    {
+                        if (damage > 10)
+                        {
+                            damage = 10;
+                        }
+                        F_counts[17]++;
+                    }
+                    break;
+                default: 
+                    break;
+            }
+        }
+
+        return damage;
+
+    }
+
+    private int Player_Atk_damage_calcul(int Hit_damage)
+    {
+        int damage = Hit_damage;
+
+        if (damage == 0)
+        {
+            return damage;
+        }
+
+        //운명 계산
+        for (int i = 0; i < BattleManager.instance.F_list.Length; i++)
+        {
+            switch (BattleManager.instance.F_list[i])
+            {
+                case 0:
+                    damage += 10;
+                    break;
+                case 1:
+                    float ran = Random.Range(0f, 1f);
+                    if (ran < 0.5f)
+                    {
+                        damage = damage + 10;
+                    }
+                    break;
+                case 3:
+                    float ran1 = Random.Range(0f, 1f);
+                    if (ran1 < 0.3f)
+                    {
+                        damage = damage + 5;
+                    }
+                    break;
+                case 5:
+                    damage += 2;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return damage;
+
+    }
+
+    private int Monster_Hit_damage_calcul(int Hit_damage)
+    {
+        int damage = Hit_damage;
+
+        if(damage == 0)
+        {
+            return damage;
+        }
+
+        //헤이스트가 존재 할 때
+        if (Monster_state.GetComponent<StateManagement>().counts[6] != 0)
+        {
+            damage = 0;
+            Monster_state.GetComponent<StateManagement>().counts[6]--;
+            return damage;
+        }
+        //스톤스킨이 존재 할 때
+        else if (Monster_state.GetComponent<StateManagement>().counts[7] != 0)
+        {
+            damage = damage / 2;
+            Monster_state.GetComponent<StateManagement>().counts[7]--;
+        }
+        //방어도가 존재 할 때
+        else if (Monster_state.GetComponent<StateManagement>().counts[4] != 0)
+        {
+            if ((damage - Monster_state.GetComponent<StateManagement>().counts[4]) < 0)
+            {
+                damage = 0;
+                Monster_state.GetComponent<StateManagement>().counts[4] -= damage;
+            }
+            else
+            {
+                damage = damage - Monster_state.GetComponent<StateManagement>().counts[4];
+                Monster_state.GetComponent<StateManagement>().counts[4] = 0;
+            }
+        }
+
+        return damage;
+
+    }
+
+    private void Damage_update()
+    {
+        //데미지 계산 반영
+        Monster_HP.value = (float)monster_current_hp / (float)monster_max_hp;
+        Monster_HP_Text.text = $"{monster_current_hp} / {monster_max_hp}";
+        Player_HP.value = (float)player_current_hp / (float)player_max_hp;
+        Player_HP_Text.text = $"{player_current_hp} / {player_max_hp}";
+    }
+
+    private void Heal_fortune()
+    {
+        //운명 계산
+        for (int i = 0; i < BattleManager.instance.F_list.Length; i++)
+        {
+            switch (BattleManager.instance.F_list[i])
+            {
+                case 6:
+                    if (player_current_hp == 0 && F_counts[6] < 1)
+                    {
+                        player_current_hp = 40;
+                        F_counts[6]++;
+                        Damage_update();
+                    }
+                    break;
+                case 7:
+                    if (player_current_hp < 10 && F_counts[7] < 1)
+                    {
+                        player_current_hp += 30;
+                        F_counts[7]++;
+                        Damage_update();
+                    }
+                    break;
+                case 9:
+                    if (player_current_hp < 10 && F_counts[9] < 1)
+                    {
+                        player_current_hp += 15;
+                        F_counts[9]++;
+                        Damage_update();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void fortune_Additional()
+    {
+        //운명 계산
+        for (int i = 0; i < BattleManager.instance.F_list.Length; i++)
+        {
+            switch (BattleManager.instance.F_list[i])
+            {
+                case 2:
+                    float ran = Random.Range(0f, 1f);
+                    if (ran < 0.3f)
+                    {
+                        fortune_First = true;
+                    }
+                    else
+                    {
+                        Debug.Log("30% 실패!!");
+                    }
+                    break;
+                case 4:
+                    float ran1 = Random.Range(0f, 1f);
+                    if (ran1 < 0.1f)
+                    {
+                        fortune_Second = true;
+                    }
+                    else
+                    {
+                        Debug.Log("10% 실패!!");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void fortune_Action(int fortune_num)
+    {
+        switch (fortune_num)
+        {
+            case 11:
+                player_Heal(0, 10);
+                break;
+            case 13:
+                Debug.Log("작동");
+                Player_state.GetComponent<StateManagement>().counts[4] += 20;
+                Player_state.transform.GetChild(4).gameObject.SetActive(true);
+                break;
+            case 15:
+                Debug.Log("작동");
+                Player_state.GetComponent<StateManagement>().counts[4] += 10;
+                Player_state.transform.GetChild(4).gameObject.SetActive(true);
                 break;
             default:
                 break;

@@ -95,17 +95,22 @@ public class fortune : MonoBehaviour
 
     public void buttonOne() {
         BattleManager.instance.F_list[BattleManager.instance.F_index] = fortune_list[0];
+        SkillManager.instance.fortune_Action(fortune_list[0]);
+
         for (int i = 0; i < fortune_list.Length; i++)
         {
             fortune_list[i] = -1;
         }
         BattleManager.instance.showIcon(BattleManager.instance.F_index);
+        
         this.gameObject.SetActive(false);
     }
 
     public void buttonTwo()
     {
         BattleManager.instance.F_list[BattleManager.instance.F_index] = fortune_list[1];
+        SkillManager.instance.fortune_Action(fortune_list[1]);
+
         for (int i = 0; i < fortune_list.Length; i++)
         {
             fortune_list[i] = -1;
@@ -117,6 +122,8 @@ public class fortune : MonoBehaviour
     public void buttonThree()
     {
         BattleManager.instance.F_list[BattleManager.instance.F_index] = fortune_list[2];
+        SkillManager.instance.fortune_Action(fortune_list[2]);
+
         for (int i = 0; i < fortune_list.Length; i++)
         {
             fortune_list[i] = -1;

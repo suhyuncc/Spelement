@@ -32,11 +32,13 @@ public class Demage_txt : MonoBehaviour
         Color alpha = demage.color;
         Vector3 up = this.transform.position;
 
+        float init_y = up.y;
+
         while (alpha.a > 0)
         {
             time += Time.deltaTime / F_time;
             alpha.a = Mathf.Lerp(1, 0, time);
-            //up.y = Mathf.Lerp(810, 860, time);
+            up.y = Mathf.Lerp(init_y, init_y+50, time);
             demage.color = alpha;
             this.transform.position = up;
             yield return null;
