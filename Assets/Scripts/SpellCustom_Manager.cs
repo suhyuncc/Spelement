@@ -21,6 +21,10 @@ public class SpellCustom_Manager : MonoBehaviour
     private Skill_icon[] icons;
     [SerializeField]
     private GameObject[] spellPages;
+    [SerializeField]
+    private GameObject Book;
+    [SerializeField]
+    private GameObject next_page;
 
     public Sprite[] sprites;
     public Sprite[] Upper_sprites;
@@ -87,7 +91,12 @@ public class SpellCustom_Manager : MonoBehaviour
             page_list[i] = -1;
         }
 
-        
+        for (int i = 0; i < icons.Length; i++)
+        {
+            icons[i].Disable();
+        }
+
+        icon_show(stage_lv);
 
         pageSetting(page_index);
     }
@@ -142,12 +151,18 @@ public class SpellCustom_Manager : MonoBehaviour
     {
         page_index++;
         pageSetting(page_index);
+        next_page.GetComponent<SpriteRenderer>().flipX = false;
+        next_page.SetActive(true);
+        Book.SetActive(false);
     }
 
     public void backBtn()
     {
         page_index--;
         pageSetting(page_index);
+        next_page.GetComponent<SpriteRenderer>().flipX = true;
+        next_page.SetActive(true);
+        Book.SetActive(false);
     }
 
     public void resetBtn()
@@ -214,6 +229,57 @@ public class SpellCustom_Manager : MonoBehaviour
         if (gm != null)
         {
             gm.GetComponent<GameManager>().IdleSceneChange();
+        }
+    }
+
+    private void icon_show(int stage_lv)
+    {
+        if(stage_lv < 3)
+        {
+            //公加己
+            for(int i = 0; i <= 2; i++)
+            {
+                icons[i].Enable();
+            }
+            //官恩
+            for (int i = 15; i <= 18; i++)
+            {
+                icons[i].Enable();
+            }
+        }
+        else if(stage_lv < 6)
+        {
+            //公加己
+            for (int i = 0; i <= 2; i++)
+            {
+                icons[i].Enable();
+            }
+            //官恩
+            for (int i = 15; i <= 18; i++)
+            {
+                icons[i].Enable();
+            }
+        }
+        else if (stage_lv < 9)
+        {
+            for (int i = 0; i <= stage_lv + 4; i++)
+            {
+                icons[i].Enable();
+            }
+        }
+        else if (stage_lv < 12)
+        {
+            for (int i = 0; i <= stage_lv + 5; i++)
+            {
+                icons[i].Enable();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < icons.Length; i++)
+            {
+                icons[i].Enable();
+            }
         }
     }
 }

@@ -105,8 +105,8 @@ public class GameManager : Singleton<GameManager>
         if (currentState == state.idle && currentStageSerialNumber != 0) //버튼이 클릭되어서 시리얼 넘버가 gameManager에 입력되었을 때 -> 배틀 씬으로 넘어간다
         {
             currentState = state.battle;
-            sceneName = "TestingBattle"; //이거 배틀 씬 이름으로
-            //sceneName = "BattleScene";
+            //sceneName = "TestingBattle"; //이거 배틀 씬 이름으로
+            sceneName = "BattleScene";
             SceneManager.LoadScene("Loading");
             Debug.Log("Start Battle!");
         }

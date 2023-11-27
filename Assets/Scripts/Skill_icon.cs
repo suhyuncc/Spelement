@@ -108,4 +108,16 @@ public class Skill_icon : MonoBehaviour
         collider.enabled = true;
         My_area.SetActive(true);
     }
+
+    public void Disable()
+    {
+        this.gameObject.SetActive(false);
+        My_area.SetActive(false);
+    }
+
+    public void Enable()
+    {
+        this.gameObject.SetActive(true);
+        My_area.SetActive(true);
+    }
 }

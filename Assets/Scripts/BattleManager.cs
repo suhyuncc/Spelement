@@ -17,6 +17,8 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
 
+    private GameObject GM;
+
     [SerializeField]
     private TextAsset csvFile = null;
     [SerializeField]
@@ -59,6 +61,8 @@ public class BattleManager : MonoBehaviour
     public int spell_count;
     public int page_index;
     private int page_max;
+
+    public int stage_num;
 
     [SerializeField]
     private GameObject[] spellPages;
@@ -176,6 +180,8 @@ public class BattleManager : MonoBehaviour
         //씬 시작시 초기세팅
         instance = this;
 
+        GM = GameObject.Find("GameManager"); //GameManager를 찾아서
+        stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
         
 
         //운명 id -1로 초기화
