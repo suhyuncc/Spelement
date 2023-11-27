@@ -71,6 +71,7 @@ public class Skill_icon : MonoBehaviour
         My_area.SetActive(true);
         if (Onspell)
         {
+            spell.GetComponent<SpellSetting>().set_Anim = true;
             spell.GetComponent<SpellSetting>().Spellsetting(spell_id);
             anActive();
         }

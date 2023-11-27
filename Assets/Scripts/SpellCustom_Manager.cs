@@ -12,10 +12,10 @@ public class SpellCustom_Manager : MonoBehaviour
     [SerializeField]
     private TextAsset csvFile = null;
 
-    [SerializeField]
-    private Button next;
-    [SerializeField]
-    private Button back;
+
+    public Button next;
+
+    public Button back;
 
     [SerializeField]
     private Skill_icon[] icons;
@@ -234,51 +234,111 @@ public class SpellCustom_Manager : MonoBehaviour
 
     private void icon_show(int stage_lv)
     {
-        if(stage_lv < 3)
+        //무속성
+        for (int i = 0; i <= 2; i++)
         {
-            //무속성
-            for(int i = 0; i <= 2; i++)
+            icons[i].Enable();
+        }
+
+        if (stage_lv <= 3)
+        {
+            if(stage_lv == 3)
             {
-                icons[i].Enable();
+                //바람
+                for (int i = 15; i < 19; i++)
+                {
+                    icons[i].Enable();
+                }
             }
+            else
+            {
+                //바람
+                for (int i = 15; i < 15 + (stage_lv % 3); i++)
+                {
+                    icons[i].Enable();
+                }
+            }
+            
+        }
+        else if(stage_lv <= 6)
+        {
             //바람
-            for (int i = 15; i <= 18; i++)
+            for (int i = 15; i < 19; i++)
             {
                 icons[i].Enable();
+            }
+
+            if (stage_lv == 6)
+            {
+                //바위
+                for (int i = 11; i < 15; i++)
+                {
+                    icons[i].Enable();
+                }
+            }
+            else
+            {
+                //바위(제한)
+                for (int i = 11; i < 11 + (stage_lv % 3); i++)
+                {
+                    icons[i].Enable();
+                }
             }
         }
-        else if(stage_lv < 6)
+        else if (stage_lv <= 9)
         {
-            //무속성
-            for (int i = 0; i <= 2; i++)
+            //바위 ~ 바람
+            for (int i = 11; i < 19; i++)
             {
                 icons[i].Enable();
             }
-            //바람
-            for (int i = 15; i <= 18; i++)
+
+            if (stage_lv == 9)
             {
-                icons[i].Enable();
+                //물
+                for (int i = 3; i < 7; i++)
+                {
+                    icons[i].Enable();
+                }
             }
-        }
-        else if (stage_lv < 9)
-        {
-            for (int i = 0; i <= stage_lv + 4; i++)
+            else
             {
-                icons[i].Enable();
-            }
-        }
-        else if (stage_lv < 12)
-        {
-            for (int i = 0; i <= stage_lv + 5; i++)
-            {
-                icons[i].Enable();
+                //물(제한)
+                for (int i = 3; i < 3 + (stage_lv % 3); i++)
+                {
+                    icons[i].Enable();
+                }
             }
         }
-        else
+        else if (stage_lv <= 12)
         {
-            for (int i = 0; i < icons.Length; i++)
+            //바위 ~ 바람
+            for (int i = 11; i < 19; i++)
             {
                 icons[i].Enable();
+            }
+
+            //물
+            for (int i = 3; i < 7; i++)
+            {
+                icons[i].Enable();
+            }
+
+            if (stage_lv == 9)
+            {
+                //불
+                for (int i = 7; i < 11; i++)
+                {
+                    icons[i].Enable();
+                }
+            }
+            else
+            {
+                //불(제한)
+                for (int i = 7; i < 7 + (stage_lv % 3); i++)
+                {
+                    icons[i].Enable();
+                }
             }
         }
     }

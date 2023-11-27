@@ -33,6 +33,8 @@ public class SpellSetting : MonoBehaviour
     private int[] Total_num = new int[5];
     private int total;
 
+    public bool set_Anim;
+
     public void Spellsetting(int spell_id)
     {
         SpellCustom_Manager.instance.spell_set(spell_id, page_id);
@@ -107,8 +109,13 @@ public class SpellSetting : MonoBehaviour
             }
         }
 
-        //마법진 그리기
-        StartCoroutine("Set");
+        if (set_Anim)
+        {
+            //마법진 그리기
+            StartCoroutine("Set");
+            set_Anim = false;
+        }
+        
     }
 
     public void Initialized()
@@ -137,11 +144,16 @@ public class SpellSetting : MonoBehaviour
     {
         plame.fillAmount = 0f;
 
+        SpellCustom_Manager.instance.next.interactable = false;
+        SpellCustom_Manager.instance.back.interactable = false;
 
         while (plame.fillAmount < 1)
         {
             plame.fillAmount += 0.0032f;
             yield return null;
         }
+
+        SpellCustom_Manager.instance.next.interactable = true;
+        SpellCustom_Manager.instance.back.interactable = true;
     }
 }

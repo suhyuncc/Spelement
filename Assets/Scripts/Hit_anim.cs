@@ -26,6 +26,7 @@ public class Hit_anim : MonoBehaviour
 
         yield return new WaitForSeconds(during_time);
 
+        StopCoroutine("Hit");
         this.gameObject.SetActive(false);
     }
 }

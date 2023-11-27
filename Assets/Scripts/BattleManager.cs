@@ -242,6 +242,7 @@ public class BattleManager : MonoBehaviour
                     }
                     else
                     {
+                        Check_fortune();
                         Elements.SetActive(true);
                         Book.gameObject.SetActive(true);
                         EleManager.instance.Reroll();
@@ -330,6 +331,15 @@ public class BattleManager : MonoBehaviour
         }
 
         Re_setting = false;
+    }
+
+    private void Check_fortune()
+    {
+        //운명 계산
+        for (int i = 0; i < F_list.Length; i++)
+        {
+            SkillManager.instance.fortune_Heal(F_list[i]);
+        }
     }
 
     IEnumerator monster_term()
