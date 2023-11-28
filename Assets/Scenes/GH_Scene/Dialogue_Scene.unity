@@ -1231,9 +1231,8 @@ MonoBehaviour:
   MapManager: {fileID: 0}
   DialogueManager: {fileID: 0}
   LoadingManager: {fileID: 0}
-  BattleManager: {fileID: 0}
-  SkillManager: {fileID: 0}
   SpellManager: {fileID: 0}
+  spellList: 010000000200000003000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!1 &402254633
 GameObject:
   m_ObjectHideFlags: 0

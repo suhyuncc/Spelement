@@ -17,8 +17,6 @@ public class GameManager : Singleton<GameManager>
     public GameObject MapManager;//MapManager를 찾을 GameObject
     public GameObject DialogueManager; //DialogueManager를 찾을 GameObject
     public GameObject LoadingManager;
-    public GameObject BattleManager;
-    public GameObject SkillManager;
     public GameObject SpellManager;
 
     private string sceneName;
@@ -26,6 +24,10 @@ public class GameManager : Singleton<GameManager>
 
     private bool isButtonClickedInIdle = false;
     private int memorizeClearedStage;
+
+    [SerializeField]
+    private int[] spellList = new int[12] {1,2,3,0,0,0,0,0,0,0,0,0}; //나중에 첫 3 spell id에 맞게 수정할 것
+
     void OnEnable()//여서부터
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -54,11 +56,6 @@ public class GameManager : Singleton<GameManager>
                 sceneName = null;
             }
         }
-        else if (currentState == state.battle && _scene.name == "BattleScene") // BattleScene에 도달했을 때
-        {
-            BattleManager = GameObject.Find("BattleManager");
-            SkillManager = GameObject.Find("SkillManager");
-        }
         else if (currentState == state.spell_setting && _scene.name == "Spell_Custom_Scene") // Spellsettingscene에 도달했을 때
         {
             SpellManager = GameObject.Find("SpellCustom_Manager");
@@ -72,20 +69,20 @@ public class GameManager : Singleton<GameManager>
     {
         currentStageSerialNumber= serialNo;
     }
-    public void GetEventName(string _eventName)
+    public void SetEventName(string _eventName)
     {
         eventName = _eventName;
     }
 
-    Scene __scene;
+    private Scene __scene;
     private void Update()
     {
         __scene = SceneManager.GetActiveScene();
         if (currentState == state.battle && currentStageCleared == true) //배틀중인데 적을 쓰러트림(clear)
         {
-            if (eventName == null)
-                currentState = state.idle;
-            else
+            if (eventName == null) // 대화 event를 받지 않았다면
+                currentState = state.idle; // 그냥 idle scene으로 
+            else //받았다면
                 currentState = state.dialogue;
             previousSerialNumber = currentStageSerialNumber;
             currentStageSerialNumber = 0;
@@ -129,8 +126,30 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void IdleSceneChange()
+    public void IdleSceneChange() // spell setting < - > idle 간 scene 전환을 위해 사용
     {
         isButtonClickedInIdle = true;
+    }
+
+    public void SetSpellBook(int[] _spellset) // spell setting scene에서 정보를 변경할 때 사용
+    {                                         
+        spellList = _spellset;
+    }
+    public void SetSpellBook(int setCount, int spellId)// 필요하다면 원소 각각을 변환하여도 상관 없다.
+    {
+        spellList[setCount] = spellId;
+    }
+
+    public int[] GetSpellSet() // spell setting or battle scene에서 현재의 spell 배치 정보를 가져올 때 사용
+    {
+        return spellList;
+    }
+
+    public void IsStageFailed() // 스테이지 도전에 실패했을 때 호출받을 함수
+    {
+        currentStageSerialNumber /= 3; // ex> 5스테이지면 1로 변환
+        currentStageSerialNumber *= 3; // ex> 위에서변환한 1을 3으로 변환 --> 3stage까지 클리어 한 것으로 처리
+        eventName = null; // 도전한 스테이지에 대화가 있었을 수 있으므로
+        currentStageCleared = true; // scene을 Idle Scene으로 변환할 수 있도록
     }
 }
