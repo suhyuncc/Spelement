@@ -9,6 +9,8 @@ public class SpellCustom_Manager : MonoBehaviour
 {
     public static SpellCustom_Manager instance;
 
+    private GameObject GM;
+
     [SerializeField]
     private TextAsset csvFile = null;
 
@@ -25,6 +27,8 @@ public class SpellCustom_Manager : MonoBehaviour
     private GameObject Book;
     [SerializeField]
     private GameObject next_page;
+    [SerializeField]
+    private Text warning_txt;
 
     public Sprite[] sprites;
     public Sprite[] Upper_sprites;
@@ -76,6 +80,8 @@ public class SpellCustom_Manager : MonoBehaviour
     {
         cur_id = -1;
         instance = this;
+        GM = GameObject.Find("GameManager"); //GameManager를 찾아서
+        stage_lv = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
         Set_Spell_Data();
         if (stage_lv > 10)
         {
@@ -83,7 +89,7 @@ public class SpellCustom_Manager : MonoBehaviour
         }
         else
         {
-            page_list = new int[stage_lv + 2];
+            page_list = new int[stage_lv + 3];
         }
 
         for(int i = 0; i < page_list.Length; i++) {
@@ -179,6 +185,23 @@ public class SpellCustom_Manager : MonoBehaviour
         pageSetting(page_index);
     }
 
+    public void done_Btn() 
+    {
+        for (int i = 0; i < page_list.Length; i++)
+        {
+            if (page_list[i] == -1)
+            {
+                //경고 창 띄우기
+                warning_txt.gameObject.SetActive(true);
+                return;
+            }
+
+        }
+
+        GM.GetComponent<GameManager>().spell_list = page_list;
+        GoBackToIdleScene();
+    }
+
     public void spell_set(int spell_id, int page_id)
     {
         if (page_list[page_index * 4 + page_id] == -1)
@@ -224,11 +247,10 @@ public class SpellCustom_Manager : MonoBehaviour
 
     public void GoBackToIdleScene()
     {
-        GameObject gm = GameObject.Find("GameManager");
 
-        if (gm != null)
+        if (GM != null)
         {
-            gm.GetComponent<GameManager>().IdleSceneChange();
+            GM.GetComponent<GameManager>().IdleSceneChange();
         }
     }
 

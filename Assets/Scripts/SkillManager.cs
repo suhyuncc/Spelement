@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-//using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,6 +65,8 @@ public class SkillManager : MonoBehaviour
     private int monster_current_hp;
     [SerializeField]
     private GameObject spin_spell_field;
+    [SerializeField]
+    private GameObject winlose_panel;
 
     private int count;
     private int _percent;
@@ -113,6 +114,18 @@ public class SkillManager : MonoBehaviour
         {
             coroutine = StartCoroutine(Skill_Active(player_turn, spell_id));
             isActive = false;
+        }
+
+        if(player_current_hp == 0)
+        {
+            
+            winlose_panel.GetComponent<winlose_panel>().is_Win = false;
+            winlose_panel.SetActive(true);
+        }
+        else if(monster_current_hp == 0)
+        {
+            winlose_panel.GetComponent<winlose_panel>().is_Win = true;
+            winlose_panel.SetActive(true);
         }
     }
 
@@ -409,9 +422,46 @@ public class SkillManager : MonoBehaviour
         
     }
 
-    private void Attack(int spell_id)
+    IEnumerator Sturn()
     {
+        if (BattleManager.instance.player_turn)
+        {
+            //기절 텍스트 띄우기
+            for (int i = 0; i < player_Damage_Text.Length; i++)
+            {
+                if (!player_Damage_Text[i].gameObject.activeSelf)
+                {
+                    player_Damage_Text[i].text = "기절!";
+                    player_Damage_Text[i].gameObject.SetActive(true);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            //기절 텍스트 띄우기
+            for (int i = 0; i < monster_Damage_Text.Length; i++)
+            {
+                if (!monster_Damage_Text[i].gameObject.activeSelf)
+                {
+                    monster_Damage_Text[i].text = "기절!";
+                    monster_Damage_Text[i].gameObject.SetActive(true);
+                    break;
+                }
+            }
+            
+        }
+        BattleManager.instance.phase = Phase.End;
 
+        yield return new WaitForSeconds(0.4f);
+
+        if (!BattleManager.instance.player_turn)
+        {
+            BattleManager.instance.monster_done = true;
+        }
+
+
+        StopCoroutine("Sturn");
     }
 
     private void Additional(int spell_id)
@@ -542,6 +592,24 @@ public class SkillManager : MonoBehaviour
                 break;
 
             //불기둥(추가 예정)
+            case 10:
+                if (player_turn)
+                {
+                    if (Monster_state.GetComponent<StateManagement>().counts[0] != 0)
+                    {
+                        monster_Hit(10, 3 * Monster_state.GetComponent<StateManagement>().counts[0]);
+                        Monster_state.GetComponent<StateManagement>().counts[0] = 0;
+                    }
+                }
+                else
+                {
+                    if (Player_state.GetComponent<StateManagement>().counts[0] != 0)
+                    {
+                        player_Hit(10, 3 * Player_state.GetComponent<StateManagement>().counts[0]);
+                        Player_state.GetComponent<StateManagement>().counts[0] = 0;
+                    }
+                }
+                break;
 
 
             case 11:
@@ -627,6 +695,21 @@ public class SkillManager : MonoBehaviour
             case 0:
                 StartCoroutine(mini_fire(BattleManager.instance.player_turn,9));
                 
+                break;
+            case 1:
+                StartCoroutine("Sturn");
+                break;
+            case 2:
+                if (BattleManager.instance.player_turn)
+                {
+                    P_hit_Effects[3].SetActive(true);
+                    player_Heal(2, (int)((float)player_max_hp * 0.25f));
+                }
+                else
+                {
+                    M_hit_Effects[3].SetActive(true);
+                    monster_Heal(2, (int)((float)monster_max_hp * 0.25f));
+                }
                 break;
             default: 
                 break;

@@ -17,7 +17,7 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
 
-    private GameObject GM;
+    public GameObject GM;
 
     [SerializeField]
     private TextAsset csvFile = null;
@@ -182,6 +182,7 @@ public class BattleManager : MonoBehaviour
 
         GM = GameObject.Find("GameManager"); //GameManager를 찾아서
         stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
+        page_list = GM.GetComponent<GameManager>().spell_list;
         
 
         //운명 id -1로 초기화
@@ -243,11 +244,16 @@ public class BattleManager : MonoBehaviour
                     else
                     {
                         Check_fortune();
+                        Player_state.GetComponent<StateManagement>().reduceState();
                         Elements.SetActive(true);
                         Book.gameObject.SetActive(true);
                         EleManager.instance.Reroll();
-                        Player_state.GetComponent<StateManagement>().reduceState();
-                        phase = Phase.Battle;
+
+                        if(phase == Phase.StandBy)
+                        {
+                            phase = Phase.Battle;
+                        }
+                        
                     }
                     
                     
@@ -256,7 +262,11 @@ public class BattleManager : MonoBehaviour
                 else
                 {
                     Monster_state.GetComponent<StateManagement>().reduceState();
-                    phase = Phase.Battle;
+
+                    if (phase == Phase.StandBy)
+                    {
+                        phase = Phase.Battle;
+                    }
 
                 }
                 break;
@@ -339,6 +349,23 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < F_list.Length; i++)
         {
             SkillManager.instance.fortune_Heal(F_list[i]);
+        }
+    }
+
+    public void GoBackToIdleScene()
+    {
+        if(Player_HP.value < 0.00001f)
+        {
+            GM.GetComponent<GameManager>().currentStageCleared = false;
+        }
+        else if(Monster_HP.value < 0.00001f)
+        {
+            GM.GetComponent<GameManager>().currentStageCleared = true;
+        }
+
+        if (GM != null)
+        {
+            GM.GetComponent<GameManager>().IdleSceneChange();
         }
     }
 

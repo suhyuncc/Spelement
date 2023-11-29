@@ -108,12 +108,14 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 ready_count++;
                 break;
             }
-            count++;
-            if(count > Fire_num)
+            else
             {
-                getnull();
-                break;
+                count++;
             }
+        }
+        if (count > total - Null_num)
+        {
+            getnull();
         }
         Debug.Log($"불 작동");
     }
@@ -130,12 +132,14 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 ready_count++;
                 break;
             }
-            count++;
-            if (count > Water_num)
+            else
             {
-                getnull();
-                break;
+                count++;
             }
+        }
+        if (count > total - Null_num)
+        {
+            getnull();
         }
         Debug.Log($"물 작동");
     }
@@ -152,13 +156,17 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 ready_count++;
                 break;
             }
-            count++;
-            if (count > Air_num)
+            else
             {
-                getnull();
-                break;
+                count++;
             }
+
         }
+        if (count > total - Null_num)
+        {
+            getnull();
+        }
+
         Debug.Log($"바람 작동");
     }
 
@@ -174,12 +182,15 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 ready_count++;
                 break;
             }
-            count++;
-            if (count > Earth_num)
+            else
             {
-                getnull();
-                break;
+                count++;
             }
+        }
+
+        if (count > total - Null_num)
+        {
+            getnull();
         }
         Debug.Log($"땅 작동");
     }

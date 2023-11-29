@@ -67,7 +67,7 @@ public class StateManagement : MonoBehaviour
     public void reduceState()
     {
         //줄어드는 상태이상은 총 3개
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             if (counts[i] != 0)
             {

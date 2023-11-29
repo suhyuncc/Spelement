@@ -21,21 +21,29 @@ public class GameManager : Singleton<GameManager>
     public GameObject SkillManager;
     public GameObject SpellManager;
 
+    public int[] spell_list;
+
     private string sceneName;
     private string eventName;
 
+    [SerializeField]
     private bool isButtonClickedInIdle = false;
+    [SerializeField]
     private int memorizeClearedStage;
+
     void OnEnable()//여서부터
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)//여기다가 넣을 것
     {
         Scene _scene = SceneManager.GetActiveScene();
         if (currentState == state.idle && _scene.name == "Dialogue_Scene") //Idle scene에 도달했을 때
         {
             MapManager = GameObject.Find("MapManager");
+            //매번 Idle scene에 도달했을 때 진행도에따른 맵 세팅
+            MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
         }
         else if (currentState == state.dialogue && _scene.name == "Dialogue_Scene") // Idle scene but 대화가 선행되어야 할 때
         {
@@ -68,64 +76,66 @@ public class GameManager : Singleton<GameManager>
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }//여까지 씬 변경될 때 마다 Update 실행 전에 실행 될(start는 한번만 실행되므로)것들 실행시키는 함수임
-    public void StartBattle(int serialNo) //startbutton(Stage)에서 serialNumber 받아올 함수
+
+    //startbutton(Stage)에서 serialNumber 받아오며 battle씬으로 전환
+    public void StartBattle(int serialNo) 
     {
         currentStageSerialNumber= serialNo;
+        currentState = state.battle;
+        sceneName = "BattleScene";
+        SceneManager.LoadScene("Loading");
+        Debug.Log("Start Battle!");
     }
+
     public void GetEventName(string _eventName)
     {
         eventName = _eventName;
     }
 
+
     Scene __scene;
     private void Update()
     {
         __scene = SceneManager.GetActiveScene();
-        if (currentState == state.battle && currentStageCleared == true) //배틀중인데 적을 쓰러트림(clear)
+
+        //dialogue 씬 -> spellsetting 씬
+        if (currentState == state.idle && isButtonClickedInIdle == true && __scene.name == "Dialogue_Scene")
+        {
+            isButtonClickedInIdle = false;
+            currentState = state.spell_setting;
+            sceneName = "Spell_Custom_Scene";
+            SceneManager.LoadScene("Loading");
+        }
+
+        //spellsetting 씬 -> dialogue 씬
+        if (currentState == state.spell_setting && isButtonClickedInIdle == true && __scene.name == "Spell_Custom_Scene") 
+        {
+            isButtonClickedInIdle = false;
+            currentState = state.idle;
+            sceneName = "Dialogue_Scene";
+            SceneManager.LoadScene("Loading");
+        }
+
+        //battle 씬 -> dialogue 씬
+        if (currentState == state.battle && isButtonClickedInIdle == true && __scene.name == "BattleScene")
         {
             if (eventName == null)
                 currentState = state.idle;
             else
                 currentState = state.dialogue;
-            previousSerialNumber = currentStageSerialNumber;
-            currentStageSerialNumber = 0;
+
+            isButtonClickedInIdle = false;
             sceneName = "Dialogue_Scene";
             SceneManager.LoadScene("Loading");
-        }
-        if (currentState == state.idle && currentStageCleared == true && __scene.name == "Dialogue_Scene") //배틀 종료후 idle scene으로 돌아오자 마자 실행될 내용들
-        {
-            if (previousSerialNumber != 0 && MapManager != null)
+
+            if (currentStageCleared)//클리어시 숫자변경
             {
-                memorizeClearedStage = previousSerialNumber;
-                MapManager.GetComponent<MapManagement>().StageClear(previousSerialNumber);
+                memorizeClearedStage = currentStageSerialNumber;
+                
                 currentStageCleared = false;//스테이지 선택되지 않은 상태로
-                previousSerialNumber = 0;
             }
-        }
-        if (currentState == state.idle && currentStageSerialNumber != 0) //버튼이 클릭되어서 시리얼 넘버가 gameManager에 입력되었을 때 -> 배틀 씬으로 넘어간다
-        {
-            currentState = state.battle;
-            //sceneName = "TestingBattle"; //이거 배틀 씬 이름으로
-            sceneName = "BattleScene";
-            SceneManager.LoadScene("Loading");
-            Debug.Log("Start Battle!");
-        }
-        if (currentState == state.idle && isButtonClickedInIdle == true && __scene.name == "Dialogue_Scene") //spellsetting 버튼이 눌렸을 때
-        {
-            isButtonClickedInIdle = false;
-            currentState = state.spell_setting;
-            //지금까지 클리어 한 스테이지 정보 가지고 있을 것
-            previousSerialNumber = memorizeClearedStage;
-            sceneName = "Spell_Custom_Scene";
-            SceneManager.LoadScene("Loading");
-        }
-        if (currentState == state.spell_setting && isButtonClickedInIdle == true && __scene.name == "Spell_Custom_Scene") //spellsetting 씬에서 지도 버튼이 눌렸을 때
-        {
-            isButtonClickedInIdle = false;
-            currentState = state.idle;
-            currentStageCleared = true;
-            sceneName = "Dialogue_Scene";
-            SceneManager.LoadScene("Loading");
+
+            currentStageSerialNumber = 0;
         }
     }
 

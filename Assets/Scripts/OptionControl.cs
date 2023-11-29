@@ -11,17 +11,21 @@ public class OptionControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (optionPanel.activeSelf)
-            {
-                Time.timeScale = 1;
-                optionPanel.SetActive(false);
-            }
-            else
-            {
-                Time.timeScale = 0;
-                optionPanel.SetActive(true);
-            }
+            option();
         }
     }
 
+    public void option()
+    {
+        if (optionPanel.activeSelf)
+        {
+            Time.timeScale = 1;
+            optionPanel.SetActive(false);
+        }
+        else
+        {
+            Time.timeScale = 0;
+            optionPanel.SetActive(true);
+        }
+    }
 }
