@@ -12,7 +12,7 @@ public class N_U_SampleBattle : MonoBehaviour
     public void isDClicked()
     {
         GameObject GM = GameObject.Find("GameManager");
-        GM.GetComponent<GameManager>().GetEventName("Example");
+        GM.GetComponent<GameManager>().SetEventName("Example");
         GM.GetComponent<GameManager>().currentStageCleared = true;
 
     }
