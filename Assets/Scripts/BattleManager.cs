@@ -220,6 +220,7 @@ public class BattleManager : MonoBehaviour
 
         pageSetting(page_index);
 
+        
     }
 
     private void Update()

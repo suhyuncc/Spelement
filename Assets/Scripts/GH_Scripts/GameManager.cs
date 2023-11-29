@@ -82,6 +82,7 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("Loading");
         Debug.Log("Start Battle!");
     }
+
     public void SetEventName(string _eventName)
     {
         eventName = _eventName;

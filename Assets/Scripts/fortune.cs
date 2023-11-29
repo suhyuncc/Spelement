@@ -70,6 +70,18 @@ public class fortune : MonoBehaviour
 
         if(ran1 != ran2 &&  ran3 != ran1 && ran2 != ran3) {
 
+            //가지고 있는 운명이 있는지 중복체크
+            for (int i = 0; i < BattleManager.instance.F_list.Length; i++)
+            {
+                if (BattleManager.instance.F_list[i] == ran1
+                    || BattleManager.instance.F_list[i] == ran2
+                    || BattleManager.instance.F_list[i] == ran3)
+                {
+                    set_Fortune();
+                    return;
+                }
+            }
+
             images[0].sprite = fortune_sprites[ran1 / 6];
             images[1].sprite = fortune_sprites[ran2 / 6];
             images[2].sprite = fortune_sprites[ran3 / 6];

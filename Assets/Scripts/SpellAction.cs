@@ -80,8 +80,6 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 costs[i].SetActive(false);
             }
         }
-        
-        
     }
 
     public void OnPointerExit(PointerEventData eventData)
