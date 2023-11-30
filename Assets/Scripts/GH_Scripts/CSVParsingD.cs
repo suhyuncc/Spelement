@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +34,7 @@ public class CSVParsingD : MonoBehaviour
 
                 DialogueData dialogueData;
                 dialogueData.name = data[2];
-                dialogueData.speakerType = data[1];
+                dialogueData.speakerType = Int32.Parse(data[1]);
                 do
                 {
                     contextList.Add(data[3].ToString());
