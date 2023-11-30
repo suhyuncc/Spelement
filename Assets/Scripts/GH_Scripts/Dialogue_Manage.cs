@@ -20,6 +20,8 @@ public class Dialogue_Manage : MonoBehaviour
     private DialogueData[] dialogueData; //대화 데이터
     [SerializeField]
     private GameObject dialoguePanel; //대화panel
+    [SerializeField]
+    private GameObject dialogueImagePanel; //Image들이 저장되어있는 패널
     public void GetEventName(string _eventName) //eventName 수령받는 함수
     {
         eventName = _eventName;
@@ -29,6 +31,8 @@ public class Dialogue_Manage : MonoBehaviour
     
     private int dataIndex = 0;
     private int contextIndex = 0;
+
+    private int previousImage = 0;
 
     private bool currentTypeEnd = false;
     private string toType = null;
@@ -43,6 +47,12 @@ public class Dialogue_Manage : MonoBehaviour
             dialogueData = CSVParsingD.GetDialogue(eventName); // 화자 타입, 화자 이름, 대사를 원하는 이벤트에 있는 내용을 가져옴
             endTriangle.SetActive(false);
             nameText.text = dialogueData[0].name;
+            if (dialogueImagePanel.transform.GetChild(dialogueData[0].speakerType).gameObject.activeSelf == false)
+            {
+                Debug.Log(dialogueData[0].speakerType);
+                previousImage = dialogueData[0].speakerType;
+                dialogueImagePanel.transform.GetChild(previousImage).gameObject.SetActive(true);
+            }
             dataIndex = 0;
             contextIndex = 0;
             currentTypeEnd = false;
@@ -77,6 +87,30 @@ public class Dialogue_Manage : MonoBehaviour
                             typingText = TypingMotion();
                             endTriangle.SetActive(false);
                             toType = dialogueData[dataIndex].dialogue_Context[contextIndex];
+
+                            if (dialogueImagePanel.transform.GetChild(dialogueData[dataIndex].speakerType).gameObject.activeSelf == false)
+                            {
+                                Debug.Log(dialogueData[dataIndex].speakerType);
+                                GameObject _prevImage = dialogueImagePanel.transform.GetChild(previousImage).gameObject;
+                                Color _prevColor = _prevImage.GetComponent<Image>().color;
+                                _prevColor.a = 0.3f;
+                                _prevImage.GetComponent<Image>().color = _prevColor; //여기까지 알파값 바까주고---------
+                                previousImage = dialogueData[dataIndex].speakerType;
+                                dialogueImagePanel.transform.GetChild(previousImage).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                GameObject _prevImage = dialogueImagePanel.transform.GetChild(previousImage).gameObject;
+                                Color _prevColor = _prevImage.GetComponent<Image>().color;
+                                _prevColor.a = 0.3f;
+                                _prevImage.GetComponent<Image>().color = _prevColor;
+                                previousImage = dialogueData[dataIndex].speakerType;
+                                _prevImage = dialogueImagePanel.transform.GetChild(previousImage).gameObject;
+                                _prevColor = _prevImage.GetComponent<Image>().color;
+                                _prevColor.a = 1.0f;
+                                _prevImage.GetComponent<Image>().color = _prevColor;
+                            }
+
                             StartCoroutine(typingText); ;
                         }
                         else
