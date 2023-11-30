@@ -183,7 +183,8 @@ public class BattleManager : MonoBehaviour
         GM = GameObject.Find("GameManager"); //GameManager를 찾아서
         stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
         page_list = GM.GetComponent<GameManager>().spell_list;
-        
+
+        stage_num -= 1;
 
         //운명 id -1로 초기화
         F_index = 0;
@@ -208,12 +209,22 @@ public class BattleManager : MonoBehaviour
         Set_State_Data();
 
         //0있는 부분은 전부 스테이지 레벨로 교체
-        Player_HP_Text.text = $"{player_HP[0]} / {player_HP[0]}";
-        Monster_HP_Text.text = $"{monster_HP[0]} / {monster_HP[0]}";
+        Player_HP_Text.text = $"{player_HP[stage_num]} / {player_HP[stage_num]}";
+        Monster_HP_Text.text = $"{monster_HP[stage_num]} / {monster_HP[stage_num]}";
 
-        monster.spell_id = Monster_Spell_id[0];
-        monster.spell_cool = Monster_Spell_cool[0];
-        monster.nomal_demage = Monster_Attack[0];
+        monster.spell_id = Monster_Spell_id[stage_num];
+        monster.spell_cool = Monster_Spell_cool[stage_num];
+        monster.nomal_demage = Monster_Attack[stage_num];
+
+        //보스일때
+        if((stage_num % 3) == 2)
+        {
+            monster.is_Boss = true;
+        }
+        else
+        {
+            monster.is_Boss = false;
+        }
 
         Book.SetActive(true);
 
@@ -266,6 +277,7 @@ public class BattleManager : MonoBehaviour
 
                     if (phase == Phase.StandBy)
                     {
+                        monster.monster_active();
                         phase = Phase.Battle;
                     }
 
@@ -286,24 +298,25 @@ public class BattleManager : MonoBehaviour
                     }
                 }
                 else {
-                    monster.monster_active();
-                    phase = Phase.End;
+
                     
                 }
+
                 break;
 
             case Phase.End:
                 if (player_turn){
                     Elements.SetActive(false);
                     player_turn = !player_turn;
-                    phase = Phase.StandBy;
+                    SkillManager.instance.check_HP();
+
                 }
                 else {
                     if (monster_done)
                     {
                         player_turn = !player_turn;
                         monster_done = false;
-                        phase = Phase.StandBy;
+                        SkillManager.instance.check_HP();
                         
                     }
                 }

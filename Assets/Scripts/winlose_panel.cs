@@ -9,9 +9,15 @@ public class winlose_panel : MonoBehaviour
 
     [SerializeField]
     private Text winlose_txt;
+    [SerializeField]
+    private GameObject book;
+    [SerializeField]
+    private GameObject Ele_pool;
 
     private void OnEnable()
     {
+        book.SetActive(false);
+        Ele_pool.SetActive(false);
         Time.timeScale = 0;
         if(is_Win)
         {
@@ -28,5 +34,7 @@ public class winlose_panel : MonoBehaviour
     private void OnDisable()
     {
         Time.timeScale = 1f;
+        book.SetActive(true);
+        Ele_pool.SetActive(true);
     }
 }

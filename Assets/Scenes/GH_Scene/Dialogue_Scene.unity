@@ -2329,7 +2329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   currentStageSerialNumber: 0
-  previousSerialNumber: 0
   currentStageCleared: 0
   MapManager: {fileID: 0}
   DialogueManager: {fileID: 0}

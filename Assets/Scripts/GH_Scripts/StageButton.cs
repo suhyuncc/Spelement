@@ -11,6 +11,8 @@ public class StageButton : MonoBehaviour
     public int stageSerialNumber = 1; // 각 스테이지의 시리얼 넘버를 저장하는 변수
     [SerializeField]
     private GameObject previousStage; //이전의 stage를 저장하는 함수
+    [SerializeField]
+    private bool is_dialogue;
 
     public string dialogueEventName = null;
     
@@ -41,14 +43,15 @@ public class StageButton : MonoBehaviour
     {
         if (isCleared == false) // isCleared(클리어 여부)가 false일 때에만 실행될 것
         {
-            if (previousStage.GetComponent<StageButton>().isCleared == true) // 직전 스테이지가 클리어 되었을 때에만 실행될 것
+            GM = GameObject.Find("GameManager"); //GameManager를 찾아서
+            GM.GetComponent<GameManager>().StartBattle(stageSerialNumber); //StartBattle!
+            if (is_dialogue)
             {
-                GM = GameObject.Find("GameManager"); //GameManager를 찾아서
-                GM.GetComponent<GameManager>().StartBattle(stageSerialNumber); //StartBattle!
-                if(dialogueEventName != null) // 만약 이 스테이지 버튼의 dialogueEventName이 존재한다면  == 이 stage를 클리어하면 대화가 진행된다면
-                {
-                    GM.GetComponent<GameManager>().SetEventName(dialogueEventName);
-                }
+                GM.GetComponent<GameManager>().SetEventName(dialogueEventName);
+            }
+            else
+            {
+                GM.GetComponent<GameManager>().SetEventName(null);
             }
         }
     }

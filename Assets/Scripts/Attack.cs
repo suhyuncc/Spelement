@@ -4,25 +4,34 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
+    public int direct;
     public int speed;
     public float during_time;
 
-    private float init_x;
-    private float init_y;
+    private Transform init_trans;
 
     private void OnEnable()
     {
-        init_x = transform.position.x;
-        init_y = transform.position.y;
+        init_trans = this.transform;
         Rigidbody2D rigid = this.GetComponent<Rigidbody2D>();
-        rigid.AddForce(new Vector2(1.15f, 0.57f) * speed, ForceMode2D.Impulse);
+
+        if(direct == -1)
+        {
+            this.transform.eulerAngles = new Vector3(0, 180, -1 *transform.rotation.eulerAngles.z);
+        }
+
+        rigid.AddForce(new Vector2(1.15f, 0.57f) * speed * direct, ForceMode2D.Impulse);
         StartCoroutine("disapear");
     }
 
     private void OnDisable()
     {
-        transform.position = new Vector2(init_x,init_y);
+        transform.position = new Vector2(init_trans.position.x, init_trans.position.x);
 
+        if (direct == -1)
+        {
+            this.transform.eulerAngles = new Vector3(0, 0, -1 * transform.rotation.eulerAngles.z);
+        }
     }
 
     IEnumerator disapear()

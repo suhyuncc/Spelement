@@ -2593,6 +2593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 0.6
 --- !u!95 &193735558
@@ -2830,6 +2831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 15
   during_time: 0.5
 --- !u!50 &195277711
@@ -4178,6 +4180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 0.3
 --- !u!1 &263936111
@@ -5760,6 +5763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f5fe17ab8437b4fb0ceddcbed4da22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  is_Boss: 0
   nomal_demage: 0
   spell_id: 0
   spell_cool: 0
@@ -6909,6 +6913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 30
   during_time: 0.3
 --- !u!212 &441690492
@@ -6971,7 +6976,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 441690489}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.16763139, w: 0.9858498}
+  m_LocalRotation: {x: 0, y: 0, z: 0.16762908, w: 0.98585016}
   m_LocalPosition: {x: -5.582547, y: -3.077036, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13169,6 +13174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 1
 --- !u!114 &942896444
@@ -13980,6 +13986,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   is_Win: 0
   winlose_txt: {fileID: 2022189844}
+  book: {fileID: 2064831726}
+  Ele_pool: {fileID: 376586171}
 --- !u!1 &1015134866
 GameObject:
   m_ObjectHideFlags: 0
@@ -15560,10 +15568,10 @@ MonoBehaviour:
   - {fileID: 58689293, guid: 3ad16f4a1000f1e4186d7368abef7ddb, type: 3}
   player_turn: 0
   monster_done: 0
-  page_list: 0000000003000000070000000a0000000900000001000000120000001200000012000000
+  page_list: 0000000003000000070000000e0000000900000001000000120000001200000012000000
   spell_count: 0
   page_index: 0
-  stage_num: 0
+  stage_num: 6
   spellPages:
   - {fileID: 481201686}
   - {fileID: 612251017}
@@ -17014,6 +17022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 20
   during_time: 0.4
 --- !u!50 &1219918511
@@ -17274,6 +17283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 1
 --- !u!114 &1235364158
@@ -18023,6 +18033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 1
 --- !u!114 &1289339657
@@ -19335,6 +19346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 1
 --- !u!1 &1343796285
@@ -20176,6 +20188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 0.5
 --- !u!1 &1379550994
@@ -27881,6 +27894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ad58daab28e44a886fd5a5f197116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direct: 0
   speed: 0
   during_time: 0.3
 --- !u!1 &2017508961

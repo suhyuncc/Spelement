@@ -10,7 +10,6 @@ public class GameManager : Singleton<GameManager>
 {
     public state currentState = state.idle;//stateManagement script에서 작성된 variable type 어짜피 GameManager에서 관리하므로 건드려줄 필요 없음
     public int currentStageSerialNumber = 0;//이것도 StageButton에서 가져올거고 노가다로 스테이지마다 설정할거라 건드려줄 필요 없음
-    public int previousSerialNumber = 0;//이건 GameManager 루프나서 currentStageSerialNumber 일단 저장하려고 가져온거니까 건드려줄 필요 없음
     //시리얼 넘버(몬스터 시리얼 넘버)는 1부터 시작됨
     public bool currentStageCleared = false;//battle 승리하면 true로 바까줘요 아님 false 상태로 scene 바까줘요
 
@@ -32,6 +31,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private int[] spellList = new int[12] {1,2,3,0,0,0,0,0,0,0,0,0}; //나중에 첫 3 spell id에 맞게 수정할 것
 
+    private void Start()
+    {
+        eventName = null;
+    }
     void OnEnable()//여서부터
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -43,7 +46,7 @@ public class GameManager : Singleton<GameManager>
         if (currentState == state.idle && _scene.name == "Dialogue_Scene") //Idle scene에 도달했을 때
         {
             MapManager = GameObject.Find("MapManager");
-            //매번 Idle scene에 도달했을 때 진행도에따른 맵 세팅
+            //매번 Idle scene에 도달했을 때 진행도에 따른 맵 세팅
             MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
         }
         else if (currentState == state.dialogue && _scene.name == "Dialogue_Scene") // Idle scene but 대화가 선행되어야 할 때
@@ -114,10 +117,7 @@ public class GameManager : Singleton<GameManager>
         //battle 씬 -> dialogue 씬
         if (currentState == state.battle && isButtonClickedInIdle == true && __scene.name == "BattleScene")
         {
-            if (eventName == null)
-                currentState = state.idle;
-            else
-                currentState = state.dialogue;
+            
 
             isButtonClickedInIdle = false;
             sceneName = "Dialogue_Scene";
@@ -129,7 +129,17 @@ public class GameManager : Singleton<GameManager>
                 
                 currentStageCleared = false;//스테이지 선택되지 않은 상태로
             }
+            else
+            {
+                eventName = null;
+            }
 
+            if (eventName == null)
+                currentState = state.idle;
+            else
+                currentState = state.dialogue;
+
+            Debug.Log(eventName);
             currentStageSerialNumber = 0;
         }
     }

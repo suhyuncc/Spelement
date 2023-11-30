@@ -82,6 +82,8 @@ public class SkillManager : MonoBehaviour
     private bool M_Haste;
     private bool P_Haste;
 
+    private bool re_Spell;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -101,8 +103,8 @@ public class SkillManager : MonoBehaviour
     private void Start()
     {
         //플레이어, 몬스터 체력 받아오기
-        player_max_hp = BattleManager.instance.player_HP[0];
-        monster_max_hp = BattleManager.instance.monster_HP[0];
+        player_max_hp = BattleManager.instance.player_HP[BattleManager.instance.stage_num];
+        monster_max_hp = BattleManager.instance.monster_HP[BattleManager.instance.stage_num];
         player_current_hp = player_max_hp;
         monster_current_hp = monster_max_hp;
     }
@@ -116,17 +118,7 @@ public class SkillManager : MonoBehaviour
             isActive = false;
         }
 
-        if(player_current_hp == 0)
-        {
-            
-            winlose_panel.GetComponent<winlose_panel>().is_Win = false;
-            winlose_panel.SetActive(true);
-        }
-        else if(monster_current_hp == 0)
-        {
-            winlose_panel.GetComponent<winlose_panel>().is_Win = true;
-            winlose_panel.SetActive(true);
-        }
+        
     }
 
     IEnumerator Skill_Active(bool player_turn, int spell_id)
@@ -143,18 +135,19 @@ public class SkillManager : MonoBehaviour
                 {
                     skill_Effects[spell_id].transform.position = Player_apos.transform.position;
                 }
-                skill_Effects[spell_id].transform.eulerAngles += new Vector3(0,0,0);
-                skill_Effects[spell_id].GetComponent<Attack>().speed *= 1;
+                skill_Effects[spell_id].GetComponent<Attack>().direct = 1;
                 spell_field(spell_id);
+                skill_Effects[spell_id].SetActive(true);
             }
             else
             {
                 //몬스터가 플레이어에게
                 skill_Effects[spell_id].transform.position = Monster_apos.transform.position;
-                skill_Effects[spell_id].transform.rotation = Quaternion.Euler(0, 0, 180);
-                skill_Effects[spell_id].GetComponent<Attack>().speed *= -1;
+                skill_Effects[spell_id].GetComponent<Attack>().direct = -1;
+                skill_Effects[spell_id].SetActive(true);
+                monster_spell_field(spell_id);
             }
-            skill_Effects[spell_id].SetActive(true);
+            
 
             yield return new WaitForSeconds(0.5f);
 
@@ -163,6 +156,8 @@ public class SkillManager : MonoBehaviour
             {
                 //몬스터에게
                 M_hit_Effects[spell_id].SetActive(true);
+
+                //어스퀘이크 카메라 흔들기
                 if(spell_id == 14)
                 {
                     StartCoroutine("camera_shake");
@@ -187,6 +182,13 @@ public class SkillManager : MonoBehaviour
             {
                 //플레이어에게
                 P_hit_Effects[spell_id].SetActive(true);
+
+                //어스퀘이크 카메라 흔들기
+                if (spell_id == 14)
+                {
+                    StartCoroutine("camera_shake");
+
+                }
 
                 //피격당하는 원소의 색상으로 점멸 효과
                 if (spell_id - 3 < 0 || spell_id == 19)
@@ -313,41 +315,55 @@ public class SkillManager : MonoBehaviour
 
         spin_spell_field.SetActive(false);
 
-        //HP에 따른 운명 발동
-        Heal_fortune();
+        if (player_turn)
+        {
+            //HP에 따른 운명 발동
+            Heal_fortune();
+        }
+        
 
         //추가 행동
         Additional(spell_id);
 
-        //운명으로 인한 추가 발동
-        if (fortune_Add)
+        if (player_turn)
         {
-            fortune_Additional();
-            fortune_Add = false;
-        }
+            //운명으로 인한 추가 발동
+            if (fortune_Add)
+            {
+                fortune_Additional();
+                fortune_Add = false;
+            }
 
-        if(fortune_First || fortune_Second)
-        {
-            if (fortune_Second)
+            if (fortune_First || fortune_Second)
             {
-                StopCoroutine(coroutine);
-                isActive = true;
-                Debug.Log("10% 발동!!");
-                fortune_Second = false;
+                if (fortune_Second)
+                {
+                    StopCoroutine(coroutine);
+                    isActive = true;
+                    Debug.Log("10% 발동!!");
+                    fortune_Second = false;
+                }
+                else if (fortune_First)
+                {
+                    StopCoroutine(coroutine);
+                    isActive = true;
+                    Debug.Log("30% 발동!!");
+                    fortune_First = false;
+                }
             }
-            else if (fortune_First)
+            else
             {
-                StopCoroutine(coroutine);
-                isActive = true;
-                Debug.Log("30% 발동!!");
-                fortune_First = false;
+                fortune_Add = true;
+            }
+
+            if(monster_current_hp == 0)
+            {
+                BattleManager.instance.phase = Phase.End;
             }
         }
-        else
-        {
-            fortune_Add = true;
-        }
-        
+            
+
+        yield return new WaitForSeconds(0.2f);
 
         //배틀 페이즈 종료
         if (player_turn)
@@ -358,6 +374,7 @@ public class SkillManager : MonoBehaviour
         else
         {
             Player.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+            BattleManager.instance.phase = Phase.End;
             BattleManager.instance.monster_done = true;
         }
 
@@ -667,6 +684,7 @@ public class SkillManager : MonoBehaviour
                 }
                 break;
 
+            //바람칼날
             case 17:
                 int ran = Random.Range(1, 11);
                 if(ran > _percent && count < 4)
@@ -680,6 +698,20 @@ public class SkillManager : MonoBehaviour
                 {
                     count = 0;
                     _percent = 0;
+                }
+                break;
+            
+            //용오름
+            case 18:
+                if (count < 4)
+                {
+                    count++;
+                    StopCoroutine(coroutine);
+                    isActive = true;
+                }
+                else
+                {
+                    count = 0;
                 }
                 break;
 
@@ -737,6 +769,24 @@ public class SkillManager : MonoBehaviour
                 spin_spell_field.SetActive(true);
                 break;
             default:
+                break;
+        }
+    }
+
+    private void monster_spell_field(int spell_id)
+    {
+        switch (spell_id)
+        {
+            case 0:
+                break;
+            case 7:
+                break;
+            case 13:
+                break;
+            case 17:
+                break;
+            default:
+                skill_Effects[spell_id].SetActive(false);
                 break;
         }
     }
@@ -1229,12 +1279,10 @@ public class SkillManager : MonoBehaviour
                 player_Heal(2, 10);
                 break;
             case 13:
-                Debug.Log("작동");
                 Player_state.GetComponent<StateManagement>().counts[4] += 20;
                 Player_state.transform.GetChild(4).gameObject.SetActive(true);
                 break;
             case 15:
-                Debug.Log("작동");
                 Player_state.GetComponent<StateManagement>().counts[4] += 10;
                 Player_state.transform.GetChild(4).gameObject.SetActive(true);
                 break;
@@ -1263,6 +1311,27 @@ public class SkillManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    public void check_HP()
+    {
+
+        if (player_current_hp == 0)
+        {
+            StopCoroutine(coroutine);
+            winlose_panel.GetComponent<winlose_panel>().is_Win = false;
+            winlose_panel.SetActive(true);
+        }
+        else if (monster_current_hp == 0)
+        {
+            StopCoroutine(coroutine);
+            winlose_panel.GetComponent<winlose_panel>().is_Win = true;
+            winlose_panel.SetActive(true);
+        }
+        else
+        {
+            BattleManager.instance.phase = Phase.StandBy;
         }
     }
 

@@ -26,7 +26,7 @@ public class Demage_txt : MonoBehaviour
 
     IEnumerator Get()
     {
-        float F_time = 1f;
+        float F_time = 0.5f;
         float time = 0f;
 
         Color alpha = demage.color;
