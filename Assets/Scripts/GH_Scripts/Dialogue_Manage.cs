@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+//gh
 public class Dialogue_Manage : MonoBehaviour
 {
     public string eventName; // eventName 수령 받을 곳
@@ -22,6 +22,18 @@ public class Dialogue_Manage : MonoBehaviour
     private GameObject dialoguePanel; //대화panel
     [SerializeField]
     private GameObject dialogueImagePanel; //Image들이 저장되어있는 패널
+
+    [SerializeField]
+    private bool isPrevDialogue = false;
+    [SerializeField]
+    private int isStageNumber = 0;
+
+    public void ItIsPreviousDialogue(int num)
+    {
+        isPrevDialogue= true;
+        isStageNumber = num;
+    }
+
     public void GetEventName(string _eventName) //eventName 수령받는 함수
     {
         eventName = _eventName;
@@ -117,9 +129,16 @@ public class Dialogue_Manage : MonoBehaviour
                         {
                             currentDialogue = false;
                             GameObject gm = GameObject.Find("GameManager");
-                            gm.GetComponent<GameManager>().currentState = state.idle;
-                            gm.GetComponent<GameManager>().MapManager.GetComponent<MapManagement>().ReturnScene();
-                            dialoguePanel.SetActive(false); //Dialogue UI
+                            if (!isPrevDialogue)
+                            {
+                                gm.GetComponent<GameManager>().currentState = state.idle;
+                                gm.GetComponent<GameManager>().MapManager.GetComponent<MapManagement>().ReturnScene();
+                                dialoguePanel.SetActive(false);//Dialogue UI
+                            }
+                            else
+                            {
+                                gm.GetComponent<GameManager>().StartBattle(isStageNumber); //StartBattle!
+                            }
                         }
                     }
                 }

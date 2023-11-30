@@ -45,6 +45,7 @@ public class GameManager : Singleton<GameManager>
         Scene _scene = SceneManager.GetActiveScene();
         if (currentState == state.idle && _scene.name == "Dialogue_Scene") //Idle scene에 도달했을 때
         {
+            DialogueManager = GameObject.Find("DialogueSystem");
             MapManager = GameObject.Find("MapManager");
             //매번 Idle scene에 도달했을 때 진행도에 따른 맵 세팅
             MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);

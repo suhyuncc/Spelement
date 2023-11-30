@@ -159,6 +159,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 2
   previousStage: {fileID: 54949583}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &2748686
 MonoBehaviour:
@@ -724,7 +726,9 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 1
   previousStage: {fileID: 1284221574}
-  dialogueEventName: 
+  next_Dialogue: 0
+  prev_Dialogue: 1
+  dialogueEventName: Example
 --- !u!114 &54949585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1766,6 +1770,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 5
   previousStage: {fileID: 1118938751}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &259101631
 MonoBehaviour:
@@ -1993,6 +1999,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 11
   previousStage: {fileID: 953391059}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &332026799
 MonoBehaviour:
@@ -3586,6 +3594,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 7
   previousStage: {fileID: 1755435766}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &653280151
 MonoBehaviour:
@@ -4173,6 +4183,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 9
   previousStage: {fileID: 1636143381}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &829086631
 MonoBehaviour:
@@ -5156,6 +5168,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 10
   previousStage: {fileID: 829086628}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &953391062
 MonoBehaviour:
@@ -5437,6 +5451,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 4
   previousStage: {fileID: 1719253335}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &1118938753
 MonoBehaviour:
@@ -5949,6 +5965,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 0
   previousStage: {fileID: 0}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &1284221576
 MonoBehaviour:
@@ -7035,6 +7053,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 12
   previousStage: {fileID: 332026797}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &1512569427
 MonoBehaviour:
@@ -7326,6 +7346,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 8
   previousStage: {fileID: 653280149}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &1636143383
 MonoBehaviour:
@@ -7834,6 +7856,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 3
   previousStage: {fileID: 2748684}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &1719253337
 MonoBehaviour:
@@ -8165,6 +8189,8 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 6
   previousStage: {fileID: 259101629}
+  next_Dialogue: 0
+  prev_Dialogue: 0
   dialogueEventName: 
 --- !u!114 &1755435768
 MonoBehaviour:
@@ -8627,7 +8653,9 @@ MonoBehaviour:
   contextText: {fileID: 522865539}
   endTriangle: {fileID: 1526514621}
   dialoguePanel: {fileID: 144297420}
-  dialogueImagePanel: {fileID: 0}
+  dialogueImagePanel: {fileID: 667485759}
+  isPrevDialogue: 0
+  isStageNumber: 0
 --- !u!1 &1853890698
 GameObject:
   m_ObjectHideFlags: 0
