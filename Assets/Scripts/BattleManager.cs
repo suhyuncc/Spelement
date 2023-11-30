@@ -6,6 +6,7 @@ using System.Threading;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+//using UnityEngine.UIElements;
 
 public enum Phase
 {
@@ -19,6 +20,14 @@ public class BattleManager : MonoBehaviour
 
     public GameObject GM;
 
+    [Header("스테이지 관련")]
+    public int stage_num;
+    [SerializeField]
+    private GameObject Backgorund;
+    [SerializeField]
+    private Sprite[] Backgorund_sprites;
+
+    [Header("CSV파일")]
     [SerializeField]
     private TextAsset csvFile = null;
     [SerializeField]
@@ -26,7 +35,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private TextAsset state_info = null;
 
-
+    [Header("Spell_Info")]
     public string[] Name;
     public int[] Null;
     public int[] Air;
@@ -36,23 +45,31 @@ public class BattleManager : MonoBehaviour
     public int[] number;
     public string[] discription;
     public int[] isAttack;
-    public int[] isHeal;//나중에 고치자(왜만들었지...)
+    public int[] isHeal;
     public int[] additional_act;
 
+    [Header("State_Info")]
     public int state_id;
     public string[] State_Name;
     public string[] State_discription;
 
+    [Header("Stage_Info")]
     public int[] monster_HP;
     public int[] player_HP;
     public int[] Monster_Attack;
     public int[] Monster_Spell_id;
     public int[] Monster_Spell_cool;
 
+    [Header("스펠북 관련")]
     public Sprite[] Upper_sprites;
     public Sprite[] Down_sprites;
     public Sprite[] icons;
+    [SerializeField]
+    private GameObject[] spellPages;
+    [SerializeField]
+    private GameObject[] change_element_btns;
 
+    [Header("전투 관련")]
     public bool player_turn;
     public bool monster_done;
     private bool Re_setting;
@@ -62,16 +79,20 @@ public class BattleManager : MonoBehaviour
     public int page_index;
     private int page_max;
 
-    public int stage_num;
-
     [SerializeField]
-    private GameObject[] spellPages;
+    private GameObject Book;
+    [SerializeField]
+    private GameObject Elements;
+
+    [Header("플레이어 관련")]
     [SerializeField]
     private Slider Player_HP;
     [SerializeField]
     private Text Player_HP_Text;
     [SerializeField]
     private GameObject Player_state;
+
+    [Header("적 관련")]
     [SerializeField]
     private Slider Monster_HP;
     [SerializeField]
@@ -79,11 +100,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private GameObject Monster_state;
     [SerializeField]
-    private GameObject Book;
-    [SerializeField]
     private Monster monster;
-    [SerializeField]
-    private GameObject Elements;
+    
 
     [Header("운명관련")]
     public int[] F_list = new int[3];
@@ -208,6 +226,14 @@ public class BattleManager : MonoBehaviour
         Set_Stage_Data();
         Set_State_Data();
 
+        //스테이지에 따른 배경 전환
+        Backgorund.GetComponent<SpriteRenderer>().sprite = Backgorund_sprites[stage_num / 3];
+
+        for(int i = 0; i < (stage_num / 3); i++)
+        {
+            change_element_btns[i].SetActive(true);
+        }
+
         //0있는 부분은 전부 스테이지 레벨로 교체
         Player_HP_Text.text = $"{player_HP[stage_num]} / {player_HP[stage_num]}";
         Monster_HP_Text.text = $"{monster_HP[stage_num]} / {monster_HP[stage_num]}";
@@ -225,6 +251,8 @@ public class BattleManager : MonoBehaviour
         {
             monster.is_Boss = false;
         }
+
+        monster.monster_Setting(stage_num);
 
         Book.SetActive(true);
 

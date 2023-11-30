@@ -30,6 +30,8 @@ public class SkillManager : MonoBehaviour
     private GameObject Monster_state;
     [SerializeField]
     private GameObject Monster_apos;
+    [SerializeField]
+    private GameObject[] Monster_noaml_apos;
 
     [SerializeField]
     private GameObject[] skill_Effects;
@@ -142,7 +144,19 @@ public class SkillManager : MonoBehaviour
             else
             {
                 //몬스터가 플레이어에게
-                skill_Effects[spell_id].transform.position = Monster_apos.transform.position;
+                if (spell_id == 13)
+                {
+                    skill_Effects[spell_id].transform.position = Player_apos.transform.position;
+                }
+                else if (spell_id == 19)
+                {
+                    skill_Effects[spell_id].transform.position 
+                        = Monster_noaml_apos[BattleManager.instance.stage_num].transform.position;
+                }
+                else
+                {
+                    skill_Effects[spell_id].transform.position = Monster_apos.transform.position;
+                }
                 skill_Effects[spell_id].GetComponent<Attack>().direct = -1;
                 skill_Effects[spell_id].SetActive(true);
                 monster_spell_field(spell_id);
@@ -784,6 +798,8 @@ public class SkillManager : MonoBehaviour
             case 13:
                 break;
             case 17:
+                break;
+            case 19:
                 break;
             default:
                 skill_Effects[spell_id].SetActive(false);

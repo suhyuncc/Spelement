@@ -16,6 +16,10 @@ public class Monster : MonoBehaviour
 
     [SerializeField]
     private Text sys_text;
+    [SerializeField]
+    private Sprite[] sprites;
+    [SerializeField]
+    private GameObject[] shadows;
 
     // Start is called before the first frame update
     void Start()
@@ -38,9 +42,21 @@ public class Monster : MonoBehaviour
         {
             StartCoroutine("Monster_turn");
         }
-        
-        
+    }
 
+    public void monster_Setting(int stage_num)
+    {
+        this.GetComponent<SpriteRenderer>().sprite = sprites[stage_num];
+        shadows[stage_num].SetActive(true);
+
+        if(stage_num == 2)
+        {
+            this.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+            this.GetComponent<SpriteRenderer>().flipX = false;
+        }
     }
 
     IEnumerator turn_pass(string s)

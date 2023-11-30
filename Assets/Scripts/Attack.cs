@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour
 
     private void OnDisable()
     {
-        transform.position = new Vector2(init_trans.position.x, init_trans.position.x);
+        transform.position = new Vector2(init_trans.position.x, init_trans.position.y);
 
         if (direct == -1)
         {
