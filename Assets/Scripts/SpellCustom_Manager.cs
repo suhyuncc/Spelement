@@ -82,6 +82,7 @@ public class SpellCustom_Manager : MonoBehaviour
         instance = this;
         GM = GameObject.Find("GameManager"); //GameManager를 찾아서
         stage_lv = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
+
         Set_Spell_Data();
         if (stage_lv > 10)
         {
@@ -346,7 +347,7 @@ public class SpellCustom_Manager : MonoBehaviour
                 icons[i].Enable();
             }
 
-            if (stage_lv == 9)
+            if (stage_lv == 12)
             {
                 //불
                 for (int i = 7; i < 11; i++)
