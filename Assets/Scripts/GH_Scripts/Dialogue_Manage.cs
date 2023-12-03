@@ -28,10 +28,19 @@ public class Dialogue_Manage : MonoBehaviour
     [SerializeField]
     private int isStageNumber = 0;
 
+    private string eventNameIf2Event = null;
+    private bool isBothDialogue = false;
+
     public void ItIsPreviousDialogue(int num)
     {
         isPrevDialogue= true;
         isStageNumber = num;
+    }
+
+    public void ItIsBothDialogue(string _eventName)
+    {
+        eventNameIf2Event = _eventName;
+        isBothDialogue = true;
     }
 
     public void GetEventName(string _eventName) //eventName 수령받는 함수
@@ -137,6 +146,10 @@ public class Dialogue_Manage : MonoBehaviour
                             }
                             else
                             {
+                                if (isBothDialogue)
+                                {
+                                    gm.GetComponent<GameManager>().SetEventName(eventNameIf2Event);
+                                }
                                 gm.GetComponent<GameManager>().StartBattle(isStageNumber); //StartBattle!
                             }
                         }
