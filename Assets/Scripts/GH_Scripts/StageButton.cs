@@ -18,6 +18,8 @@ public class StageButton : MonoBehaviour
     private bool prev_Dialogue;
 
     public string dialogueEventName = null;
+
+    public string dialogueEveneNameIf2EventAppear = null;
     
     private GameObject GM; //GameManager를 할당받는 변수
     private void Update()
@@ -47,16 +49,21 @@ public class StageButton : MonoBehaviour
         if (isCleared == false) // isCleared(클리어 여부)가 false일 때에만 실행될 것
         {
             GM = GameObject.Find("GameManager"); //GameManager를 찾아서
-            if (next_Dialogue) // 전투 이후 대화가 진행될 때
-            {
-                GM.GetComponent<GameManager>().SetEventName(dialogueEventName);
-                GM.GetComponent<GameManager>().StartBattle(stageSerialNumber); //StartBattle!
-            }
-            else if(prev_Dialogue) // 전투 이전 대화가 진행이 될 때
+            
+            if(prev_Dialogue) // 전투 이전 대화가 진행이 될 때
             {
                 GM.GetComponent<GameManager>().DialogueManager.GetComponent<Dialogue_Manage>().ItIsPreviousDialogue(stageSerialNumber);
                 GM.GetComponent<GameManager>().MapManager.GetComponent<MapManagement>().SceneChanged();
                 GM.GetComponent<GameManager>().DialogueManager.GetComponent<Dialogue_Manage>().GetEventName(dialogueEventName);
+                if(next_Dialogue)
+                {
+                    GM.GetComponent<GameManager>().DialogueManager.GetComponent<Dialogue_Manage>().ItIsBothDialogue(dialogueEveneNameIf2EventAppear);
+                }
+            }
+            else if (next_Dialogue) // 전투 이후 대화가 진행될 때
+            {
+                GM.GetComponent<GameManager>().SetEventName(dialogueEventName);
+                GM.GetComponent<GameManager>().StartBattle(stageSerialNumber); //StartBattle!
             }
             else
             {
