@@ -249,7 +249,7 @@ public class SkillManager : MonoBehaviour
                 //난기류 스택이 존재 할 때
                 if (Player_state.GetComponent<StateManagement>().counts[8] != 0)
                 {
-                    monster_Hit(17, 5);
+                    monster_Hit(16, 5);
                     Player_state.GetComponent<StateManagement>().counts[8]--;
                 }
 
@@ -312,7 +312,7 @@ public class SkillManager : MonoBehaviour
                 //난기류 스택이 존재 할 때
                 if (Monster_state.GetComponent<StateManagement>().counts[8] != 0)
                 {
-                    player_Hit(17, 5);
+                    player_Hit(16, 5);
                     Monster_state.GetComponent<StateManagement>().counts[8]--;
                 }
             }
@@ -329,7 +329,7 @@ public class SkillManager : MonoBehaviour
 
         spin_spell_field.SetActive(false);
 
-        if (player_turn)
+        if (!player_turn)
         {
             //HP에 따른 운명 발동
             Heal_fortune();
@@ -412,6 +412,11 @@ public class SkillManager : MonoBehaviour
             sfx.Play();
 
             player_current_hp -= 3;
+            //오버 히트 방지
+            if (player_current_hp < 0)
+            {
+                player_current_hp = 0;
+            }
             yield return new WaitForSeconds(0.3f);
 
             //데미지 계산 반영
@@ -421,6 +426,10 @@ public class SkillManager : MonoBehaviour
             //색 복구
             Player.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
 
+            //HP에 따른 운명 발동
+            Heal_fortune();
+            //적의 HP가 0이면 전투 종료
+            check_HP();
             yield return new WaitForSeconds(0.3f);
             Book.SetActive(true);
             
@@ -438,6 +447,11 @@ public class SkillManager : MonoBehaviour
             sfx.Play();
 
             monster_current_hp -= 3;
+            //오버 히트 방지
+            if (monster_current_hp < 0)
+            {
+                monster_current_hp = 0;
+            }
             yield return new WaitForSeconds(0.3f);
 
             //데미지 계산 반영
@@ -449,8 +463,17 @@ public class SkillManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.3f);
 
+            //적의 HP가 0이면 전투 종료
+            check_HP();
+
         }
         
+    }
+
+    IEnumerator spell_16()
+    {
+        yield return new WaitForSeconds(0.2f);
+        StopCoroutine(spell_16());
     }
 
     IEnumerator Sturn()
@@ -622,7 +645,6 @@ public class SkillManager : MonoBehaviour
                 }
                 break;
 
-            //불기둥(추가 예정)
             case 10:
                 if (player_turn)
                 {
@@ -657,6 +679,10 @@ public class SkillManager : MonoBehaviour
                 }
                 break;
 
+            //어스 스트라이크(추가예정)
+            case 12:
+                break;
+
             case 13:
                 if (player_turn)
                 {
@@ -668,6 +694,10 @@ public class SkillManager : MonoBehaviour
                     Player_state.GetComponent<StateManagement>().counts[1] = 1;
                     Player_state.transform.GetChild(1).gameObject.SetActive(true);
                 }
+                break;
+
+            //어스퀘이크(추가예정)
+            case 14:
                 break;
 
             case 15:
@@ -726,6 +756,15 @@ public class SkillManager : MonoBehaviour
                 else
                 {
                     count = 0;
+                    if (player_turn)
+                    {
+                        M_hit_Effects[spell_id].SetActive(false);
+                        
+                    }
+                    else
+                    {
+                        P_hit_Effects[spell_id].SetActive(false);
+                    }
                 }
                 break;
 
@@ -809,6 +848,12 @@ public class SkillManager : MonoBehaviour
 
     private void player_Heal(int spell_id, int heal_point)
     {
+        if (BattleManager.instance.isAttack[spell_id] != 1
+            && BattleManager.instance.isHeal[spell_id] != 1)
+        {
+            heal_point = 0;
+        }
+
         player_current_hp += heal_point;
         
 
@@ -824,6 +869,12 @@ public class SkillManager : MonoBehaviour
 
     private void monster_Heal(int spell_id, int heal_point)
     {
+        if (BattleManager.instance.isAttack[spell_id] != 1
+            && BattleManager.instance.isHeal[spell_id] != 1)
+        {
+            heal_point = 0;
+        }
+
         monster_current_hp += heal_point;
         
 
@@ -866,6 +917,8 @@ public class SkillManager : MonoBehaviour
 
     private void player_Damage_txt(int spell_id, int point)
     {
+
+
         for (int i = 0; i < player_Damage_Text.Length; i++)
         {
             if (!player_Damage_Text[i].gameObject.activeSelf)
@@ -898,8 +951,16 @@ public class SkillManager : MonoBehaviour
                     }
                 }
 
+                if (spell_id == 16)
+                {
+                    player_Damage_Text[i].gameObject.GetComponent<Demage_txt>().is_16 = true;
+                    player_Damage_Text[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    player_Damage_Text[i].gameObject.SetActive(true);
+                }
                 
-                player_Damage_Text[i].gameObject.SetActive(true);
                 break;
             }
         }
@@ -913,7 +974,7 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
-            for (int i = 0; i < player_Damage_Text.Length; i++)
+        for (int i = 0; i < player_Damage_Text.Length; i++)
         {
             if (!player_Damage_Text[i].gameObject.activeSelf)
             {
@@ -945,6 +1006,8 @@ public class SkillManager : MonoBehaviour
 
     private void monster_Damage_txt(int spell_id, int point)
     {
+        
+
         for (int i = 0; i < monster_Damage_Text.Length; i++)
         {
             if (!monster_Damage_Text[i].gameObject.activeSelf)
@@ -976,8 +1039,17 @@ public class SkillManager : MonoBehaviour
                         monster_Damage_Text[i].text = $"-{point}";
                     }
                 }
+
+                if (spell_id == 16)
+                {
+                    monster_Damage_Text[i].gameObject.GetComponent<Demage_txt>().is_16 = true;
+                    monster_Damage_Text[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    monster_Damage_Text[i].gameObject.SetActive(true);
+                }
                 
-                monster_Damage_Text[i].gameObject.SetActive(true);
                 break;
             }
         }
@@ -1291,6 +1363,22 @@ public class SkillManager : MonoBehaviour
     {
         switch (fortune_num)
         {
+            case 7:
+                if (player_current_hp < 10 && F_counts[7] < 1)
+                {
+                    player_Heal(2, 30);
+                    F_counts[7]++;
+                    Damage_update();
+                }
+                break;
+            case 9:
+                if (player_current_hp < 10 && F_counts[9] < 1)
+                {
+                    player_Heal(2, 15);
+                    F_counts[9]++;
+                    Damage_update();
+                }
+                break;
             case 11:
                 player_Heal(2, 10);
                 break;
@@ -1347,7 +1435,12 @@ public class SkillManager : MonoBehaviour
         }
         else
         {
-            BattleManager.instance.phase = Phase.StandBy;
+            //End페이즈에서 HP체크가 발동했을 때만 실행
+            if(BattleManager.instance.phase == Phase.End)
+            {
+                BattleManager.instance.phase = Phase.StandBy;
+            }
+            
         }
     }
 

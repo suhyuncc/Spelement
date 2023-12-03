@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Demage_txt : MonoBehaviour
 {
+    public bool is_16;
+
     private Text demage;
 
     private Color orign_Co;
@@ -21,7 +23,16 @@ public class Demage_txt : MonoBehaviour
     {
         demage.color = orign_Co;
         this.transform.position = orign_Vec;
+        if(is_16)
+        {
+            this.transform.position = this.transform.position - new Vector3(0, 50, 0);
+        }
         StartCoroutine("Get");
+    }
+
+    private void OnDisable()
+    {
+        is_16 = false;
     }
 
     IEnumerator Get()

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 //using UnityEngine.UIElements;
@@ -68,6 +69,8 @@ public class BattleManager : MonoBehaviour
     private GameObject[] spellPages;
     [SerializeField]
     private GameObject[] change_element_btns;
+    [SerializeField]
+    private GameObject return_btn;
 
     [Header("전투 관련")]
     public bool player_turn;
@@ -204,6 +207,22 @@ public class BattleManager : MonoBehaviour
 
         stage_num -= 1;
 
+        switch (stage_num)
+        {
+            case 0:
+                EleManager.instance.player_lv = 1;
+                break;
+            default:
+                EleManager.instance.player_lv = ((stage_num - 1) / 3) + 2;
+
+                if(stage_num > 1)
+                {
+                    return_btn.SetActive(true);
+                }
+                break;
+        }
+        
+
         //운명 id -1로 초기화
         F_index = 0;
         for (int i = 0; i < F_list.Length; i++)
@@ -229,6 +248,7 @@ public class BattleManager : MonoBehaviour
         //스테이지에 따른 배경 전환
         Backgorund.GetComponent<SpriteRenderer>().sprite = Backgorund_sprites[stage_num / 3];
 
+        //스테이지에 따른 편린
         for(int i = 0; i < (stage_num / 3); i++)
         {
             change_element_btns[i].SetActive(true);
@@ -372,8 +392,12 @@ public class BattleManager : MonoBehaviour
             if (i < (page_list.Length - (4 * page_i))) {
                 spellPages[i].GetComponent<SpellAction>().spell_id = page_list[i + (4 * page_i)];
                 spellPages[i].GetComponent<SpellAction>().spellSetting();
-                spell_count++;
-                
+
+                //반추할때 spell_count가 4이상이 되는걸 방지
+                if (spell_count < 4)
+                {
+                    spell_count++;
+                }
             }
             else
             {
@@ -381,7 +405,7 @@ public class BattleManager : MonoBehaviour
             }
             
         }
-
+        
         Re_setting = false;
     }
 
@@ -403,6 +427,7 @@ public class BattleManager : MonoBehaviour
         else if(Monster_HP.value < 0.00001f)
         {
             GM.GetComponent<GameManager>().currentStageCleared = true;
+            GM.GetComponent<GameManager>().Addspell(stage_num);
         }
 
         if (GM != null)

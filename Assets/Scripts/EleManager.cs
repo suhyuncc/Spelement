@@ -44,11 +44,11 @@ public class EleManager : MonoBehaviour
                 break;
 
             case 2:
-                Earth();
+                Air();
                 break;
 
             case 3:
-                Air();
+                Earth();
                 break;
 
             case 4:
@@ -106,6 +106,7 @@ public class EleManager : MonoBehaviour
     private void Earth()
     {
         int null_index = 0;
+        int air_index = 0;
         int earth_index = 0;
 
         PoolReset();
@@ -118,6 +119,12 @@ public class EleManager : MonoBehaviour
                 Earths[earth_index].transform.position = Points[i].position;
                 Earths[earth_index].SetActive(true);
                 earth_index++;
+            }
+            else if (random >= 0.2f && random < 0.4f)
+            {
+                Airs[air_index].transform.position = Points[i].position;
+                Airs[air_index].SetActive(true);
+                air_index++;
             }
             else
             {
@@ -130,7 +137,6 @@ public class EleManager : MonoBehaviour
     private void Air()
     {
         int null_index = 0;
-        int earth_index = 0;
         int air_index = 0;
 
         PoolReset();
@@ -140,11 +146,6 @@ public class EleManager : MonoBehaviour
 
             if (random < 0.2f)
             {
-                Earths[earth_index].transform.position = Points[i].position;
-                Earths[earth_index].SetActive(true);
-                earth_index++;
-            }
-            else if (random >= 0.2f && random < 0.4f) {
                 Airs[air_index].transform.position = Points[i].position;
                 Airs[air_index].SetActive(true);
                 air_index++;

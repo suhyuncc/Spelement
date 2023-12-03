@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 //gh
 public class GameManager : Singleton<GameManager>
 {
-    public state currentState = state.idle;//stateManagement script에서 작성된 variable type 어짜피 GameManager에서 관리하므로 건드려줄 필요 없음
+    //start씬에서 시작해야 되므로 상태 start로 지정
+    public state currentState = state.start;//stateManagement script에서 작성된 variable type 어짜피 GameManager에서 관리하므로 건드려줄 필요 없음
     public int currentStageSerialNumber = 0;//이것도 StageButton에서 가져올거고 노가다로 스테이지마다 설정할거라 건드려줄 필요 없음
     //시리얼 넘버(몬스터 시리얼 넘버)는 1부터 시작됨
     public bool currentStageCleared = false;//battle 승리하면 true로 바까줘요 아님 false 상태로 scene 바까줘요
@@ -25,8 +26,7 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     private bool isButtonClickedInIdle = false;
-    [SerializeField]
-    private int memorizeClearedStage;
+    public int memorizeClearedStage;
 
     [SerializeField]
     private int[] spellList = new int[12] {1,2,3,0,0,0,0,0,0,0,0,0}; //나중에 첫 3 spell id에 맞게 수정할 것
@@ -115,11 +115,18 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene("Loading");
         }
 
+        //start 씬 -> dialogue 씬
+        if (currentState == state.start && isButtonClickedInIdle == true && __scene.name == "Start Scene")
+        {
+            isButtonClickedInIdle = false;
+            currentState = state.idle;
+            sceneName = "Dialogue_Scene";
+            SceneManager.LoadScene("Loading");
+        }
+
         //battle 씬 -> dialogue 씬
         if (currentState == state.battle && isButtonClickedInIdle == true && __scene.name == "BattleScene")
         {
-            
-
             isButtonClickedInIdle = false;
             sceneName = "Dialogue_Scene";
             SceneManager.LoadScene("Loading");
@@ -162,6 +169,57 @@ public class GameManager : Singleton<GameManager>
     public int[] GetSpellSet() // spell setting or battle scene에서 현재의 spell 배치 정보를 가져올 때 사용
     {
         return spellList;
+    }
+
+    public void Addspell(int stage_id)
+    {
+        int[] temp_list = new int[spell_list.Length + 1];
+        int spell_id;
+
+        spell_list.CopyTo(temp_list, 0);
+        //스테이지 레벨에 따른 클리어시 스펠 자동 추가
+        switch (stage_id)
+        {
+            case 0:
+                spell_id = 15;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 1:
+                spell_id = 16;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 2:
+                spell_id = 17;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 3:
+                spell_id = 11;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 4:
+                spell_id = 12;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 5:
+                spell_id = 13;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 6:
+                spell_id = 3;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 7:
+                spell_id = 4;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            case 8:
+                spell_id = 5;
+                temp_list.SetValue(spell_id, spell_list.Length);
+                break;
+            default: 
+                break;
+        }   
+        spell_list = temp_list;
     }
 
     public void IsStageFailed() // 스테이지 도전에 실패했을 때 호출받을 함수

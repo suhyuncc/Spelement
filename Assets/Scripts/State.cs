@@ -6,7 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler, IPointerClickHandler
+public class State : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
 {
     [SerializeField]
     private GameObject discrip_box;

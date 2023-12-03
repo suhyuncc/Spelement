@@ -104,6 +104,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 ready_count++;
+                Debug.Log($"불 작동");
                 break;
             }
             else
@@ -115,7 +116,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             getnull();
         }
-        Debug.Log($"불 작동");
+        
     }
 
     public void getwater()
@@ -128,6 +129,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 ready_count++;
+                Debug.Log($"물 작동");
                 break;
             }
             else
@@ -139,7 +141,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             getnull();
         }
-        Debug.Log($"물 작동");
+        
     }
 
     public void getair()
@@ -152,6 +154,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 ready_count++;
+                Debug.Log($"바람 작동");
                 break;
             }
             else
@@ -165,7 +168,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             getnull();
         }
 
-        Debug.Log($"바람 작동");
+        
     }
 
     public void getearth()
@@ -178,6 +181,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 ready_count++;
+                Debug.Log($"땅 작동");
                 break;
             }
             else
@@ -190,7 +194,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             getnull();
         }
-        Debug.Log($"땅 작동");
+        
     }
 
     public void getnull()
@@ -202,10 +206,11 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 ready_count++;
+                Debug.Log($"무 작동");
                 break;
             }
         }
-        Debug.Log($"무 작동");
+        
     }
 
     public void spellSetting() {

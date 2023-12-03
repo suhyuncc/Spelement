@@ -81,7 +81,6 @@ public class DragAndDrop : MonoBehaviour
     private void OnMouseDown()
     {
         mousePosition = Input.mousePosition - GetmousePos();
-        //GameManager.Instance.Target = this.gameObject;
     }
 
     private void OnMouseDrag()

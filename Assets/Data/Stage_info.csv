@@ -1,5 +1,5 @@
 ﻿Stage,Enemy_Hp,Enemy_Defense,Enemy_Attack,Player_Hp,Enemy_spell_id,spell_cool
-1,20,0,3,20,15,1
+1,20,0,3,20,15,2
 2,25,0,4,20,16,1
 3,30,5,6,20,36,2
 4,25,0,4,30,11,1

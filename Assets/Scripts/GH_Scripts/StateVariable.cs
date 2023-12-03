@@ -8,7 +8,8 @@ public enum state //gameManager에서 사용함 건들 ㄴㄴ(state 추가는 해도 댐)
     dialogue,
     battle,
     spell_setting,
-    main
+    main,
+    start
 }
 public class StateVariable : MonoBehaviour
 {

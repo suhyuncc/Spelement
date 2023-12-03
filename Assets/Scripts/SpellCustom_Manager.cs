@@ -13,7 +13,10 @@ public class SpellCustom_Manager : MonoBehaviour
 
     [SerializeField]
     private TextAsset csvFile = null;
-
+    [SerializeField]
+    private AudioSource sfx_Audio;
+    [SerializeField]
+    private AudioClip[] sfx_clips;
 
     public Button next;
 
@@ -81,7 +84,7 @@ public class SpellCustom_Manager : MonoBehaviour
         cur_id = -1;
         instance = this;
         GM = GameObject.Find("GameManager"); //GameManager를 찾아서
-        stage_lv = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
+        stage_lv = GM.GetComponent<GameManager>().memorizeClearedStage; //스테이지 넘버 가져오기
 
         Set_Spell_Data();
         if (stage_lv > 10)
@@ -161,6 +164,9 @@ public class SpellCustom_Manager : MonoBehaviour
         next_page.GetComponent<SpriteRenderer>().flipX = false;
         next_page.SetActive(true);
         Book.SetActive(false);
+
+        //0번은 책넘기기
+        SFX_play(0);
     }
 
     public void backBtn()
@@ -170,6 +176,9 @@ public class SpellCustom_Manager : MonoBehaviour
         next_page.GetComponent<SpriteRenderer>().flipX = true;
         next_page.SetActive(true);
         Book.SetActive(false);
+
+        //0번은 책넘기기
+        SFX_play(0);
     }
 
     public void resetBtn()
@@ -244,6 +253,12 @@ public class SpellCustom_Manager : MonoBehaviour
             }
 
         }
+    }
+
+    private void SFX_play(int sfx_id)
+    {
+        sfx_Audio.clip = sfx_clips[sfx_id];
+        sfx_Audio.Play();
     }
 
     public void GoBackToIdleScene()
