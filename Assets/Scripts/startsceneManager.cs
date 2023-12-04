@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class startsceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Startbtn()
     {
         GameObject gm = GameObject.Find("GameManager");
