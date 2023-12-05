@@ -1119,17 +1119,26 @@ public class SkillManager : MonoBehaviour
         //방어도가 존재 할 때
         else if (Player_state.GetComponent<StateManagement>().counts[4] != 0)
         {
-            if((damage - Player_state.GetComponent<StateManagement>().counts[4]) < 0)
+            //어스스트라이크나 어스퀘이크일때
+            if(spell_id == 12 || spell_id == 14)
             {
-                Player_state.GetComponent<StateManagement>().counts[4] -= damage;
-                damage = 0;
-                
+                Player_state.GetComponent<StateManagement>().counts[4] = 0;
             }
             else
             {
-                damage = damage - Player_state.GetComponent<StateManagement>().counts[4];
-                Player_state.GetComponent<StateManagement>().counts[4] = 0;
+                if ((damage - Player_state.GetComponent<StateManagement>().counts[4]) < 0)
+                {
+                    Player_state.GetComponent<StateManagement>().counts[4] -= damage;
+                    damage = 0;
+
+                }
+                else
+                {
+                    damage = damage - Player_state.GetComponent<StateManagement>().counts[4];
+                    Player_state.GetComponent<StateManagement>().counts[4] = 0;
+                }
             }
+            
         }
 
         //운명 계산
@@ -1262,16 +1271,24 @@ public class SkillManager : MonoBehaviour
         //방어도가 존재 할 때
         else if (Monster_state.GetComponent<StateManagement>().counts[4] != 0)
         {
-            if ((damage - Monster_state.GetComponent<StateManagement>().counts[4]) < 0)
+            if (spell_id == 12 || spell_id == 14)
             {
-                damage = 0;
-                Monster_state.GetComponent<StateManagement>().counts[4] -= damage;
+                Monster_state.GetComponent<StateManagement>().counts[4] = 0;
             }
             else
             {
-                damage = damage - Monster_state.GetComponent<StateManagement>().counts[4];
-                Monster_state.GetComponent<StateManagement>().counts[4] = 0;
+                if ((damage - Monster_state.GetComponent<StateManagement>().counts[4]) < 0)
+                {
+                    Monster_state.GetComponent<StateManagement>().counts[4] -= damage;
+                    damage = 0;
+                }
+                else
+                {
+                    damage = damage - Monster_state.GetComponent<StateManagement>().counts[4];
+                    Monster_state.GetComponent<StateManagement>().counts[4] = 0;
+                }
             }
+            
         }
 
         return damage;
