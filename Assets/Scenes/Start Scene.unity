@@ -2104,6 +2104,13 @@ MonoBehaviour:
   isButtonClickedInIdle: 0
   memorizeClearedStage: 0
   spellList: 010000000200000003000000000000000000000000000000000000000000000000000000000000000000000000000000
+  masterVolume: 100
+  backgroundVolume: 100
+  effectVolume: 100
+  masterToggle: 0
+  backgroundToggle: 0
+  effectToggle: 0
+  option: {fileID: 0}
 --- !u!4 &592846655
 Transform:
   m_ObjectHideFlags: 0
@@ -2937,7 +2944,7 @@ GameObject:
   - component: {fileID: 796922757}
   m_Layer: 5
   m_Name: Option
-  m_TagString: Untagged
+  m_TagString: Options
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2980,13 +2987,14 @@ MonoBehaviour:
   Mixer: {fileID: 24100000, guid: 8b3f2a7905bd61e4b8d2a2c3686dfcdd, type: 2}
   Master: {fileID: 205193090}
   BGM: {fileID: 521448702}
-  Effect: {fileID: 2139359544}
+  EffectV: {fileID: 2139359544}
   masterT: {fileID: 2074696826}
   BGMT: {fileID: 19905730}
   EffectT: {fileID: 946290750}
   masterText: {fileID: 621848409}
   BGMText: {fileID: 2014462547}
   EffectText: {fileID: 948124305}
+  gm: {fileID: 0}
 --- !u!114 &796922758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4245,7 +4253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

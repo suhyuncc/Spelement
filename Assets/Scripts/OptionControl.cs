@@ -14,6 +14,11 @@ public class OptionControl : MonoBehaviour
             option();
         }
     }
+    
+    public GameObject GetOptionPanel() 
+    {
+        return optionPanel;
+    }
 
     public void option()
     {

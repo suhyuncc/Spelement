@@ -1,6 +1,7 @@
 using Singleton;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,7 +45,7 @@ public class GameManager : Singleton<GameManager>
     private bool backgroundToggle = false;
     [SerializeField]
     private bool effectToggle = false;
-
+    [SerializeField]
     private GameObject option;
 
     private void Start()
@@ -63,10 +64,13 @@ public class GameManager : Singleton<GameManager>
         {
             DialogueManager = GameObject.Find("DialogueSystem");
             MapManager = GameObject.Find("MapManager");
-            option = GameObject.Find("Option");
-            option.SetActive(true);
-            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
-            option.SetActive(false);
+            option = GameObject.Find("OptionControl").GetComponent<OptionControl>().GetOptionPanel();
+            if (option != null)
+            {
+                option.SetActive(true);
+                option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+                option.SetActive(false);
+            }
             //매번 Idle scene에 도달했을 때 진행도에 따른 맵 세팅
             MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
         }
@@ -74,9 +78,9 @@ public class GameManager : Singleton<GameManager>
         {
             DialogueManager = GameObject.Find("DialogueSystem");
             MapManager = GameObject.Find("MapManager");
-            option = GameObject.Find("Option");
+            option = GameObject.Find("OptionControl").GetComponent<OptionControl>().GetOptionPanel();
             option.SetActive(true);
-            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
             option.SetActive(false);
             MapManager.GetComponent<MapManagement>().SceneChanged();
             DialogueManager.GetComponent<Dialogue_Manage>().GetEventName(eventName);
@@ -94,16 +98,23 @@ public class GameManager : Singleton<GameManager>
         else if (currentState == state.spell_setting && _scene.name == "Spell_Custom_Scene") // Spellsettingscene에 도달했을 때
         {
             SpellManager = GameObject.Find("SpellCustom_Manager");
-            option = GameObject.Find("Option");
+            option = GameObject.Find("OptionControl").GetComponent<OptionControl>().GetOptionPanel();
             option.SetActive(true);
-            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
             option.SetActive(false);
         }
         else if (_scene.name == "BattleScene")
         {
-            option = GameObject.Find("Option");
+            option = GameObject.Find("OptionControl").GetComponent<OptionControl>().GetOptionPanel();
             option.SetActive(true);
-            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.SetActive(false);
+        }
+        else if(_scene.name == "StartScene")
+        {
+            option = GameObject.Find("OptionControl").GetComponent<OptionControl>().GetOptionPanel();
+            option.SetActive(true);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
             option.SetActive(false);
         }
     }

@@ -1487,7 +1487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &144297421
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2465,7 +2465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &396373620
 Transform:
   m_ObjectHideFlags: 0
@@ -2504,6 +2504,13 @@ MonoBehaviour:
   isButtonClickedInIdle: 0
   memorizeClearedStage: 0
   spellList: 010000000200000003000000000000000000000000000000000000000000000000000000000000000000000000000000
+  masterVolume: 100
+  backgroundVolume: 100
+  effectVolume: 100
+  masterToggle: 0
+  backgroundToggle: 0
+  effectToggle: 0
+  option: {fileID: 0}
 --- !u!1 &402254633
 GameObject:
   m_ObjectHideFlags: 0
@@ -3258,7 +3265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &522616505
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8865,7 +8872,7 @@ GameObject:
   - component: {fileID: 1724516309}
   m_Layer: 5
   m_Name: Option
-  m_TagString: Untagged
+  m_TagString: Options
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8885,13 +8892,14 @@ MonoBehaviour:
   Mixer: {fileID: 24100000, guid: 8b3f2a7905bd61e4b8d2a2c3686dfcdd, type: 2}
   Master: {fileID: 850374953}
   BGM: {fileID: 31657776}
-  Effect: {fileID: 7607300}
+  EffectV: {fileID: 7607300}
   masterT: {fileID: 384600944}
   BGMT: {fileID: 885148439}
   EffectT: {fileID: 2092277686}
   masterText: {fileID: 13610548}
   BGMText: {fileID: 1958704562}
   EffectText: {fileID: 1196740027}
+  gm: {fileID: 0}
 --- !u!114 &1724516310
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1234,7 +1234,7 @@ GameObject:
   - component: {fileID: 112914922}
   m_Layer: 5
   m_Name: Option
-  m_TagString: Untagged
+  m_TagString: Options
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1279,13 +1279,14 @@ MonoBehaviour:
   Mixer: {fileID: 24100000, guid: 8b3f2a7905bd61e4b8d2a2c3686dfcdd, type: 2}
   Master: {fileID: 903749587}
   BGM: {fileID: 1235098016}
-  Effect: {fileID: 672788828}
+  EffectV: {fileID: 672788828}
   masterT: {fileID: 1569518341}
   BGMT: {fileID: 630816382}
   EffectT: {fileID: 150475554}
   masterText: {fileID: 548100843}
   BGMText: {fileID: 306931779}
   EffectText: {fileID: 1785729649}
+  gm: {fileID: 0}
 --- !u!114 &112914923
 MonoBehaviour:
   m_ObjectHideFlags: 0

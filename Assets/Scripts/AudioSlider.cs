@@ -21,13 +21,10 @@ public class AudioSlider : MonoBehaviour
     [SerializeField]
     private GameObject gm;
 
-    private void Start()
-    {
-        gm = GameObject.Find("GameManager");
-    }
 
-    public void OnSceneChangedSettingAudio(float MasterA, float BGMA, float EffectA, bool ToggleM, bool ToggleB, bool ToggleE)
+    public void OnSceneChangedSettingAudio(GameObject GM,float MasterA, float BGMA, float EffectA, bool ToggleM, bool ToggleB, bool ToggleE)
     {
+        gm = GM;
         Master.value = MasterA;
         BGM.value = BGMA;
         EffectV.value = EffectA;
