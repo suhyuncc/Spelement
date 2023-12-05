@@ -10,13 +10,34 @@ public class AudioSlider : MonoBehaviour
     [SerializeField] private AudioMixer Mixer;
     [SerializeField] private Slider Master;
     [SerializeField] private Slider BGM;
-    [SerializeField] private Slider Effect;
+    [SerializeField] private Slider EffectV;
     [SerializeField] private Toggle masterT;
     [SerializeField] private Toggle BGMT;
     [SerializeField] private Toggle EffectT;
     [SerializeField] private TMP_Text masterText;
     [SerializeField] private TMP_Text BGMText;
     [SerializeField] private TMP_Text EffectText;
+
+    [SerializeField]
+    private GameObject gm;
+
+    private void Start()
+    {
+        gm = GameObject.Find("GameManager");
+    }
+
+    public void OnSceneChangedSettingAudio(float MasterA, float BGMA, float EffectA, bool ToggleM, bool ToggleB, bool ToggleE)
+    {
+        Master.value = MasterA;
+        BGM.value = BGMA;
+        EffectV.value = EffectA;
+        masterT.isOn = ToggleM;
+        BGMT.isOn = ToggleB;
+        EffectT.isOn = ToggleE;
+        SetMasterVolume();
+        SetBGMVolume();
+        SetEffectVolume();
+    }
 
     public void SetMasterVolume ()
     {
@@ -35,6 +56,7 @@ public class AudioSlider : MonoBehaviour
                 Mixer.SetFloat("Master", sound);
             }
         }
+        gm.GetComponent<GameManager>().SetVolM(Master.value, masterT.isOn);
     }
 
     public void SetBGMVolume()
@@ -54,12 +76,13 @@ public class AudioSlider : MonoBehaviour
                 Mixer.SetFloat("Background", sound);
             }
         }
+        gm.GetComponent<GameManager>().SetVolB(BGM.value, BGMT.isOn);
     }
 
     public void SetEffectVolume()
     {
 
-        float sound = Effect.value;
+        float sound = EffectV.value;
         EffectText.text = (int)sound + "%";
         if (EffectT.isOn)
         {
@@ -74,6 +97,7 @@ public class AudioSlider : MonoBehaviour
                 Mixer.SetFloat("Effect", sound);
             }
         }
+        gm.GetComponent<GameManager>().SetVolE(EffectV.value, EffectT.isOn);
     }
 
     public void MasterToggleClicked()
@@ -94,6 +118,7 @@ public class AudioSlider : MonoBehaviour
                 Mixer.SetFloat("Master", sound);
             }
         }
+        gm.GetComponent<GameManager>().SetVolM(Master.value, masterT.isOn);
     }
     public void BackToggleClicked()
     {
@@ -113,6 +138,7 @@ public class AudioSlider : MonoBehaviour
                 Mixer.SetFloat("Background", sound);
             }
         }
+        gm.GetComponent<GameManager>().SetVolM(Master.value, masterT.isOn);
     }
     public void EffectToggleClicked()
     {
@@ -124,7 +150,7 @@ public class AudioSlider : MonoBehaviour
         else
         {
             EffectText.color = new Color(EffectText.color.r, EffectText.color.g, EffectText.color.b, 1f);
-            float sound = Effect.value * 4 / 10;
+            float sound = EffectV.value * 4 / 10;
             if (sound == 0) Mixer.SetFloat("Effect", -80);
             else
             {
@@ -132,5 +158,6 @@ public class AudioSlider : MonoBehaviour
                 Mixer.SetFloat("Effect", sound);
             }
         }
+        gm.GetComponent<GameManager>().SetVolE(EffectV.value, EffectT.isOn);
     }
 }

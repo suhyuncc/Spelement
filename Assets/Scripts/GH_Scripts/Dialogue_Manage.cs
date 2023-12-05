@@ -27,6 +27,8 @@ public class Dialogue_Manage : MonoBehaviour
     private bool isPrevDialogue = false;
     [SerializeField]
     private int isStageNumber = 0;
+    [SerializeField]
+    private GameObject background;
 
     private string eventNameIf2Event = null;
     private bool isBothDialogue = false;
@@ -59,12 +61,17 @@ public class Dialogue_Manage : MonoBehaviour
     private string toType = null;
 
     private IEnumerator typingText;
+
+    private GameObject gm;
     private void Update()
     {
+
         if(isDialogue)
         {
             isDialogue = false;
             currentDialogue= true;
+            gm = GameObject.Find("GameManager");
+            background.transform.GetChild(gm.GetComponent<GameManager>().GetStageNumber()).gameObject.SetActive(true);
             dialogueData = CSVParsingD.GetDialogue(eventName); // 화자 타입, 화자 이름, 대사를 원하는 이벤트에 있는 내용을 가져옴
             endTriangle.SetActive(false);
             nameText.text = dialogueData[0].name;
@@ -137,7 +144,7 @@ public class Dialogue_Manage : MonoBehaviour
                         else
                         {
                             currentDialogue = false;
-                            GameObject gm = GameObject.Find("GameManager");
+                            
                             if (!isPrevDialogue)
                             {
                                 gm.GetComponent<GameManager>().currentState = state.idle;

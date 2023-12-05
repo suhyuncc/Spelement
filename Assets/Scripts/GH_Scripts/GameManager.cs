@@ -30,6 +30,22 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     private int[] spellList = new int[12] {1,2,3,0,0,0,0,0,0,0,0,0}; //나중에 첫 3 spell id에 맞게 수정할 것
+    
+    //for sound
+    [SerializeField]
+    private float masterVolume = 100f;
+    [SerializeField]
+    private float backgroundVolume = 100f;
+    [SerializeField]
+    private float effectVolume = 100f;
+    [SerializeField]
+    private bool masterToggle = false;
+    [SerializeField]
+    private bool backgroundToggle = false;
+    [SerializeField]
+    private bool effectToggle = false;
+
+    private GameObject option;
 
     private void Start()
     {
@@ -47,6 +63,10 @@ public class GameManager : Singleton<GameManager>
         {
             DialogueManager = GameObject.Find("DialogueSystem");
             MapManager = GameObject.Find("MapManager");
+            option = GameObject.Find("Option");
+            option.SetActive(true);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.SetActive(false);
             //매번 Idle scene에 도달했을 때 진행도에 따른 맵 세팅
             MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
         }
@@ -54,6 +74,10 @@ public class GameManager : Singleton<GameManager>
         {
             DialogueManager = GameObject.Find("DialogueSystem");
             MapManager = GameObject.Find("MapManager");
+            option = GameObject.Find("Option");
+            option.SetActive(true);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.SetActive(false);
             MapManager.GetComponent<MapManagement>().SceneChanged();
             DialogueManager.GetComponent<Dialogue_Manage>().GetEventName(eventName);
             eventName = null;
@@ -70,6 +94,17 @@ public class GameManager : Singleton<GameManager>
         else if (currentState == state.spell_setting && _scene.name == "Spell_Custom_Scene") // Spellsettingscene에 도달했을 때
         {
             SpellManager = GameObject.Find("SpellCustom_Manager");
+            option = GameObject.Find("Option");
+            option.SetActive(true);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.SetActive(false);
+        }
+        else if (_scene.name == "BattleScene")
+        {
+            option = GameObject.Find("Option");
+            option.SetActive(true);
+            option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
+            option.SetActive(false);
         }
     }
     void OnDisable()
@@ -228,5 +263,25 @@ public class GameManager : Singleton<GameManager>
         currentStageSerialNumber *= 3; // ex> 위에서변환한 1을 3으로 변환 --> 3stage까지 클리어 한 것으로 처리
         eventName = null; // 도전한 스테이지에 대화가 있었을 수 있으므로
         currentStageCleared = true; // scene을 Idle Scene으로 변환할 수 있도록
+    }
+    public int GetStageNumber()
+    {
+        if (memorizeClearedStage >= 12) memorizeClearedStage -= 2;
+        return memorizeClearedStage/3; //배경화면 띄울 때 쓸 거
+    }
+    public void SetVolM(float vol, bool tog)
+    {
+        masterVolume = vol;
+        masterToggle= tog;
+    }
+    public void SetVolB(float vol, bool tog)
+    {
+        backgroundVolume = vol;
+        backgroundToggle = tog;
+    }
+    public void SetVolE(float vol, bool tog)
+    {
+        effectVolume = vol;
+        effectToggle = tog;
     }
 }
