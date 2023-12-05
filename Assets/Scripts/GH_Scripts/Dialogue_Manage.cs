@@ -178,7 +178,7 @@ public class Dialogue_Manage : MonoBehaviour
         for(int i = 0; i < toType.Length; i++)
         {
             contextText.text+= toType[i];
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.15f);
         }
         currentTypeEnd = true;
         endTriangle.SetActive(true);
