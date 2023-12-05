@@ -118,7 +118,7 @@ public class Dialogue_Manage : MonoBehaviour
 
                             if (dialogueImagePanel.transform.GetChild(dialogueData[dataIndex].speakerType).gameObject.activeSelf == false)
                             {
-                                Debug.Log(dialogueData[dataIndex].speakerType);
+                                //Debug.Log(dialogueData[dataIndex].speakerType);
                                 GameObject _prevImage = dialogueImagePanel.transform.GetChild(previousImage).gameObject;
                                 Color _prevColor = _prevImage.GetComponent<Image>().color;
                                 _prevColor.a = 0.3f;
