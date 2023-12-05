@@ -101,6 +101,8 @@ public class DragAndDrop : MonoBehaviour
             transform.position = InitPosition;
         }
 
+        SkillManager.instance.SFX_On(0, 1);
+
     }
 
     private void OnTriggerExit(Collider other)

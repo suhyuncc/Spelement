@@ -34865,6 +34865,10 @@ MonoBehaviour:
   - {fileID: 372968403}
   - {fileID: 236797893}
   - {fileID: 1284183847}
+  sfx_Manager: {fileID: 0}
+  UI_SFX:
+  - {fileID: 8300000, guid: 3fb33a758bc7a96478c452545103ef34, type: 3}
+  - {fileID: 8300000, guid: c2afcd84d4dca9441bc5111b18ef4aae, type: 3}
   hit_SFX:
   - {fileID: 8300000, guid: 075b678b67c4bc64a99a2fef9b60e602, type: 3}
   - {fileID: 8300000, guid: 075b678b67c4bc64a99a2fef9b60e602, type: 3}

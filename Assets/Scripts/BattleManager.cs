@@ -201,9 +201,9 @@ public class BattleManager : MonoBehaviour
         //씬 시작시 초기세팅
         instance = this;
 
-        //GM = GameObject.Find("GameManager"); //GameManager를 찾아서
-        //stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
-        //page_list = GM.GetComponent<GameManager>().spell_list;
+        GM = GameObject.Find("GameManager"); //GameManager를 찾아서
+        stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
+        page_list = GM.GetComponent<GameManager>().spell_list;
 
         stage_num -= 1;
 

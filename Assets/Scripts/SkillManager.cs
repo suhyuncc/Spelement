@@ -9,6 +9,8 @@ public class SkillManager : MonoBehaviour
 
     [SerializeField]
     private Camera camera;
+
+    [Header("플레이어 관련")]
     [SerializeField]
     private GameObject Player;
     [SerializeField]
@@ -20,6 +22,7 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private GameObject Player_apos;
 
+    [Header("적 관련")]
     [SerializeField]
     private GameObject Monster;
     [SerializeField]
@@ -33,14 +36,22 @@ public class SkillManager : MonoBehaviour
     [SerializeField]
     private GameObject[] Monster_noaml_apos;
 
+    [Header("스킬 효과")]
     [SerializeField]
     private GameObject[] skill_Effects;
     [SerializeField]
     private GameObject[] P_hit_Effects;
     [SerializeField]
     private GameObject[] M_hit_Effects;
+
+    [Header("효과음")]
+    public AudioSource sfx_Manager;
+    [SerializeField]
+    private AudioClip[] UI_SFX;
     [SerializeField]
     private AudioClip[] hit_SFX;
+
+    [Header("전투 관련")]
     [SerializeField]
     private GameObject Book;
     [SerializeField]
@@ -51,7 +62,7 @@ public class SkillManager : MonoBehaviour
     private Color[] colors = {new Color(0.75f,0.75f,0.75f), new Color(0.75f, 0.75f, 1f),
         new Color(1, 0.75f, 0.75f), new Color(1f, 0.875f, 0.75f), new Color(0.875f, 1f, 0.75f) };
 
-    private AudioSource sfx;
+    
 
     public bool isActive;
     public bool isAttack;
@@ -84,13 +95,11 @@ public class SkillManager : MonoBehaviour
     private bool M_Haste;
     private bool P_Haste;
 
-    private bool re_Spell;
-
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
-        sfx = this.GetComponent<AudioSource>();
+        sfx_Manager = this.GetComponent<AudioSource>();
         _percent = 0;
 
         for(int i = 0; i < F_counts.Length; i++)
@@ -189,8 +198,8 @@ public class SkillManager : MonoBehaviour
                 }
                 
 
-                sfx.clip = hit_SFX[0];
-                sfx.Play();
+                sfx_Manager.clip = hit_SFX[0];
+                sfx_Manager.Play();
             }
             else
             {
@@ -408,8 +417,8 @@ public class SkillManager : MonoBehaviour
 
             player_Damage_txt(spell_id,3);
 
-            sfx.clip = hit_SFX[0];
-            sfx.Play();
+            sfx_Manager.clip = hit_SFX[0];
+            sfx_Manager.Play();
 
             player_current_hp -= 3;
             //오버 히트 방지
@@ -443,8 +452,8 @@ public class SkillManager : MonoBehaviour
 
             monster_Damage_txt(spell_id,3);
 
-            sfx.clip = hit_SFX[0];
-            sfx.Play();
+            sfx_Manager.clip = hit_SFX[0];
+            sfx_Manager.Play();
 
             monster_current_hp -= 3;
             //오버 히트 방지
@@ -518,6 +527,23 @@ public class SkillManager : MonoBehaviour
         StopCoroutine("Sturn");
     }
 
+    public void SFX_On(int subject_id, int index) 
+    {
+        //subject_id 0은 UI_SFX, 1은 hit_SFX
+        switch (subject_id)
+        {
+            case 0:
+                sfx_Manager.clip = UI_SFX[index];
+                sfx_Manager.Play();
+                break; 
+            case 1:
+                sfx_Manager.clip = hit_SFX[index];
+                sfx_Manager.Play();
+                break;
+            default: 
+                break;
+        }
+    }
     private void Additional(int spell_id)
     {
         switch(spell_id)
