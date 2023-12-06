@@ -160,8 +160,8 @@ MonoBehaviour:
   stageSerialNumber: 2
   previousStage: {fileID: 54949583}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: Wind_2
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &2748686
 MonoBehaviour:
@@ -463,7 +463,7 @@ MonoBehaviour:
   previousStage: {fileID: 1284221574}
   next_Dialogue: 0
   prev_Dialogue: 1
-  dialogueEventName: Example
+  dialogueEventName: Wind_1
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &54949585
 MonoBehaviour:
@@ -1246,10 +1246,10 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 13
   previousStage: {fileID: 1512569424}
-  next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
-  dialogueEveneNameIf2EventAppear: 
+  next_Dialogue: 1
+  prev_Dialogue: 1
+  dialogueEventName: first_king_1
+  dialogueEveneNameIf2EventAppear: first_king_end
 --- !u!114 &160739758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,8 +1691,8 @@ MonoBehaviour:
   stageSerialNumber: 5
   previousStage: {fileID: 1118938751}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: Earth_2
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &259101631
 MonoBehaviour:
@@ -2068,8 +2068,8 @@ MonoBehaviour:
   stageSerialNumber: 11
   previousStage: {fileID: 953391059}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: fire_2
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &332026799
 MonoBehaviour:
@@ -4021,8 +4021,8 @@ MonoBehaviour:
   stageSerialNumber: 7
   previousStage: {fileID: 1755435766}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: Water_1
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &653280151
 MonoBehaviour:
@@ -4511,10 +4511,10 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 9
   previousStage: {fileID: 1636143381}
-  next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
-  dialogueEveneNameIf2EventAppear: 
+  next_Dialogue: 1
+  prev_Dialogue: 1
+  dialogueEventName: Water_3
+  dialogueEveneNameIf2EventAppear: Water_end
 --- !u!114 &829086631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5085,8 +5085,8 @@ MonoBehaviour:
   stageSerialNumber: 10
   previousStage: {fileID: 829086628}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: fire_1
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &953391062
 MonoBehaviour:
@@ -5519,8 +5519,8 @@ MonoBehaviour:
   stageSerialNumber: 4
   previousStage: {fileID: 1719253335}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: Earth_1
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &1118938753
 MonoBehaviour:
@@ -7260,10 +7260,10 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 12
   previousStage: {fileID: 332026797}
-  next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
-  dialogueEveneNameIf2EventAppear: 
+  next_Dialogue: 1
+  prev_Dialogue: 1
+  dialogueEventName: fire_3
+  dialogueEveneNameIf2EventAppear: fire_end
 --- !u!114 &1512569427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7648,8 +7648,8 @@ MonoBehaviour:
   stageSerialNumber: 8
   previousStage: {fileID: 653280149}
   next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
+  prev_Dialogue: 1
+  dialogueEventName: Water_2
   dialogueEveneNameIf2EventAppear: 
 --- !u!114 &1636143383
 MonoBehaviour:
@@ -8385,10 +8385,10 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 3
   previousStage: {fileID: 2748684}
-  next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
-  dialogueEveneNameIf2EventAppear: 
+  next_Dialogue: 1
+  prev_Dialogue: 1
+  dialogueEventName: Wind_3
+  dialogueEveneNameIf2EventAppear: Wind_end
 --- !u!114 &1719253337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8773,10 +8773,10 @@ MonoBehaviour:
   isChecked: 0
   stageSerialNumber: 6
   previousStage: {fileID: 259101629}
-  next_Dialogue: 0
-  prev_Dialogue: 0
-  dialogueEventName: 
-  dialogueEveneNameIf2EventAppear: 
+  next_Dialogue: 1
+  prev_Dialogue: 1
+  dialogueEventName: Earth_3
+  dialogueEveneNameIf2EventAppear: Earth_end
 --- !u!114 &1755435768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9256,7 +9256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f827cc851148c84498aaf721fb175731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  csvFile: {fileID: 4900000, guid: 069bb41cecc04d046b68ef785bd73949, type: 3}
+  csvFile: {fileID: 4900000, guid: 5064993b670704f4bb15aee975a508bc, type: 3}
 --- !u!114 &1836535292
 MonoBehaviour:
   m_ObjectHideFlags: 0

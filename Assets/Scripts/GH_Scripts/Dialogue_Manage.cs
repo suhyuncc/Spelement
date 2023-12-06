@@ -68,6 +68,13 @@ public class Dialogue_Manage : MonoBehaviour
 
         if(isDialogue)
         {
+            for(int t = 0; t< 15; t++)
+            {
+                if (dialogueImagePanel.transform.GetChild(t).gameObject.activeSelf)
+                {
+                    dialogueImagePanel.transform.GetChild(t).gameObject.SetActive(false);
+                }
+            }
             isDialogue = false;
             currentDialogue= true;
             gm = GameObject.Find("GameManager");

@@ -43,7 +43,7 @@ public class CSVParsingD : MonoBehaviour
                         data = row[i].Split(new char[] { ',' });
                     }
                     else break;
-                } while (data[1] == "" && data[0] != "end");
+                } while (i < row.Length && data[1] == "" && data[0] != "end");
 
                 dialogueData.dialogue_Context= contextList.ToArray();
                 dataList.Add(dialogueData);

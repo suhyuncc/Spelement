@@ -82,6 +82,7 @@ public class GameManager : Singleton<GameManager>
             option.SetActive(true);
             option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
             option.SetActive(false);
+            MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
             MapManager.GetComponent<MapManagement>().SceneChanged();
             DialogueManager.GetComponent<Dialogue_Manage>().GetEventName(eventName);
             eventName = null;
