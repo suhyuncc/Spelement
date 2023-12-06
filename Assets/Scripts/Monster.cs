@@ -63,7 +63,7 @@ public class Monster : MonoBehaviour
     {
         sys_text.text = s;
         sys_text.gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1.5f);
         BattleManager.instance.phase = Phase.End;
         BattleManager.instance.monster_done = true;
 

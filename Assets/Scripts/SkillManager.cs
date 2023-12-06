@@ -384,7 +384,7 @@ public class SkillManager : MonoBehaviour
                 BattleManager.instance.phase = Phase.End;
             }
         }
-            
+
 
         yield return new WaitForSeconds(0.2f);
 
@@ -396,6 +396,7 @@ public class SkillManager : MonoBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(0.3f);
             Player.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
             BattleManager.instance.phase = Phase.End;
             BattleManager.instance.monster_done = true;
@@ -565,13 +566,13 @@ public class SkillManager : MonoBehaviour
             case 3:
                 if (player_turn)
                 {
-                    Player_state.GetComponent<StateManagement>().counts[2] = 5;
+                    Player_state.GetComponent<StateManagement>().counts[2] = 3;
                     Player_state.transform.GetChild(2).gameObject.SetActive(true);
 
                 }
                 else
                 {
-                    Monster_state.GetComponent<StateManagement>().counts[2] = 5;
+                    Monster_state.GetComponent<StateManagement>().counts[2] = 3;
                     Monster_state.transform.GetChild(2).gameObject.SetActive(true);
                 }
                 break;
@@ -814,12 +815,12 @@ public class SkillManager : MonoBehaviour
                 if (BattleManager.instance.player_turn)
                 {
                     P_hit_Effects[3].SetActive(true);
-                    player_Heal(2, (int)((float)player_max_hp * 0.25f));
+                    player_Heal(2, 7);
                 }
                 else
                 {
                     M_hit_Effects[3].SetActive(true);
-                    monster_Heal(2, (int)((float)monster_max_hp * 0.25f));
+                    monster_Heal(2, 7);
                 }
                 break;
             default: 
@@ -1142,8 +1143,9 @@ public class SkillManager : MonoBehaviour
             damage = damage / 2;
             Player_state.GetComponent<StateManagement>().counts[7]--;
         }
+
         //방어도가 존재 할 때
-        else if (Player_state.GetComponent<StateManagement>().counts[4] != 0)
+        if (Player_state.GetComponent<StateManagement>().counts[4] != 0)
         {
             //어스스트라이크나 어스퀘이크일때
             if(spell_id == 12 || spell_id == 14)
@@ -1294,8 +1296,9 @@ public class SkillManager : MonoBehaviour
             damage = damage / 2;
             Monster_state.GetComponent<StateManagement>().counts[7]--;
         }
+        
         //방어도가 존재 할 때
-        else if (Monster_state.GetComponent<StateManagement>().counts[4] != 0)
+        if (Monster_state.GetComponent<StateManagement>().counts[4] != 0)
         {
             if (spell_id == 12 || spell_id == 14)
             {

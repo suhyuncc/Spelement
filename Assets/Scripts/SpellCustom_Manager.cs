@@ -96,10 +96,14 @@ public class SpellCustom_Manager : MonoBehaviour
             page_list = new int[stage_lv + 3];
         }
 
-        for(int i = 0; i < page_list.Length; i++) {
+        //썼던 페이지 정보 불러오기
+        GM.GetComponent<GameManager>().spell_list.CopyTo(page_list, 0);
+
+        /*
+        for (int i = 0; i < page_list.Length; i++) {
             //비어있다면 -1
             page_list[i] = -1;
-        }
+        }*/
 
         for (int i = 0; i < icons.Length; i++)
         {
@@ -107,6 +111,15 @@ public class SpellCustom_Manager : MonoBehaviour
         }
 
         icon_show(stage_lv);
+
+        for (int i = 0; i < page_list.Length; i++)
+        {
+            if (page_list[i] != -1)
+            {
+                icons[page_list[i]].anActive();
+            }
+            
+        }
 
         pageSetting(page_index);
     }

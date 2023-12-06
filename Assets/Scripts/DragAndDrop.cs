@@ -101,7 +101,7 @@ public class DragAndDrop : MonoBehaviour
             transform.position = InitPosition;
         }
 
-        SkillManager.instance.SFX_On(0, 1);
+        SkillManager.instance.SFX_On(0, 2);
 
     }
 

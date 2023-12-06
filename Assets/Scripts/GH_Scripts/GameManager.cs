@@ -110,7 +110,7 @@ public class GameManager : Singleton<GameManager>
             option.GetComponent<AudioSlider>().OnSceneChangedSettingAudio(this.gameObject,masterVolume, backgroundVolume, effectVolume, masterToggle, backgroundToggle, effectToggle);
             option.SetActive(false);
         }
-        else if(_scene.name == "StartScene")
+        else if(_scene.name == "Start Scene")
         {
             option = GameObject.Find("OptionControl").GetComponent<OptionControl>().GetOptionPanel();
             option.SetActive(true);

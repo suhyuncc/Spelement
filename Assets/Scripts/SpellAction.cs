@@ -84,6 +84,11 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (isDone)
+        {
+            return;
+        }
+
         description.gameObject.SetActive(false);
         Name.gameObject.SetActive(false);
 
@@ -216,15 +221,16 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void spellSetting() {
 
         //this.gameObject.SetActive(true);
-        //collide_Area.enabled = true;
+        collide_Area.enabled = true;
 
         spell_icon.interactable = true;
+        spell_icon.gameObject.SetActive(true);
 
         spell_page.color = new Color(1, 1, 1, 1f);
 
+        
         for (int i = 0; i < costs.Length; i++)
         {
-            costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
             costs[i].SetActive(false);
         }
 
@@ -308,14 +314,16 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void spellDone()
     {
         spell_icon.interactable = false;
+        spell_icon.gameObject.SetActive(false);
 
         spell_page.color = new Color(1, 1, 1, 0.5f);
         for (int i = 0; i < total; i++)
         {
             costs[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
+            costs[i].SetActive(false);
         }
 
-        //collide_Area.enabled = false;
+        collide_Area.enabled = false;
 
         BattleManager.instance.spell_count--;
 
