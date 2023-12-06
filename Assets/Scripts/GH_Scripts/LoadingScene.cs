@@ -9,6 +9,7 @@ public class LoadingScene : MonoBehaviour
 {
     [SerializeField]
     private Image filledArea;
+    [SerializeField]
     private string sceneName;
 
 

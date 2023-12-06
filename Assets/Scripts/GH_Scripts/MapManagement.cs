@@ -15,6 +15,7 @@ public class MapManagement : MonoBehaviour
 
         if (gm != null)
         {
+            Time.timeScale = 1;
             gm.GetComponent<GameManager>().SaveandBack();
         }
     }
