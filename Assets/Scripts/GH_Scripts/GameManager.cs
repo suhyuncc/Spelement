@@ -277,7 +277,6 @@ public class GameManager : Singleton<GameManager>
     }
     public int GetStageNumber()
     {
-        if (memorizeClearedStage >= 12) memorizeClearedStage -= 2;
         return memorizeClearedStage/3; //배경화면 띄울 때 쓸 거
     }
     public void SetVolM(float vol, bool tog)
