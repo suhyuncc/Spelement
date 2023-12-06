@@ -86,6 +86,8 @@ public class BattleManager : MonoBehaviour
     private GameObject Book;
     [SerializeField]
     private GameObject Elements;
+    [SerializeField]
+    private AudioClip[] BGM;
 
     [Header("플레이어 관련")]
     [SerializeField]
@@ -201,9 +203,9 @@ public class BattleManager : MonoBehaviour
         //씬 시작시 초기세팅
         instance = this;
 
-        GM = GameObject.Find("GameManager"); //GameManager를 찾아서
-        stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
-        page_list = GM.GetComponent<GameManager>().spell_list;
+        //GM = GameObject.Find("GameManager"); //GameManager를 찾아서
+        //stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
+        //page_list = GM.GetComponent<GameManager>().spell_list;
 
         stage_num -= 1;
 
@@ -212,8 +214,18 @@ public class BattleManager : MonoBehaviour
             case 0:
                 EleManager.instance.player_lv = 1;
                 break;
+
             default:
-                EleManager.instance.player_lv = ((stage_num - 1) / 3) + 2;
+
+                if(stage_num == 12)
+                {
+                    EleManager.instance.player_lv = 5;
+                }
+                else
+                {
+                    EleManager.instance.player_lv = ((stage_num - 1) / 3) + 2;
+                }
+                
 
                 if(stage_num > 1)
                 {
@@ -221,7 +233,19 @@ public class BattleManager : MonoBehaviour
                 }
                 break;
         }
-        
+
+        //브금 세팅
+        if (stage_num == 12)
+        {
+            this.gameObject.GetComponent<AudioSource>().clip = BGM[1];
+            this.gameObject.GetComponent<AudioSource>().Play();
+        }
+        else
+        {
+            this.gameObject.GetComponent<AudioSource>().clip = BGM[0];
+            this.gameObject.GetComponent<AudioSource>().Play();
+        }
+
 
         //운명 id -1로 초기화
         F_index = 0;
@@ -262,10 +286,15 @@ public class BattleManager : MonoBehaviour
         monster.spell_cool = Monster_Spell_cool[stage_num];
         monster.nomal_demage = Monster_Attack[stage_num];
 
+
         //보스일때
         if((stage_num % 3) == 2)
         {
             monster.is_Boss = true;
+        }
+        else if(stage_num == 12)
+        {
+            monster.is_King = true;
         }
         else
         {
@@ -279,7 +308,9 @@ public class BattleManager : MonoBehaviour
 
         pageSetting(page_index);
 
-        
+        Book.SetActive(false);
+
+
     }
 
     private void Update()

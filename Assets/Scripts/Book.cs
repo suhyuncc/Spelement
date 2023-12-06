@@ -21,6 +21,7 @@ public class Book : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine("OpenBook");
+        SkillManager.instance.SFX_On(0, 3);
     }
 
     // Start is called before the first frame update
@@ -43,6 +44,7 @@ public class Book : MonoBehaviour
         {
             spellPages[i].SetActive(false);
         }
+        
         yield return new WaitForSeconds(0.75f);
         
         book_anim.SetBool("Open", false);

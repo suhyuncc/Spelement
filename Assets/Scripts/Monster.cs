@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour
 {
     public bool is_Boss;
+    public bool is_King;
 
     public int nomal_demage;
     public int spell_id;
@@ -20,6 +21,8 @@ public class Monster : MonoBehaviour
     private Sprite[] sprites;
     [SerializeField]
     private GameObject[] shadows;
+    [SerializeField]
+    private int[] king_spell_list;
 
     // Start is called before the first frame update
     void Start()
@@ -30,13 +33,18 @@ public class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void monster_active() {
+    public void monster_active()
+    {
         if (is_Boss)
         {
             StartCoroutine("Boss_Monster_turn");
+        }
+        else if (is_King)
+        {
+            StartCoroutine("King_turn");
         }
         else
         {
@@ -49,7 +57,12 @@ public class Monster : MonoBehaviour
         this.GetComponent<SpriteRenderer>().sprite = sprites[stage_num];
         shadows[stage_num].SetActive(true);
 
-        if(stage_num == 2)
+        if (is_King)
+        {
+            king_spell_list = BattleManager.instance.page_list;
+        }
+
+        if (stage_num == 2)
         {
             this.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -134,7 +147,7 @@ public class Monster : MonoBehaviour
                 sys_text.gameObject.SetActive(true);
             }
             //스킬1
-            else if(ran > 0.25f)
+            else if (ran > 0.25f)
             {
                 current_spell_id = (spell_id / 2) - 1;
                 //스킬 쿨 작동
@@ -152,6 +165,40 @@ public class Monster : MonoBehaviour
                 StartCoroutine(turn_pass($"{BattleManager.instance.Name[current_spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다"));
                 Debug.Log($"{BattleManager.instance.Name[current_spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
             }
+        }
+        else
+        {
+            current_cool--;
+            if (current_cool == 0)
+            {
+                SkillManager.instance.player_turn = false;
+                SkillManager.instance.spell_id = current_spell_id;
+                SkillManager.instance.isActive = true;
+                Debug.Log($"스킬 발동!!");
+                sys_text.text = $"{BattleManager.instance.Name[current_spell_id]}!!";
+                sys_text.gameObject.SetActive(true);
+            }
+            else
+            {
+                StartCoroutine(turn_pass($"{BattleManager.instance.Name[current_spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다"));
+                Debug.Log($"{BattleManager.instance.Name[current_spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
+            }
+        }
+    }
+
+    IEnumerator King_turn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (current_cool == 0)
+        {
+            int ran = Random.Range(0, 12);
+
+            current_spell_id = king_spell_list[ran];
+
+            //스킬 쿨 작동
+            current_cool = spell_cool;
+            StartCoroutine(turn_pass($"{BattleManager.instance.Name[current_spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다"));
+            Debug.Log($"{BattleManager.instance.Name[current_spell_id]}의 스킬 발동까지 {current_cool}턴 남았습니다");
         }
         else
         {

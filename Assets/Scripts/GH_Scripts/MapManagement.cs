@@ -9,6 +9,16 @@ public class MapManagement : MonoBehaviour
     [SerializeField]
     private GameObject mapPanel;
 
+    public void GostartScene()
+    {
+        GameObject gm = GameObject.Find("GameManager");
+
+        if (gm != null)
+        {
+            gm.GetComponent<GameManager>().SaveandBack();
+        }
+    }
+
     public void SceneChanged()
     {
         mapPanel.SetActive(false);

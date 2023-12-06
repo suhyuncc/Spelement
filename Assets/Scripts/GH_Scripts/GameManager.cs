@@ -133,6 +133,15 @@ public class GameManager : Singleton<GameManager>
         Debug.Log("Start Battle!");
     }
 
+    public void SaveandBack()
+    {
+        //저장기능 추가
+
+        currentState = state.start;
+        sceneName = "Start Scene";
+        SceneManager.LoadScene("Loading");
+    }
+
     public void SetEventName(string _eventName)
     {
         eventName = _eventName;
