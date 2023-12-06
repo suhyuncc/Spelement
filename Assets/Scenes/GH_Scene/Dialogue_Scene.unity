@@ -2460,6 +2460,7 @@ MonoBehaviour:
   - {fileID: 953391059}
   - {fileID: 332026797}
   - {fileID: 1512569424}
+  - {fileID: 160739755}
   mapPanel: {fileID: 522616504}
 --- !u!82 &405135571
 AudioSource:
