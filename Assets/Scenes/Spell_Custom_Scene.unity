@@ -2441,6 +2441,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 991601665}
+        m_TargetAssemblyTypeName: SpellCustom_Manager, Assembly-CSharp
+        m_MethodName: btn_SFX
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &286683548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4384,6 +4396,18 @@ MonoBehaviour:
       - m_Target: {fileID: 991601665}
         m_TargetAssemblyTypeName: SpellCustom_Manager, Assembly-CSharp
         m_MethodName: done_Btn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 991601665}
+        m_TargetAssemblyTypeName: SpellCustom_Manager, Assembly-CSharp
+        m_MethodName: btn_SFX
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7982,6 +8006,8 @@ MonoBehaviour:
   sfx_Audio: {fileID: 1798328831}
   sfx_clips:
   - {fileID: 8300000, guid: f3bcd1f80f02f204aa7590a59ffa5f68, type: 3}
+  - {fileID: 8300000, guid: 456601ce05ac5c1468f8ca46b65c6a5e, type: 3}
+  - {fileID: 8300000, guid: c594d95279728204d9bf5065a0714122, type: 3}
   next: {fileID: 1898789915}
   back: {fileID: 317475089}
   icons:
@@ -9710,6 +9736,18 @@ MonoBehaviour:
       - m_Target: {fileID: 651526538}
         m_TargetAssemblyTypeName: OptionControl, Assembly-CSharp
         m_MethodName: option
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 991601665}
+        m_TargetAssemblyTypeName: SpellCustom_Manager, Assembly-CSharp
+        m_MethodName: btn_SFX
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

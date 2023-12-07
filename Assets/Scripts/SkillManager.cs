@@ -50,6 +50,8 @@ public class SkillManager : MonoBehaviour
     private AudioClip[] UI_SFX;
     [SerializeField]
     private AudioClip[] hit_SFX;
+    [SerializeField]
+    private AudioClip[] attack_SFX;
 
     [Header("전투 관련")]
     [SerializeField]
@@ -196,10 +198,7 @@ public class SkillManager : MonoBehaviour
                 {
                     Monster.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
                 }
-                
-
-                sfx_Manager.clip = hit_SFX[0];
-                sfx_Manager.Play();
+                SFX_On(1, spell_id);
             }
             else
             {
@@ -222,7 +221,7 @@ public class SkillManager : MonoBehaviour
                 {
                     Player.GetComponent<SpriteRenderer>().color = colors[((spell_id - 3) / 4) + 1];
                 }
-
+                SFX_On(1,spell_id);
             }
         }
         //공격 기술이 아닐때
@@ -232,10 +231,12 @@ public class SkillManager : MonoBehaviour
             if (player_turn)
             {
                 P_hit_Effects[spell_id].SetActive(true);
+                SFX_On(1, spell_id);
             }
             else
             {
                 M_hit_Effects[spell_id].SetActive(true);
+                SFX_On(1, spell_id);
             }
         }
 
@@ -418,8 +419,7 @@ public class SkillManager : MonoBehaviour
 
             player_Damage_txt(spell_id,3);
 
-            sfx_Manager.clip = hit_SFX[0];
-            sfx_Manager.Play();
+            SFX_On(1, spell_id);
 
             player_current_hp -= 3;
             //오버 히트 방지
@@ -453,8 +453,7 @@ public class SkillManager : MonoBehaviour
 
             monster_Damage_txt(spell_id,3);
 
-            sfx_Manager.clip = hit_SFX[0];
-            sfx_Manager.Play();
+            SFX_On(1, spell_id);
 
             monster_current_hp -= 3;
             //오버 히트 방지
@@ -517,7 +516,7 @@ public class SkillManager : MonoBehaviour
         }
         BattleManager.instance.phase = Phase.End;
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.7f);
 
         if (!BattleManager.instance.player_turn)
         {
@@ -539,6 +538,10 @@ public class SkillManager : MonoBehaviour
                 break; 
             case 1:
                 sfx_Manager.clip = hit_SFX[index];
+                sfx_Manager.Play();
+                break;
+            case 2:
+                sfx_Manager.clip = attack_SFX[index];
                 sfx_Manager.Play();
                 break;
             default: 
@@ -816,11 +819,13 @@ public class SkillManager : MonoBehaviour
                 {
                     P_hit_Effects[3].SetActive(true);
                     player_Heal(2, 7);
+                    SFX_On(1, 3);
                 }
                 else
                 {
                     M_hit_Effects[3].SetActive(true);
                     monster_Heal(2, 7);
+                    SFX_On(1, 3);
                 }
                 break;
             default: 
@@ -834,18 +839,22 @@ public class SkillManager : MonoBehaviour
         {
             case 0:
                 spin_spell_field.GetComponent<SpriteRenderer>().color = colors[0];
+                SFX_On(2, 0);
                 spin_spell_field.SetActive(true);
                 break;
             case 7:
                 spin_spell_field.GetComponent<SpriteRenderer>().color = colors[2];
+                SFX_On(2, 1);
                 spin_spell_field.SetActive(true);
                 break;
             case 13:
                 spin_spell_field.GetComponent<SpriteRenderer>().color = colors[3];
+                SFX_On(2, 2);
                 spin_spell_field.SetActive(true);
                 break;
             case 17:
                 spin_spell_field.GetComponent<SpriteRenderer>().color = colors[4];
+                SFX_On(2, 3);
                 spin_spell_field.SetActive(true);
                 break;
             default:

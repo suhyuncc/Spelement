@@ -23,11 +23,13 @@ public class winlose_panel : MonoBehaviour
         {
             winlose_txt.color = Color.blue;
             winlose_txt.text = "½Â¸®!!!!!";
+            SkillManager.instance.SFX_On(0, 4);
         }
         else
         {
             winlose_txt.color = Color.red;
             winlose_txt.text = "ÆÐ¹è....";
+            SkillManager.instance.SFX_On(0, 5);
         }
     }
 

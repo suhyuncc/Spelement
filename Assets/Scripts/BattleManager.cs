@@ -203,9 +203,9 @@ public class BattleManager : MonoBehaviour
         //씬 시작시 초기세팅
         instance = this;
 
-        //GM = GameObject.Find("GameManager"); //GameManager를 찾아서
-        //stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
-        //page_list = GM.GetComponent<GameManager>().spell_list;
+        GM = GameObject.Find("GameManager"); //GameManager를 찾아서
+        stage_num = GM.GetComponent<GameManager>().currentStageSerialNumber; //스테이지 넘버 가져오기
+        page_list = GM.GetComponent<GameManager>().spell_list;
 
         stage_num -= 1;
 
@@ -235,16 +235,8 @@ public class BattleManager : MonoBehaviour
         }
 
         //브금 세팅
-        if (stage_num == 12)
-        {
-            this.gameObject.GetComponent<AudioSource>().clip = BGM[1];
-            this.gameObject.GetComponent<AudioSource>().Play();
-        }
-        else
-        {
-            this.gameObject.GetComponent<AudioSource>().clip = BGM[0];
-            this.gameObject.GetComponent<AudioSource>().Play();
-        }
+        this.gameObject.GetComponent<AudioSource>().clip = BGM[stage_num / 3];
+        this.gameObject.GetComponent<AudioSource>().Play();
 
 
         //운명 id -1로 초기화

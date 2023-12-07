@@ -313,6 +313,7 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //스펠 버튼으로 작동(스펠 사용 후 실행)
     public void spellDone()
     {
+        SkillManager.instance.SFX_On(0, 6);
         spell_icon.interactable = false;
         spell_icon.gameObject.SetActive(false);
 

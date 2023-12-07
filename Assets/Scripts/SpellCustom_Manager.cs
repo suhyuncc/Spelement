@@ -268,9 +268,15 @@ public class SpellCustom_Manager : MonoBehaviour
         }
     }
 
-    private void SFX_play(int sfx_id)
+    public void SFX_play(int sfx_id)
     {
         sfx_Audio.clip = sfx_clips[sfx_id];
+        sfx_Audio.Play();
+    }
+
+    public void btn_SFX()
+    {
+        sfx_Audio.clip = sfx_clips[1];
         sfx_Audio.Play();
     }
 

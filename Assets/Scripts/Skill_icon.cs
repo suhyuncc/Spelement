@@ -73,6 +73,7 @@ public class Skill_icon : MonoBehaviour
         {
             spell.GetComponent<SpellSetting>().set_Anim = true;
             spell.GetComponent<SpellSetting>().Spellsetting(spell_id);
+            SpellCustom_Manager.instance.SFX_play(2);
             anActive();
         }
     }

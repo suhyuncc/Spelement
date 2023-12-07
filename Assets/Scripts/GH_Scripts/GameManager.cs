@@ -229,6 +229,11 @@ public class GameManager : Singleton<GameManager>
 
     public void Addspell(int stage_id)
     {
+        if(stage_id > 8)
+        {
+            return;
+        }
+
         int[] temp_list = new int[spell_list.Length + 1];
         int spell_id;
 
