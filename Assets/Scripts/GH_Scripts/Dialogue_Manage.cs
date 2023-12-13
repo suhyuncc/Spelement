@@ -32,11 +32,19 @@ public class Dialogue_Manage : MonoBehaviour
 
     private string eventNameIf2Event = null;
     private bool isBothDialogue = false;
+    private bool isBothDialoguein1Time = false;
 
     public void ItIsPreviousDialogue(int num)
     {
         isPrevDialogue= true;
         isStageNumber = num;
+    }
+
+    public void ItisDoubleDialogue(string event1, string event2)
+    {
+        isBothDialoguein1Time= true;
+        GetEventName(event1);
+        eventNameIf2Event = event2;
     }
 
     public void ItIsBothDialogue(string _eventName)
@@ -49,13 +57,14 @@ public class Dialogue_Manage : MonoBehaviour
     {
         eventName = _eventName;
         isDialogue = true;
-        dialoguePanel.SetActive(true);
+        if(dialoguePanel.activeSelf == false)
+            dialoguePanel.SetActive(true);
     }
     
     private int dataIndex = 0;
     private int contextIndex = 0;
 
-    private int previousImage = 0;
+    private int previousImage = 0; 
 
     private bool currentTypeEnd = false;
     private string toType = null;
@@ -68,7 +77,7 @@ public class Dialogue_Manage : MonoBehaviour
 
         if(isDialogue)
         {
-            for(int t = 0; t< 15; t++)
+            for(int t = 0; t< 26; t++)
             {
                 if (dialogueImagePanel.transform.GetChild(t).gameObject.activeSelf)
                 {
@@ -152,7 +161,13 @@ public class Dialogue_Manage : MonoBehaviour
                         {
                             currentDialogue = false;
                             
-                            if (!isPrevDialogue)
+                            if(isBothDialoguein1Time)
+                            {
+                                isBothDialoguein1Time= false;
+                                GetEventName(eventNameIf2Event);
+                                
+                            }
+                            else if (!isPrevDialogue)
                             {
                                 gm.GetComponent<GameManager>().currentState = state.idle;
                                 gm.GetComponent<GameManager>().MapManager.GetComponent<MapManagement>().ReturnScene();

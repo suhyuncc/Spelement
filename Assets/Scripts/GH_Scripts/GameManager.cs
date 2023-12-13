@@ -76,6 +76,11 @@ public class GameManager : Singleton<GameManager>
             }
             //매번 Idle scene에 도달했을 때 진행도에 따른 맵 세팅
             MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
+            if(isFirstGame)
+            {
+                MapManager.GetComponent<MapManagement>().SceneChanged();
+                DialogueManager.GetComponent<Dialogue_Manage>().ItisDoubleDialogue("Tutorial_1", "Tutorial_2");
+            }
         }
         else if (currentState == state.dialogue && _scene.name == "Dialogue_Scene") // Idle scene but 대화가 선행되어야 할 때
         {
