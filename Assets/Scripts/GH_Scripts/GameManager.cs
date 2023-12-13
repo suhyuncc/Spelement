@@ -48,6 +48,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private GameObject option;
 
+    [SerializeField]
+    private bool isFirstGame = false;
+
     private void Start()
     {
         eventName = null;
@@ -308,5 +311,10 @@ public class GameManager : Singleton<GameManager>
     {
         effectVolume = vol;
         effectToggle = tog;
+    }
+
+    public void FirstGameStart()
+    {
+        isFirstGame = true;
     }
 }

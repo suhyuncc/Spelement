@@ -11,6 +11,7 @@ public class startsceneManager : MonoBehaviour
         if (gm != null)
         {
             gm.GetComponent<GameManager>().spell_list = new int[3] { 0, 1, 2 };
+            gm.GetComponent<GameManager>().FirstGameStart();
             gm.GetComponent<GameManager>().IdleSceneChange();
         }
     }
