@@ -443,14 +443,14 @@ public class BattleManager : MonoBehaviour
 
     public void GoBackToIdleScene()
     {
-        if(Player_HP.value < 0.00001f)
-        {
-            GM.GetComponent<GameManager>().currentStageCleared = false;
-        }
-        else if(Monster_HP.value < 0.00001f)
+        if(Monster_HP.value < 0.00001f)
         {
             GM.GetComponent<GameManager>().currentStageCleared = true;
             GM.GetComponent<GameManager>().Addspell(stage_num);
+        }
+        else
+        {
+            GM.GetComponent<GameManager>().currentStageCleared = false;
         }
 
         if (GM != null)

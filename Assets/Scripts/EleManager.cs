@@ -250,6 +250,7 @@ public class EleManager : MonoBehaviour
             Earths[i].transform.position = Points[i].position;
             Earths[i].SetActive(true);
         }
+        SkillManager.instance.SFX_On(0, 6);
     }
 
     public void All_air()
@@ -260,6 +261,7 @@ public class EleManager : MonoBehaviour
             Airs[i].transform.position = Points[i].position;
             Airs[i].SetActive(true);
         }
+        SkillManager.instance.SFX_On(0, 6);
     }
 
     public void All_water()
@@ -270,6 +272,7 @@ public class EleManager : MonoBehaviour
             Waters[i].transform.position = Points[i].position;
             Waters[i].SetActive(true);
         }
+        SkillManager.instance.SFX_On(0, 6);
     }
 
     public void All_fire()
@@ -280,5 +283,6 @@ public class EleManager : MonoBehaviour
             Fires[i].transform.position = Points[i].position;
             Fires[i].SetActive(true);
         }
+        SkillManager.instance.SFX_On(0, 6);
     }
 }
