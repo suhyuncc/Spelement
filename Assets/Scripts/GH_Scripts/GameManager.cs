@@ -78,6 +78,7 @@ public class GameManager : Singleton<GameManager>
             MapManager.GetComponent<MapManagement>().StageClear(memorizeClearedStage);
             if(isFirstGame)
             {
+                isFirstGame = false;
                 MapManager.GetComponent<MapManagement>().SceneChanged();
                 DialogueManager.GetComponent<Dialogue_Manage>().ItisDoubleDialogue("Tutorial_1", "Tutorial_2");
             }
