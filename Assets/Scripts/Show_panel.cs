@@ -32,7 +32,8 @@ public class Show_panel : MonoBehaviour, IPointerExitHandler, IPointerEnterHandl
     {
         if (mouseOn)
         {
-            discrip_box.transform.position = Input.mousePosition + new Vector3(20f, 20f, 0);
+            discrip_box.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition + new Vector3(20f, 20f, 0)
+                + new Vector3(-960f, -540f, 0);
         }
 
     }

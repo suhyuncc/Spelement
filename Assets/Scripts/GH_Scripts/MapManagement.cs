@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 //gh
 public class MapManagement : MonoBehaviour
@@ -9,8 +10,24 @@ public class MapManagement : MonoBehaviour
     [SerializeField]
     private GameObject mapPanel;
 
+    private SaveData1 saveData = new SaveData1();
+
+    private string SAVE_DATA_DIRECTORY;  // 저장할 폴더 경로
+    private string SAVE_FILENAME = "/SaveFile.txt"; // 파일 이름
+
+    void Start()
+    {
+        SAVE_DATA_DIRECTORY = Application.dataPath + "/Save/";
+
+        if (!Directory.Exists(SAVE_DATA_DIRECTORY)) // 해당 경로가 존재하지 않는다면
+            Directory.CreateDirectory(SAVE_DATA_DIRECTORY); // 폴더 생성(경로 생성)
+
+    }
+
     public void GostartScene()
     {
+        SaveData();
+
         GameObject gm = GameObject.Find("GameManager");
 
         if (gm != null)
@@ -47,5 +64,22 @@ public class MapManagement : MonoBehaviour
                 count++;
             }
         } 
+    }
+
+    public void SaveData()
+    {
+        saveData.saveStage = GameManager.instance.memorizeClearedStage;
+        saveData.saveisSaved = true;
+
+        // 스펠 리스트 저장
+        for (int i = 0; i < GameManager.instance.spell_list.Length; i++)
+        {
+            saveData.saveList.Add(GameManager.instance.spell_list[i]);
+        }
+
+        // 최종 전체 저장
+        string json = JsonUtility.ToJson(saveData); // 제이슨화
+
+        File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, json);
     }
 }

@@ -87,7 +87,7 @@ public class SpellCustom_Manager : MonoBehaviour
         stage_lv = GM.GetComponent<GameManager>().memorizeClearedStage; //스테이지 넘버 가져오기
 
         Set_Spell_Data();
-        if (stage_lv > 10)
+        if (stage_lv > 9)
         {
             page_list = new int[12];
         }
@@ -98,6 +98,8 @@ public class SpellCustom_Manager : MonoBehaviour
 
         //썼던 페이지 정보 불러오기
         GM.GetComponent<GameManager>().spell_list.CopyTo(page_list, 0);
+        
+        
 
         /*
         for (int i = 0; i < page_list.Length; i++) {

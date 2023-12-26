@@ -31521,7 +31521,7 @@ MonoBehaviour:
   UI_SFX:
   - {fileID: 8300000, guid: 3fb33a758bc7a96478c452545103ef34, type: 3}
   - {fileID: 8300000, guid: c2afcd84d4dca9441bc5111b18ef4aae, type: 3}
-  - {fileID: 8300000, guid: ecd3851f73d25624abbc798f15b495d9, type: 3}
+  - {fileID: 8300000, guid: 9de4c97baef313e4e9d79e273e8ab931, type: 3}
   - {fileID: 8300000, guid: 4cc5ab566f7fc804c98e4fea289c28b9, type: 3}
   - {fileID: 8300000, guid: ad42ae500dad1634a8de97d03053fb41, type: 3}
   - {fileID: 8300000, guid: 3321bf932b7731e4c8c5762f54dd4d23, type: 3}
