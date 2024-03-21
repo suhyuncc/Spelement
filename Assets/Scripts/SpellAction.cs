@@ -22,8 +22,6 @@ public class SpellAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private Sprite[] Jam_sprites;
     
-
-
     [SerializeField]
     private int Null_num;
     [SerializeField]

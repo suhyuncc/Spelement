@@ -338,9 +338,6 @@ public class BattleManager : MonoBehaviour
                         }
                         
                     }
-                    
-                    
-                    
                 }
                 else
                 {
